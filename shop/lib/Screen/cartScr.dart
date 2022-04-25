@@ -15,9 +15,11 @@ class CartScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocProvider<CartWishListBloc>(
-        create: (context) => CartWishListBloc()..add(FetchCartEvent()),
-        child: CustomScrollView(
+      body:
+      //  BlocProvider<CartWishListBloc>(
+      //   create: (context) => CartWishListBloc()..add(FetchCartEvent()),
+      //   child:
+         CustomScrollView(
           slivers: [
             // ! Sliver app Bar
 
@@ -62,7 +64,7 @@ class CartScreen extends StatelessWidget {
             //  ! Sliver Product Content
           ],
         ),
-      ),
+      // ),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(20),
         child: Btn(

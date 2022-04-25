@@ -3,25 +3,22 @@ import 'package:shop/Backend/Model/user.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 
-ValueNotifier<User> currentUser = ValueNotifier(User());
+// ValueNotifier<User> currentUser = ValueNotifier(User());
 // ! Get Resuest
 Future getDioRequest(String url) async {
-  Response response;
-
-  // print('URL ' + url);
   Map<String, dynamic> header = Map<String, dynamic>();
-  header['Authorization'] = "Bearer " + currentUser.value.token!;
+  // header['Authorization'] = "Bearer " + currentUser.value.token!;
   header['Content-Type'] = 'application/json';
-  // print('Header' + header.toString());
 
   try {
-    response = await Dio().get(url, options: Options(headers: header));
+    Response response = await Dio().get(url, options: Options(headers: header));
+    // if (response.statusCode == 200) {
+      return response.data;
+    // }
+    // return false;
   } on DioError catch (e) {
-    // print('Response' + e.response!.data.toString());
     return e.response!.data;
   }
-  // print('Response' + response.data.toString());
-  return response.data;
 }
 
 // ! Post Reauest
@@ -35,11 +32,11 @@ Future postDioRequest(String url,
   // print('URL ' + url);
   // print('Input ' + data.toString());
   Map<String, dynamic> headers = Map<String, dynamic>();
-  header != null
-      ? headers['GoogleAccessToken'] = header
-      : headers['authorization'] = "Bearer " + currentUser.value.token!;
-  headers['Content-Type'] =
-      contentType != null ? contentType : 'application/json';
+  // header != null
+  //     ? headers['GoogleAccessToken'] = header
+  //     // : headers['authorization'] = "Bearer " + currentUser.value.token!;
+  // headers['Content-Type'] =
+  //     contentType != null ? contentType : 'application/json';
   // print('Header' + headers.toString());
   try {
     response = await dio.post(url,
@@ -58,10 +55,10 @@ Future postDioRequest(String url,
 Future putDioRequest(String url, var body, {String? header}) async {
   Response response;
   Map<String, dynamic> headers = Map<String, dynamic>();
-  header != null
-      ? headers['GoogleAccessToken'] = header
-      : headers['authorization'] = "Bearer " + currentUser.value.token!;
-  headers['Content-Type'] = 'application/json';
+  // header != null
+  //     ? headers['GoogleAccessToken'] = header
+  //     // : headers['authorization'] = "Bearer " + currentUser.value.token!;
+  // headers['Content-Type'] = 'application/json';
 
   // print('URL ' + url);
   // print('Input ' + body.toString());

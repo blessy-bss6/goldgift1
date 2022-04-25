@@ -1,32 +1,13 @@
 class URLConstants {
-  static const baseUrl = "https://reqres.in/";
+  static const String Key = "ck_e574cd75f0fedf68fda0fa8fd99c17f54665a4c6";
+  static const String password = "cs_9e084118b1fdba78c85c24b6a209fdf382057e5e";
+  static const baseUrl = "https://liveprojects.co.in/goldgift";
 
   ///API onBoarding************************************************************************
-  static const signUpApiUrl = baseUrl + 'api/register/';
-  static const loginApiUrl = baseUrl + 'api/login/';
-  static const logoutApiUrl = baseUrl + 'api/users/logout/';
+  static const productUrl = '/wp-json/wc/v3/products';
+  static const categoryUrl = "/wp-json/wc/v3/products/categories";
+  static const homeUrl = "/";
+  //API Product
 
-  //API ForgotPassword Email
-  static const sendOtpEmail = baseUrl + 'api/users/sendOtpToEmail/';
-  static const resentOtpEmail = baseUrl + 'api/users/resendOtpToEmail/';
-  static const verifyOtpEmail = baseUrl + 'api/users/verifyOtpFromEmail';
-  static const resetPassEmail = baseUrl + 'api/users/resetPasswordFromEmail';
-
-  //API ForgotPassword Mobile
-  static const sendOtpMbl = baseUrl + 'comm/sendOtp';
-  static const resentOtpMbl = baseUrl + 'comm/resendOtp';
-  static const verifyOtpMbl = baseUrl + 'comm/verifyOtp';
-  static const resetPassFromMbl = baseUrl + 'api/users/resetPasswordFromPhone';
-
-  //  ! Home Product
-  static const prodUrl = baseUrl + '';
-  static const homeUrl = baseUrl + 'api/unknown/';
-
-  // ! Order and Cart
-  static const cartUrl = baseUrl + '';
-  static const cartItemPutUrl = baseUrl + '';
-  static const cartItemDeleteUrl = baseUrl + '';
-  static const wishlistUrl = baseUrl + '';
-  static const wishlistItemPutUrl = baseUrl + '';
-  static const wishlistItemDeleteUrl = baseUrl + '';
+  static const categorysUrl = "/wp-json/wp/v2/categories";
 }

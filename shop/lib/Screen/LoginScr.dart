@@ -38,13 +38,13 @@ class LoginScreen extends StatelessWidget {
         //     UserNavigationBar(
         //       currentTab: 0,
         //     ));
-        final cubit = BlocProvider.of<RegisterBloc>(context, listen: false);
-        var b = cubit.add(LoginBtnEvent(
-          password: passwordController.text,
-          email: userNameController.text,
-        ));
+        // final cubit = BlocProvider.of<RegisterBloc>(context, listen: false);
+        // var b = cubit.add(LoginBtnEvent(
+        //   password: passwordController.text,
+        //   email: userNameController.text,
+        // ));
 
-        print(cubit);
+        // print(cubit);
 
         // BlocProvider.of<RegisterBloc>(context)
         //   ..add(LoginBtnEvent(
@@ -65,16 +65,18 @@ class LoginScreen extends StatelessWidget {
 
     return Scaffold(
       body:
-          BlocConsumer<RegisterBloc, RegisterState>(listener: (context, state) {
-        if (state is SuccessState) {
-          navigationPush(
-              context,
-              UserNavigationBar(
-                currentTab: 1,
-              ));
-        }
-      }, builder: (context, state) {
-        return Padding(
+      //     BlocConsumer<RegisterBloc, RegisterState>(listener: (context, state) {
+      //   if (state is SuccessState) {
+      //     navigationPush(
+      //         context,
+      //         UserNavigationBar(
+      //           currentTab: 1,
+      //         ));
+      //   }
+      // }, builder: (context, state) {
+
+      //   return 
+        Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 30),
           child: Form(
             key: _formKey,
@@ -120,8 +122,8 @@ class LoginScreen extends StatelessWidget {
               ],
             ),
           ),
-        );
-      }),
+        ),
+      // }),
       bottomNavigationBar:
           // bottomSheet:
           Container(

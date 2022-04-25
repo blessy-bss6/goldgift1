@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shop/Backend/Bloc/prod_home_Bloc.dart';
+import 'package:shop/Backend/Bloc/prod_Bloc.dart';
 import 'package:shop/Backend/Bloc/reg_Login_Bloc.dart';
 import 'package:shop/Elements/baseAppbar.dart';
 import 'package:shop/Elements/button.dart';
@@ -11,6 +11,7 @@ import 'package:shop/Screen/cartScr.dart';
 import 'package:shop/utils/common.dart';
 import 'package:shop/utils/style.dart';
 
+import '../Backend/Bloc/home_Bloc.dart';
 import 'CategoryScr.dart';
 import 'LoginScr.dart';
 import 'f1.dart';
@@ -23,11 +24,11 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  ProdHomeBloc prodBloc = ProdHomeBloc();
+  HomeBloc prodBloc = HomeBloc();
 
   @override
   void initState() {
-    prodBloc = BlocProvider.of<ProdHomeBloc>(context, listen: false);
+    prodBloc = BlocProvider.of<HomeBloc>(context, listen: false);
     prodBloc.add(FetchHomeEvent());
     super.initState();
   }
@@ -53,124 +54,133 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocConsumer<ProdHomeBloc, RegisterState>(
+      body: BlocConsumer<HomeBloc, HomeState>(
           listener: (context, state) {},
           builder: (context, state) {
-            return CustomScrollView(
-              slivers: [
-                // ! Sliver app Bar
-                SliverAppBar(
-                  // expandedHeight: 6.0,
-                  // flexibleSpace: const FlexibleSpaceBar(
-                  //   title: Text('Available seats'),
-                  // ),
-                  backgroundColor: coffeColor,
-                  title: Text(
-                    'Gold Gift Ideas',
-                    style: whiteTextStyle,
-                  ),
-                  centerTitle: true,
-                  bottom: PreferredSize(
-                      preferredSize: Size.fromHeight(60),
-                      child: Container(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 5.0, horizontal: 15.0),
-                          child: SearchBox(
-                            controller: searchController,
+            print(state);
+            if (state is HomeSuccessState) {
+              return CustomScrollView(
+                slivers: [
+                  // ! Sliver app Bar
+                  SliverAppBar(
+                    // expandedHeight: 6.0,
+                    // flexibleSpace: const FlexibleSpaceBar(
+                    //   title: Text('Available seats'),
+                    // ),
+                    backgroundColor: coffeColor,
+                    title: Text(
+                      'Gold Gift Ideas',
+                      style: whiteTextStyle,
+                    ),
+                    centerTitle: true,
+                    bottom: PreferredSize(
+                        preferredSize: Size.fromHeight(60),
+                        child: Container(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 5.0, horizontal: 15.0),
+                            child: SearchBox(
+                              controller: searchController,
+                            ),
                           ),
+                        )),
+                    actions: <Widget>[
+                      IconButton(
+                        icon: const Icon(Icons.login),
+                        tooltip: 'Login',
+                        onPressed: () => navigationPush(context, LoginScreen()),
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.shopping_bag),
+                        tooltip: 'Cart',
+                        onPressed: () => navigationPush(context, CartScreen()),
+                      ),
+                    ],
+                  ),
+                  SliverList(
+                    delegate: SliverChildListDelegate([
+                      ImgSlider(),
+                      CategoryListItem(cateList: state.category)
+                    ]),
+                  ),
+
+                  // ! First List
+                  SliverPadding(
+                    padding: const EdgeInsets.all(2),
+                    sliver: SliverToBoxAdapter(
+                      child: Column(
+                        children: [
+                          Divider(),
+                          Container(
+                              alignment: Alignment.center,
+                              child: Text(
+                                'Special Offers ',
+                                style: labelTextStyle,
+                              )),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SliverPadding(
+                    padding: const EdgeInsets.all(4.0),
+                    sliver: SliverGrid(
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          childAspectRatio: MediaQuery.of(context).size.width /
+                              (MediaQuery.of(context).size.height / 1.9),
+                          mainAxisSpacing: 10.0,
+                          crossAxisSpacing: 10.0,
                         ),
-                      )),
-                  actions: <Widget>[
-                    IconButton(
-                      icon: const Icon(Icons.login),
-                      tooltip: 'Login',
-                      onPressed: () => navigationPush(context, LoginScreen()),
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.shopping_bag),
-                      tooltip: 'Cart',
-                      onPressed: () => navigationPush(context, CartScreen()),
-                    ),
-                  ],
-                ),
-                SliverList(
-                  delegate: SliverChildListDelegate(
-                      [ImgSlider(), CategoryListItem()]),
-                ),
+                        delegate: SliverChildBuilderDelegate((context, index) {
+                          return CategeoryGridProdList(
+                            // onTap: () => navigationPush(context, ProductShowScreen()),
+                            imageUrl: catList[index]['pic'],
+                            title: catList[index]['name'],
+                          );
+                        }, childCount: catList.length)),
+                  ),
 
-                // ! First List
-                SliverPadding(
-                  padding: const EdgeInsets.all(2),
-                  sliver: SliverToBoxAdapter(
-                    child: Column(
-                      children: [
-                        Divider(),
-                        Container(
-                            alignment: Alignment.center,
-                            child: Text(
-                              'Special Offers ',
-                              style: labelTextStyle,
-                            )),
-                      ],
+                  // ! First List
+                  SliverPadding(
+                    padding: const EdgeInsets.all(3),
+                    sliver: SliverToBoxAdapter(
+                      child: Column(
+                        children: [
+                          Divider(),
+                          Container(
+                              alignment: Alignment.center,
+                              child: Text(
+                                'For Return Gift',
+                                style: labelTextStyle,
+                              )),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                SliverPadding(
-                  padding: const EdgeInsets.all(4.0),
-                  sliver: SliverGrid(
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        childAspectRatio: MediaQuery.of(context).size.width /
-                            (MediaQuery.of(context).size.height / 1.9),
-                        mainAxisSpacing: 10.0,
-                        crossAxisSpacing: 10.0,
-                      ),
-                      delegate: SliverChildBuilderDelegate((context, index) {
-                        return CategeoryGridProdList(
-                          // onTap: () => navigationPush(context, ProductShowScreen()),
-                          imageUrl: catList[index]['pic'],
-                          title: catList[index]['name'],
-                        );
-                      }, childCount: catList.length)),
-                ),
+                  SliverPadding(
+                    padding: const EdgeInsets.all(5.0),
+                    sliver: SliverGrid(
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          childAspectRatio: MediaQuery.of(context).size.width /
+                              (MediaQuery.of(context).size.height / 1.9),
+                          mainAxisSpacing: 10.0,
+                          crossAxisSpacing: 10.0,
+                        ),
+                        delegate: SliverChildBuilderDelegate((context, index) {
+                          return CategeoryGridProdList(
+                            // onTap: () => navigationPush(context, ProductShowScreen()),
+                            imageUrl: 'assets/images/Oxidized.png',
+                            title: 'product',
+                          );
+                        }, childCount: 6)),
+                  )
+                ],
+              );
+            }
 
-                // ! First List
-                SliverPadding(
-                  padding: const EdgeInsets.all(3),
-                  sliver: SliverToBoxAdapter(
-                    child: Column(
-                      children: [
-                        Divider(),
-                        Container(
-                            alignment: Alignment.center,
-                            child: Text(
-                              'For Return Gift',
-                              style: labelTextStyle,
-                            )),
-                      ],
-                    ),
-                  ),
-                ),
-                SliverPadding(
-                  padding: const EdgeInsets.all(5.0),
-                  sliver: SliverGrid(
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        childAspectRatio: MediaQuery.of(context).size.width /
-                            (MediaQuery.of(context).size.height / 1.9),
-                        mainAxisSpacing: 10.0,
-                        crossAxisSpacing: 10.0,
-                      ),
-                      delegate: SliverChildBuilderDelegate((context, index) {
-                        return CategeoryGridProdList(
-                          // onTap: () => navigationPush(context, ProductShowScreen()),
-                          imageUrl: 'assets/images/Oxidized.png',
-                          title: 'product',
-                        );
-                      }, childCount: 6)),
-                )
-              ],
+            return Center(
+              child: CircularProgressIndicator(),
             );
           }),
       drawer: DrawerScreen(),
@@ -180,6 +190,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
 // !  Vertical list for Category
 class CategoryListItem extends StatelessWidget {
+  final dynamic cateList;
   List catList = [
     {
       "pic": "assets/imgs/prodcat1.png",
@@ -213,10 +224,13 @@ class CategoryListItem extends StatelessWidget {
     },
   ];
 
-  CategoryListItem({Key? key}) : super(key: key);
+  CategoryListItem({Key? key, this.cateList}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    print('catelist data $cateList');
+     print(cateList.runtimeType);
+     print(cateList.length);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -246,7 +260,7 @@ class CategoryListItem extends StatelessWidget {
           height: 180,
           child: ListView.builder(
             shrinkWrap: true,
-            itemCount: catList.length,
+            itemCount: cateList.length,
             scrollDirection: Axis.horizontal,
             itemBuilder: (context, i) {
               return Padding(
@@ -259,8 +273,8 @@ class CategoryListItem extends StatelessWidget {
                     children: [
                       // ! Pic Section
                       Container(
-                        child: Pics(
-                          src: catList[i]['pic'].toString(),
+                        child: Pics(networkImg: true,
+                          src: cateList[i]['src'].toString(),
                           height: 120,
                           width: 150,
                           fit: BoxFit.cover,
@@ -272,7 +286,7 @@ class CategoryListItem extends StatelessWidget {
                         margin: EdgeInsets.only(top: 0.0),
                         alignment: Alignment.bottomCenter,
                         child: Text(
-                          ' ${catList[i]['name']}',
+                          ' ${cateList[i]['name']}',
                           style: mediumTextStyle,
                         ),
                       ),
@@ -280,7 +294,7 @@ class CategoryListItem extends StatelessWidget {
                       Container(
                         alignment: Alignment.bottomCenter,
                         child: Text(
-                          '${catList[i]['product']} product',
+                          '${cateList[i]['count']} product',
                           style: smallTextStyle,
                         ),
                       )

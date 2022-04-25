@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
+import 'package:shop/Screen/a.dart';
 import 'Allproveder.dart';
 import 'Screen/splashScr.dart';
 
@@ -27,9 +28,11 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
+    return 
+    MultiProvider(
       providers: MainBloc.allBlocs(),
-      child: MaterialApp(
+      child: 
+      MaterialApp(
         title: 'GoldGiftIdeas',
         theme: ThemeData(
             // primaryColor: redColor,
@@ -37,6 +40,7 @@ class MyApp extends StatelessWidget {
             ),
         debugShowCheckedModeBanner: false,
         home: SplashScreen(),
+        // home:ProdScr()
       ),
     );
   }

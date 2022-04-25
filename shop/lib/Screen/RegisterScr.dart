@@ -31,13 +31,13 @@ class RegisterScreen extends StatelessWidget {
       }
       _formKey.currentState!.save();
       if (isvalid == true) {
-        var isregis =
-            await BlocProvider.of<RegisterBloc>(context, listen: false)
-              ..add(SignUpBtnEvent(
-                  password: passwordController.text,
-                  email: userNameController.text,
-                  fullname: nameController.text,
-                  phone: mobileController.text));
+        // var isregis =
+        //     await BlocProvider.of<RegisterBloc>(context, listen: false)
+        //       ..add(SignUpBtnEvent(
+        //           password: passwordController.text,
+        //           email: userNameController.text,
+        //           fullname: nameController.text,
+        //           phone: mobileController.text));
         // navigationPush(
         //     context,
         //     UserNavigationBar(
@@ -48,16 +48,17 @@ class RegisterScreen extends StatelessWidget {
 
     return Scaffold(
       body:
-          BlocConsumer<RegisterBloc, RegisterState>(listener: (context, state) {
-        if (state is SuccessState) {
-          navigationPush(
-              context,
-              UserNavigationBar(
-                currentTab: 1,
-              ));
-        }
-      }, builder: (context, state) {
-        return Padding(
+      //     BlocConsumer<RegisterBloc, RegisterState>(listener: (context, state) {
+      //   if (state is SuccessState) {
+      //     navigationPush(
+      //         context,
+      //         UserNavigationBar(
+      //           currentTab: 1,
+      //         ));
+      //   }
+      // }, builder: (context, state) {
+      //   return
+         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 30),
           child: Form(
             key: _formKey,
@@ -130,8 +131,9 @@ class RegisterScreen extends StatelessWidget {
               ],
             ),
           ),
-        );
-      }),
+      //   );
+      // }
+      ),
       bottomNavigationBar:
           // bottomSheet:
           Container(
