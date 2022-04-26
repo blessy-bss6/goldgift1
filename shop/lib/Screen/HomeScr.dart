@@ -228,9 +228,9 @@ class CategoryListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('catelist data $cateList');
-     print(cateList.runtimeType);
-     print(cateList.length);
+    // print('catelist data $cateList');
+    //  print(cateList.runtimeType);
+    //  print(cateList.length);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -272,14 +272,14 @@ class CategoryListItem extends StatelessWidget {
                     // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       // ! Pic Section
-                      Container(
-                        child: Pics(networkImg: true,
-                          src: cateList[i]['src'].toString(),
-                          height: 120,
-                          width: 150,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
+                      // Container(
+                      //   child: Pics(networkImg: true,
+                      //     src: cateList[i]['src'].toString(),
+                      //     height: 120,
+                      //     width: 150,
+                      //     fit: BoxFit.cover,
+                      //   ),
+                      // ),
                       heightSizedBox(1.0),
                       // ! Bottom Name
                       Container(

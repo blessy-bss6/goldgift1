@@ -1,10 +1,11 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:shop/Backend/Resp/prod_home_Resp.dart';
-import 'reg_Login_Bloc.dart';
+import '../Resp/category_Resp.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   ProdHomeRespo prodResp = ProdHomeRespo();
+  CategoryRespo cateResp = CategoryRespo();
 
   HomeBloc() : super(HomeInitialState()) {
     on<FetchHomeEvent>(_homeMethod);
@@ -15,11 +16,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     try {
       // var user = await prodResp.homeResp();
       var prod = await prodResp.prodResp();
-        var cate = await prodResp.categoryResp();
+      var cate = await cateResp.categoryResp();
       // print('user data ${user['cate']}');
       // if (user != false)
-      if (prod != false || cate !=false)
-      {
+      if (prod != false || cate != false) {
         // emit(HomeSuccessState(product: user['prod'], category: user['cate']));
         emit(HomeSuccessState(product: prod, category: cate));
       } else {

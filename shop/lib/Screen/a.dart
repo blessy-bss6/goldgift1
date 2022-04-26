@@ -8,7 +8,7 @@ class ProdScr extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: FutureBuilder(
-        future: prodresp.homeResp(),
+        future: prodresp.prodResp(),
         builder: (context, snapshot) {
           print(snapshot.data);
           if (snapshot.data != null) {

@@ -33,17 +33,17 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       backgroundColor: bgColor ?? coffeColor,
       elevation: elevation,
-      automaticallyImplyLeading: boolLeading ?? true,
+      // automaticallyImplyLeading: boolLeading ?? true,
       // leading: leading,
-      leading: leading != null
-          ? leading
-          : boolLeading == false
-              ? null
-              : IconButton(
-                  iconSize: 28,
-                  icon: Icon(Icons.chevron_left_sharp, color: txtWhiteColor),
-                  onPressed: leadingOnTap ?? () => Navigator.of(context).pop(),
-                ),
+      // leading: leading != null
+      //     ? leading
+      //     : boolLeading == false
+      //         ? null
+      //         : IconButton(
+      //             iconSize: 28,
+      //             icon: Icon(Icons.chevron_left_sharp, color: txtWhiteColor),
+      //             onPressed: leadingOnTap ?? () => Navigator.of(context).pop(),
+      //           ),
       title: title != null
           ? Text(title!,
               style: TextStyle(
@@ -103,16 +103,16 @@ class SliverAppBars extends StatelessWidget {
       // toolbarHeight:toolBarHeight ,
 
       elevation: elevation,
-      automaticallyImplyLeading: boolLeading ?? true,
-      leading: leading != null
-          ? leading
-          : boolLeading == false
-              ? null
-              : IconButton(
-                  iconSize: 28,
-                  icon: Icon(Icons.chevron_left_sharp, color: txtWhiteColor),
-                  onPressed: () => Navigator.of(context).pop(),
-                ),
+      // automaticallyImplyLeading: boolLeading ?? true,
+      // leading: leading != null
+      //     ? leading
+      //     : boolLeading == false
+      //         ? null
+      //         : IconButton(
+      //             iconSize: 28,
+      //             icon: Icon(Icons.chevron_left_sharp, color: txtWhiteColor),
+      //             onPressed: () => Navigator.of(context).pop(),
+      //           ),
       // title: Text(
       //   'All Category ',
       //   style: appBarTS,

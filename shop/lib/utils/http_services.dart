@@ -12,9 +12,9 @@ Future getDioRequest(String url) async {
 
   try {
     Response response = await Dio().get(url, options: Options(headers: header));
-    // if (response.statusCode == 200) {
+    if (response.statusCode == 200) {
       return response.data;
-    // }
+    }
     // return false;
   } on DioError catch (e) {
     return e.response!.data;

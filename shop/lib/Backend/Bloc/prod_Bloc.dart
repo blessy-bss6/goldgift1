@@ -9,6 +9,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
   ProductBloc() : super(ProdInitialState()) {
     // on<FetchHomeEvent>(_homeMethod);
     on<FetchProdEvent>(_prodMethod);
+    on<FetchSubProdEvent>(_subProdMethod);
   }
   // void _homeMethod(FetchHomeEvent event, Emitter emit) async {
   //   // print(event);
@@ -31,10 +32,29 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     try {
       var user = await prodResp.prodResp();
       // print('user data $user');
-      if (user == true) {
-        emit(ProdSuccessState());
+      if (user != false) {
+        emit(ProdSuccessState(data: user));
+      } else {
+        emit(ProdInitialState());
       }
-      emit(ProdInitialState());
+    } catch (e) {
+      emit(ProdFailedState());
+    }
+  }
+
+  void _subProdMethod(FetchSubProdEvent event, Emitter emit) async {
+    // print(event);
+    emit(ProdLoadingState());
+    try {
+      var user = await prodResp.subprodResp(
+          pageNum: event.pageNum, categoryId: event.categoryId);
+      // print('user data $user');
+      if (user != false) {
+        emit(ProdSuccessState(data: user));
+      }
+      else{
+        emit(ProdInitialState());
+      }
     } catch (e) {
       emit(ProdFailedState());
     }
@@ -54,6 +74,13 @@ class FetchProdEvent extends ProductEvent {
   List<Object> get props => [];
 }
 
+class FetchSubProdEvent extends ProductEvent {
+  final String? pageNum, categoryId;
+  FetchSubProdEvent({this.pageNum = '1', this.categoryId});
+  @override
+  List<Object> get props => [];
+}
+
 abstract class ProductState extends Equatable {
   const ProductState();
 
@@ -66,7 +93,7 @@ class ProdInitialState extends ProductState {}
 class ProdLoadingState extends ProductState {}
 
 class ProdSuccessState extends ProductState {
-   final dynamic data;
+  final dynamic data;
   ProdSuccessState({this.data});
 }
 

@@ -42,16 +42,23 @@ class _UserNavigationBarState extends State<UserNavigationBar> {
               // sellerId: widget.sellerId,
               );
           break;
+
         case 2:
-          widget.currentPage = OrderDeatilsScreen(
+          widget.currentPage = ProductListScreen(
               // sellerId: widget.sellerId,
               );
           break;
         case 3:
+          widget.currentPage = OrderDeatilsScreen(
+              // sellerId: widget.sellerId,
+              );
+          break;
+
+        case 4:
           widget.currentPage = CartScreen();
 
           break;
-        case 4:
+        case 5:
           widget.currentPage = ProfileScreen();
           // widget.currentPage = SelGeneratePromoCodes(sellerId: widget.sellerId);
           break;
@@ -109,9 +116,17 @@ class _UserNavigationBarState extends State<UserNavigationBar> {
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.shop,
+              Icons.category,
               size: 22,
               color: widget.currentTab == 2 ? coffeColor : Colors.black38,
+            ),
+            label: 'Product',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.shop,
+              size: 22,
+              color: widget.currentTab == 3 ? coffeColor : Colors.black38,
             ),
             // icon: Image.asset(
             //   'assets/icons/bottom-3.png',
@@ -124,7 +139,7 @@ class _UserNavigationBarState extends State<UserNavigationBar> {
             icon: Image.asset(
               'assets/icons/bottom-4.png',
               height: 22,
-              color: widget.currentTab == 3 ? coffeColor : Colors.black38,
+              color: widget.currentTab == 4 ? coffeColor : Colors.black38,
             ),
             label: 'Cart',
           ),
@@ -132,7 +147,7 @@ class _UserNavigationBarState extends State<UserNavigationBar> {
             icon: Image.asset(
               'assets/icons/bottom-1.png',
               height: 22,
-              color: widget.currentTab == 4 ? coffeColor : Colors.black38,
+              color: widget.currentTab == 5 ? coffeColor : Colors.black38,
             ),
             label: 'Profile',
           ),

@@ -1,10 +1,9 @@
-import 'dart:html';
-import 'dart:io';
-
-import 'package:dio/dio.dart';
-
+import '../Model/product.dart';
 import '/utils/app_constants.dart';
 import '/utils/http_services.dart';
+import 'package:http/http.dart' as http;
+import 'dart:async';
+import 'dart:convert';
 
 class ProdHomeRespo {
   Future<dynamic> prodResp() async {
@@ -12,79 +11,52 @@ class ProdHomeRespo {
         URLConstants.productUrl +
         "?consumer_key=${URLConstants.Key}&consumer_secret=${URLConstants.password}";
 
-    final response = await getDioRequest(url);
-    // print(response);
-    if (response != null) {
-      return response;
-    } else {
-      // print(response);
-      return response;
-    }
-  }
+    final response = await http.get(Uri.parse(url));
+    print(response.statusCode);
 
-  Future<dynamic> homeResp() async {
-    // final response =
-    //     await getDioRequest("https://liveprojects.co.in/goldgift/");
-    var prod = prodResp();
-    var cate = categoryResp();
-    // print(prod);
+    if (response.statusCode == 200) {
+      // If the server did return a 200 OK response,
+      // then parse the JSON.
 
-    if (prod != null || cate != null) {
-      return {"prod": prod, "cate": cate};
+      print(ProductModel.fromJson(jsonDecode(response.body)));
+      return ProductModel.fromJson(jsonDecode(response.body));
     } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      // throw Exception('Failed to load album');
       return false;
     }
 
+    // final response = await getDioRequest(url);
     // print(response);
     // if (response != null) {
     //   return response;
     // } else {
-    //   print(response);
-    //   return response;
+    //   // print(response);
+    //   // return response;
+    //   return false;
     // }
   }
 
-  Future<dynamic> categoryResp() async {
-    String url = URLConstants.baseUrl +
-        URLConstants.categoryUrl +
-        "?consumer_key=${URLConstants.Key}&consumer_secret=${URLConstants.password}";
-
-    final response = await getDioRequest(url);
-    // print(response);
-    if (response != null) {
-      return response;
-    } else {
-      // print(response);
-      return response;
-    }
-  }
-
-  Future<dynamic> subCategoryResp() async {
+  Future<dynamic> subprodResp({String? pageNum, String? categoryId}) async {
+    // https: //liveprojects.co.in/goldgift/wp-json/wc/v3/products?per_page=10&category=152
     String url = URLConstants.baseUrl +
         URLConstants.productUrl +
-        "?consumer_key=${URLConstants.Key}&consumer_secret=${URLConstants.password}";
+        "?per_page=$pageNum&category=$categoryId"
+            "&consumer_key=${URLConstants.Key}&consumer_secret=${URLConstants.password}";
+
+    // String url = URLConstants.baseUrl +
+    //     URLConstants.productUrl +
+    //     "?consumer_key=${URLConstants.Key}&consumer_secret=${URLConstants.password}";
 
     final response = await getDioRequest(url);
     print(response);
     if (response != null) {
       return response;
     } else {
-      print(response);
-      return response;
+      // print(response);
+      // return response;
+      return false;
     }
   }
-  //   try {
-  //
-  //     Response response = await Dio().get(url,
-  //         // "https://liveprojects.co.in/goldgift/wp-json/wc/v3/products?consumer_key=ck_e574cd75f0fedf68fda0fa8fd99c17f54665a4c6&consumer_secret=cs_9e084118b1fdba78c85c24b6a209fdf382057e5e",
-  //         options: Options(
-  //             headers: {HttpHeaders.contentTypeHeader: "application/json"}));
-
-  //     print(response.statusCode);
-  //     // print(response.data[1]['id']);
-  //     return response.data;
-  //   } on Error catch (e) {
-  //     print(e);
-  //   }
-  // }
 }

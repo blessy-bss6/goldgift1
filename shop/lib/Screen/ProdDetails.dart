@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shop/Backend/Bloc/prod_Bloc.dart';
 import 'package:shop/Elements/baseAppbar.dart';
 import 'package:shop/Elements/button.dart';
 import 'package:shop/Elements/imgScr.dart';
 import 'package:shop/utils/common.dart';
 import 'package:shop/utils/style.dart';
 
+import '../utils/htmlRemove.dart';
 import 'cartScr.dart';
 
 // class ProdcutDeatilsScreen extends StatelessWidget {
@@ -28,7 +31,8 @@ import 'cartScr.dart';
 // }
 
 class ProdDetailScreen extends StatefulWidget {
-  ProdDetailScreen({Key? key}) : super(key: key);
+  final dynamic prodNumber;
+  ProdDetailScreen({Key? key, this.prodNumber}) : super(key: key);
 
   @override
   State<ProdDetailScreen> createState() => _ProdDetailScreenState();
@@ -53,6 +57,16 @@ class _ProdDetailScreenState extends State<ProdDetailScreen> {
     });
   }
 
+  dynamic description;
+  @override
+  void initState() {
+    // TODO: implement initState
+    description = HtmlTags.removeTag(
+        htmlString: widget.prodNumber['description'],callBack: (string) => print(string));
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,52 +74,52 @@ class _ProdDetailScreenState extends State<ProdDetailScreen> {
         title: 'Product Details',
         centerTitle: true,
       ),
-      body:
-          // SingleChildScrollView(
-          // child:
-          SingleChildScrollView(
-        child: Column(
-          // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          // crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // ! Image Section
-            Container(
-              alignment: Alignment.center,
-              // color: Colors.red,
-              child: Pics(
-                src: listImgSrc != null
-                    ? listImgSrc.toString()
-                    : 'assets/images/Wooden-Pooja-Mandir.png',
-                width: 300,
-                height: 200,
-              ),
-            ),
-            heightSizedBox(5.0),
-            //  Image List Section
-            ImgHorizontalList(
-              cheight: 80,
-              prodList: img,
-              callBack: imgcallBack,
-              itemBorder: listImgSrc != null ? listImgSrc.toString() : null,
-            ),
-            // !  Product Content
-            ProdDetailsContent(),
+      body: BlocConsumer<ProductBloc, ProductState>(
+          listener: (context, state) {},
+          builder: (context, state) {
+            return SingleChildScrollView(
+              child: Column(
+                children: [
+                  // ! Image Section
+                  Container(
+                    alignment: Alignment.center,
+                    // color: Colors.red,
+                    child: Pics(
+                      src: listImgSrc != null
+                          ? listImgSrc.toString()
+                          : 'assets/images/Wooden-Pooja-Mandir.png',
+                      width: 300,
+                      height: 200,
+                    ),
+                  ),
+                  heightSizedBox(5.0),
+                  //  Image List Section
+                  ImgHorizontalList(
+                    cheight: 80,
+                    prodList: img,
+                    callBack: imgcallBack,
+                    itemBorder:
+                        listImgSrc != null ? listImgSrc.toString() : null,
+                  ),
+                  // !  Product Content
+                  ProdDetailsContent(prodNumber: widget.prodNumber),
 
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                alignment: Alignment.bottomCenter,
-                child: Txt(
-                  t: 'GitHub, Inc. is a provider of Internet hosting for software development and version control using Git. It offers the distributed version control and source code management functionality of Git, plus its own features. ',
-                  style: smallTextStyle,
-                ),
-              ),
-            )
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      alignment: Alignment.bottomCenter,
+                      child: Txt(
+                        t: description.toString(),
+                        style: smallTextStyle,
+                      ),
+                    ),
+                  )
 
-            // ! Btn  for Cart
-          ],
-        ),
-      ),
+                  // ! Btn  for Cart
+                ],
+              ),
+            );
+          }),
       // ),
       // bottomSheet: Padding(
       //   padding: const EdgeInsets.all(20),
@@ -136,9 +150,8 @@ class _ProdDetailScreenState extends State<ProdDetailScreen> {
 }
 
 class ProdDetailsContent extends StatefulWidget {
-  const ProdDetailsContent({
-    Key? key,
-  }) : super(key: key);
+  final dynamic prodNumber;
+  const ProdDetailsContent({Key? key, this.prodNumber}) : super(key: key);
 
   @override
   State<ProdDetailsContent> createState() => _ProdDetailsContentState();
@@ -149,23 +162,23 @@ class _ProdDetailsContentState extends State<ProdDetailsContent> {
   dynamic quantity;
   dynamic fullPrice;
 
-  plusCallBack(dynamic cartItem) {
-    setState(() {
-      price = cartItem * 150;
-      quantity = cartItem;
-      fullPrice = cartItem * 300;
-      // print(' plus $cartItem');
-    });
-  }
+  // plusCallBack(dynamic cartItem) {
+  //   setState(() {
+  //     price = cartItem * 150;
+  //     quantity = cartItem;
+  //     fullPrice = cartItem * 300;
+  //     // print(' plus $cartItem');
+  //   });
+  // }
 
-  minusCallBack(dynamic cartItem) {
-    setState(() {
-      // print('minus $cartItem');
-      price = cartItem * 150;
-      quantity = cartItem;
-      fullPrice = cartItem * 300;
-    });
-  }
+  // minusCallBack(dynamic cartItem) {
+  //   setState(() {
+  //     // print('minus $cartItem');
+  //     price = cartItem * 150;
+  //     quantity = cartItem;
+  //     fullPrice = cartItem * 300;
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -192,7 +205,7 @@ class _ProdDetailsContentState extends State<ProdDetailsContent> {
           margin: EdgeInsets.only(top: 5, left: 10),
           // alignment: Alignment.topLeft,
           child: Txt(
-            t: 'Product Tititle for this prodct dshjhdsj',
+            t: widget.prodNumber['name'],
             fontSize: 15,
             style: labelTextStyle,
             fontWeight: FontWeight.bold,
@@ -209,13 +222,13 @@ class _ProdDetailsContentState extends State<ProdDetailsContent> {
           ),
         ),
 
-        Container(
-          margin: EdgeInsets.only(top: 5, left: 10),
-          child: CartBtn(
-            plusCallBack: plusCallBack,
-            minusCallBack: minusCallBack,
-          ),
-        ),
+        // Container(
+        //   margin: EdgeInsets.only(top: 5, left: 10),
+        //   child: CartBtn(
+        //     plusCallBack: plusCallBack,
+        //     minusCallBack: minusCallBack,
+        //   ),
+        // ),
       ],
     );
   }
@@ -226,13 +239,13 @@ class _ProdDetailsContentState extends State<ProdDetailsContent> {
       child: Column(
         children: [
           Txt(
-            t: 'MRP : Rs${fullPrice != null ? fullPrice : 900}',
+            t: 'MRP : Rs${widget.prodNumber["regular_price"]}',
             decoration: TextDecoration.lineThrough,
             fontSize: 13,
             color: greyColor,
           ),
           Txt(
-            t: 'Rs ${price != null ? price : 500}',
+            t: 'Rs ${widget.prodNumber["sale_price"]}',
             fontSize: 17,
             color: offgreenColor,
           ),
