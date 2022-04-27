@@ -15,11 +15,13 @@ class ProdHomeRespo {
     print(response.statusCode);
 
     if (response.statusCode == 200) {
-      // If the server did return a 200 OK response,
-      // then parse the JSON.
+      dynamic data = jsonDecode(response.body);
+      print(data);
 
-      print(ProductModel.fromJson(jsonDecode(response.body)));
-      return ProductModel.fromJson(jsonDecode(response.body));
+      return data;
+
+      // print(ProductModel.fromJson(jsonDecode(response.body)));
+      // return ProductModel.fromJson(jsonDecode(response.body));
     } else {
       // If the server did not return a 200 OK response,
       // then throw an exception.

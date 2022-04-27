@@ -15,7 +15,7 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  SharedHelper sharedHelper = SharedHelper();
+  // SharedHelper sharedHelper = SharedHelper();
 
   @override
   void initState() {
@@ -24,26 +24,25 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   checkLogin() async {
-    bool isLogin = await sharedHelper.containsKey('current_user');
-    print('splash Login $isLogin');
-    if (isLogin) {
-      // currentUser.value = await getCurrentUser();
-      // print(currentUser.value.token);
-      print('splash Login $isLogin');
-      navigationRemoveUntil(
-          context,
-          UserNavigationBar(
-            currentTab: 2,
-          ));
-    } else {
-      Timer(
-          Duration(seconds:2),
-          () => navigationRemoveUntil(
-              context,
-              UserNavigationBar(
-                currentTab: 0,
-              )));
-    }
+    // bool isLogin = await sharedHelper.containsKey('current_user');
+    // print('splash Login $isLogin');
+    // if (isLogin) {
+    //   // currentUser.value = await getCurrentUser();
+    //   // print(currentUser.value.token);
+    //   print('splash Login $isLogin');
+    //   navigationRemoveUntil(
+    //       context,
+    //       UserNavigationBar(
+    //         currentTab: 2,
+    //       ));
+    // } else {
+    Timer(
+        Duration(seconds: 2),
+        () => navigationRemoveUntil(
+            context,
+            UserNavigationBar(
+              currentTab: 0,
+            )));
   }
 
   @override
@@ -51,7 +50,8 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(1.0),
-        child: Container(height: double.infinity, width: double.infinity,
+        child: Container(
+          height: double.infinity, width: double.infinity,
           child: Pics(
             src: 'assets/imgs/goldspalsh.jpg',
             fit: BoxFit.cover,

@@ -124,19 +124,14 @@ class IconBtn extends StatelessWidget {
   }
 }
 
-class CartBtn extends StatefulWidget {
-  final dynamic plusCallBack;
-  final dynamic minusCallBack;
+class CartBtn extends StatelessWidget {
+  final dynamic plusBtn;
+  final dynamic minusBtn;
   final Color? color;
-  const CartBtn({Key? key, this.color, this.plusCallBack, this.minusCallBack})
+  final dynamic cartItem;
+  const CartBtn(
+      {Key? key, this.color, this.plusBtn, this.cartItem, this.minusBtn})
       : super(key: key);
-
-  @override
-  State<CartBtn> createState() => _CartBtnState();
-}
-
-class _CartBtnState extends State<CartBtn> {
-  dynamic cartItem = 1;
 
   @override
   Widget build(BuildContext context) {
@@ -159,15 +154,8 @@ class _CartBtnState extends State<CartBtn> {
                 padding: const EdgeInsets.all(0.0),
                 icon: Icon(Icons.remove),
                 iconSize: 18,
-                color: widget.color,
-                onPressed: cartItem > 1
-                    ? () {
-                        setState(() {
-                          cartItem -= 1;
-                          widget.minusCallBack(cartItem);
-                        });
-                      }
-                    : null,
+                color: color,
+                onPressed: minusBtn,
               ),
             ),
           ),
@@ -175,7 +163,7 @@ class _CartBtnState extends State<CartBtn> {
             child: Container(
               alignment: Alignment.center,
               child: Text(
-                ' $cartItem ',
+                '$cartItem',
               ),
             ),
           ),
@@ -183,17 +171,11 @@ class _CartBtnState extends State<CartBtn> {
             child: Container(
               // alignment: Alignment.topRight,
               child: IconButton(
-                padding: const EdgeInsets.all(0.0),
-                icon: Icon(Icons.add),
-                iconSize: 18,
-                color: widget.color,
-                onPressed: () {
-                  setState(() {
-                    cartItem += 1;
-                    widget.plusCallBack(cartItem);
-                  });
-                },
-              ),
+                  padding: const EdgeInsets.all(0.0),
+                  icon: Icon(Icons.add),
+                  iconSize: 18,
+                  color: color,
+                  onPressed: () => plusBtn),
             ),
           )
         ],

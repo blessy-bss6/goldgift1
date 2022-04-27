@@ -19,7 +19,7 @@ class CategoryScreen extends StatefulWidget {
 class _CategoryScreenState extends State<CategoryScreen> {
   final TextEditingController? searchController = TextEditingController();
 
-  // List catList = [
+
   dynamic pageNum = 1;
 
   @override

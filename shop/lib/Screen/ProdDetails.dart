@@ -7,28 +7,9 @@ import 'package:shop/Elements/imgScr.dart';
 import 'package:shop/utils/common.dart';
 import 'package:shop/utils/style.dart';
 
+import '../Backend/Bloc/localCart_Bloc.dart';
 import '../utils/htmlRemove.dart';
 import 'cartScr.dart';
-
-// class ProdcutDeatilsScreen extends StatelessWidget {
-//   ProdcutDeatilsScreen({Key? key}) : super(key: key);
-
-//   final List<Widget> tabs = [];
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: BaseAppBar(
-//         title: 'Product Details',
-//       ),
-//       body: SingleChildScrollView(
-//         child: Column(
-//           children: [],
-//         ),
-//       ),
-//     );
-//   }
-// }
 
 class ProdDetailScreen extends StatefulWidget {
   final dynamic prodNumber;
@@ -39,30 +20,31 @@ class ProdDetailScreen extends StatefulWidget {
 }
 
 class _ProdDetailScreenState extends State<ProdDetailScreen> {
-  final List img = [
-    'assets/images/IndianGod.png',
-    'assets/images/god-idols.png',
-    // // 'assets/images/snacks.png',
-    'assets/images/Brass.png',
-    // 'assets/images/pulse.png',
-    // 'assets/images/watermelon.png',
-  ];
+  // final List img = [
+  //   'assets/images/IndianGod.png',
+  //   'assets/images/god-idols.png',
+  //   // // 'assets/images/snacks.png',
+  //   'assets/images/Brass.png',
+  //   // 'assets/images/pulse.png',
+  //   // 'assets/images/watermelon.png',
+  // ];
 
-  dynamic listImgSrc;
+  // dynamic listImgSrc;
 
-  imgcallBack(dynamic imgSrc) {
-    // print('callBack $imgSrc');
-    setState(() {
-      listImgSrc = imgSrc;
-    });
-  }
+  // imgcallBack(dynamic imgSrc) {
+  //   // print('callBack $imgSrc');
+  //   setState(() {
+  //     listImgSrc = imgSrc;
+  //   });
+  // }
 
   dynamic description;
   @override
   void initState() {
     // TODO: implement initState
     description = HtmlTags.removeTag(
-        htmlString: widget.prodNumber['description'],callBack: (string) => print(string));
+        htmlString: widget.prodNumber['description'],
+        callBack: (string) => print(string));
 
     super.initState();
   }
@@ -85,22 +67,20 @@ class _ProdDetailScreenState extends State<ProdDetailScreen> {
                     alignment: Alignment.center,
                     // color: Colors.red,
                     child: Pics(
-                      src: listImgSrc != null
-                          ? listImgSrc.toString()
-                          : 'assets/images/Wooden-Pooja-Mandir.png',
+                      src: 'assets/images/Wooden-Pooja-Mandir.png',
                       width: 300,
                       height: 200,
                     ),
                   ),
                   heightSizedBox(5.0),
                   //  Image List Section
-                  ImgHorizontalList(
-                    cheight: 80,
-                    prodList: img,
-                    callBack: imgcallBack,
-                    itemBorder:
-                        listImgSrc != null ? listImgSrc.toString() : null,
-                  ),
+                  // ImgHorizontalList(
+                  //   cheight: 80,
+                  //   prodList: img,
+                  //   callBack: imgcallBack,
+                  //   itemBorder:
+                  //       listImgSrc != null ? listImgSrc.toString() : null,
+                  // ),
                   // !  Product Content
                   ProdDetailsContent(prodNumber: widget.prodNumber),
 
@@ -120,23 +100,23 @@ class _ProdDetailScreenState extends State<ProdDetailScreen> {
               ),
             );
           }),
-      // ),
-      // bottomSheet: Padding(
-      //   padding: const EdgeInsets.all(20),
-      //   child: Btn(
-      //     // alignment: Alignment.bottomLeft,
-      //     height: 45,
-      //     width: double.infinity,
-      //     btnName: 'Add to Cart',
-      //     txtColor: txtWhiteColor,
-      //     color: coffeColor,
-      //     onTap: () => navigationPush(context, CartScreen()),
-      //   ),
-      // ),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(20),
         child: Btn(
-          onTap: () => navigationPush(context, CartScreen()),
+          onTap: () {
+            BlocProvider.of<LocalCartBloc>(context, listen: false)
+              ..add(LocalCartItemAddEvent(prodData: {
+                "id": widget.prodNumber['id'],
+                "name": widget.prodNumber['name'],
+                "quantity": 1,
+                "Fixedsale_price": int.parse(widget.prodNumber["sale_price"]),
+                "Fixedregular_price":
+                    int.parse(widget.prodNumber["regular_price"]),
+                "sale_price": int.parse(widget.prodNumber["sale_price"]),
+                "regular_price": int.parse(widget.prodNumber["regular_price"])
+              }));
+            navigationPush(context, CartScreen());
+          },
           alignment: Alignment.bottomLeft,
           height: 45,
           width: double.infinity,
@@ -205,7 +185,8 @@ class _ProdDetailsContentState extends State<ProdDetailsContent> {
           margin: EdgeInsets.only(top: 5, left: 10),
           // alignment: Alignment.topLeft,
           child: Txt(
-            t: widget.prodNumber['name'],
+            // t: widget.prodNumber['name'],
+            t: '${widget.prodNumber['name'].toString().length > 10 ? widget.prodNumber['name'].toString().substring(0, 50) + "\n" + widget.prodNumber['name'].toString().substring(50, 90) : widget.prodNumber['name']}',
             fontSize: 15,
             style: labelTextStyle,
             fontWeight: FontWeight.bold,

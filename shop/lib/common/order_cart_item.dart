@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+
 import 'package:shop/Elements/button.dart';
 import 'package:shop/utils/common.dart';
-import 'package:shop/utils/shared_helper.dart';
+
 import 'package:shop/utils/style.dart';
 
 class AddressPart extends StatelessWidget {
@@ -56,8 +57,20 @@ class AddressPart extends StatelessWidget {
 // ! Price List
 class PriceList extends StatelessWidget {
   final String? heading;
+
   final BoxDecoration? decoration;
-  const PriceList({Key? key, this.heading, this.decoration}) : super(key: key);
+  final dynamic subPrice;
+  final dynamic mrpPrice;
+  final dynamic shipPrice;
+
+  const PriceList({
+    Key? key,
+    this.heading,
+    this.mrpPrice,
+    this.shipPrice,
+    this.subPrice,
+    this.decoration,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -75,32 +88,32 @@ class PriceList extends StatelessWidget {
           ),
           datas(
             t1: 'Subtotal',
-            t2: 'Rs 900',
+            t2: 'Rs $subPrice',
           ),
           datas(
             t1: 'Shpping Charge',
-            t2: 'Rs 70',
+            t2: 'Rs $shipPrice',
           ),
           datas(
               t1: 'Total Discount',
-              t2: '- Rs 300',
+              t2: '- Rs ${mrpPrice - subPrice}',
               style: TextStyle(color: offgreenColor, fontSize: 15)),
-          datas(
-            t1: 'Tax Charge',
-            t2: 'Rs 00.00',
-          ),
-          datas(
-              t1: 'Promo Code',
-              t2: '- Rs 400',
-              style: TextStyle(color: offgreenColor, fontSize: 15)),
+          // datas(
+          //   t1: 'Tax Charge',
+          //   t2: 'Rs 00.00',
+          // ),
+          // datas(
+          //     t1: 'Promo Code',
+          //     t2: '- Rs 400',
+          //     style: TextStyle(color: offgreenColor, fontSize: 15)),
           heightSizedBox(3.0),
           Container(
               // margin: EdgeInsets.all(),
               decoration: BoxDecoration(color: brownWhiteColor),
               padding: EdgeInsets.all(5),
               child: datas(
-                t1: 'Total Pay',
-                t2: 'Rs 1200',
+                t1: 'Total ',
+                t2: 'Rs${subPrice + shipPrice}',
               ))
         ],
       ),
@@ -110,7 +123,7 @@ class PriceList extends StatelessWidget {
   Widget datas({String? t1, String? t2, TextStyle? style}) {
     return Padding(
       padding:
-          const EdgeInsets.only(left: 15.0, right: 15.0, top: 1.5, bottom: 1.5),
+          const EdgeInsets.only(left: 15.0, right: 15.0, top: 1, bottom: 1),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -128,7 +141,8 @@ class PriceList extends StatelessWidget {
   }
 }
 
-class BasicProdDetail extends StatefulWidget {
+// 1 BASIC PRODUCT
+class BasicProdDetail extends StatelessWidget {
   final dynamic prodNumber;
   final bool? cartBtn, mrpTxt;
   final dynamic price;
@@ -145,110 +159,71 @@ class BasicProdDetail extends StatefulWidget {
       : super(key: key);
 
   @override
-  State<BasicProdDetail> createState() => _BasicProdDetailState();
-}
-
-class _BasicProdDetailState extends State<BasicProdDetail> {
-  dynamic price;
-  dynamic quantity;
-  dynamic fullPrice;
-  dynamic cartItem = 1;
-
-  plusCallBack(dynamic cartItem) {
-    setState(() {
-      price = cartItem * 50;
-      quantity = cartItem;
-      fullPrice = cartItem * 90;
-      // print(' plus $cartItem');
-    });
-  }
-
-  minusCallBack(dynamic cartItem) {
-    setState(() {
-      // print('minus $cartItem');
-      price = cartItem * 50;
-      quantity = cartItem;
-      fullPrice = cartItem * 90;
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Txt(
-          t: 'Title Name ${widget.prodNumber}',
+          t: '${prodNumber['name'].toString().length > 10 ? prodNumber['name'].toString().substring(0, 40) +"\n" + prodNumber['name'].toString().substring(40, 80) :
+           prodNumber['name']}',
           fontSize: 15,
           fontWeight: FontWeight.bold,
         ),
         Txt(
-          t: '${widget.quantity != null ? widget.quantity : 1}',
+          t: '${prodNumber['quantity']}',
           fontSize: 17,
           color: greyColor,
         ),
         Row(
           children: [
             Container(
-              child: widget.mrpTxt == false
-                  ? null
-                  : Txt(
-                      t: 'MRP : Rs${widget.fullPrice != null ? widget.fullPrice : 900} ',
-                      decoration: TextDecoration.lineThrough,
-                      fontSize: 13,
-                      color: greyColor,
-                    ),
+              child: Txt(
+                t: 'MRP : Rs${prodNumber['regular_price']} ',
+                decoration: TextDecoration.lineThrough,
+                fontSize: 13,
+                color: greyColor,
+              ),
             ),
 
             // widthSizedBox(2.0),
             Txt(
-              t: 'Rs ${widget.price != null ? widget.price : 500}',
+              t: 'Rs ${prodNumber['sale_price']}',
               style: labelTextStyle,
             ),
           ],
         ),
-        heightSizedBox(2.0),
+        // heightSizedBox(2.0),
         // Container(
-        //   child: widget.cartBtn == false
-        //       ? null
-        //       : CartBtn(
-        //           plusCallBack: plusCallBack,
-        //           minusCallBack: minusCallBack,
-        //         ),
-        Container(
-          child: widget.cartBtn == false
-              ? null
-              : CartBtn2(
-                  onPressed1: cartItem > 1
-                      ? () async {
-                          setState(() {
-                            cartItem -= 1;
-
-                            // update an existing item
-                            // if (itemKey != null) {
-                            //   updateItem(itemKey, {
-                            //     'name': _nameController.text.trim(),
-                            //     'quantity': _quantityController.text.trim()
-                            //   });
-                            // }
-
-                            // Clear the text fields
-                            // _nameController.text = '';
-                            // _quantityController.text = '';
-
-                            // Navigator.of(context).pop();
-                          });
-                        }
-                      : null,
-                  cartItem: cartItem,
-                  onPressed2: () {
-                    setState(() {
-                      cartItem += 1;
-                    });
-                  },
-                ),
-        )
+        //   child: CartBtn(
+        //       plusBtn: () {
+        //         print('plusbtn');
+        //         BlocProvider.of<LocalCartBloc>(context, listen: false)
+        //           ..add(LocalCartItemPutEvent(id: prodNumber['key'], prodData: {
+        //             "id": prodNumber["id"],
+        //             "name": prodNumber['name'],
+        //             "quantity": prodNumber['quantity'] + 1,
+        //             "sale_price":
+        //                 prodNumber["sale_price"] * (prodNumber['quantity'] + 1),
+        //             "regular_price": prodNumber["regular_price"] *
+        //                 (prodNumber['quantity'] + 1)
+        //           }));
+        //       },
+        //       cartItem: prodNumber['quantity'],
+        //       minusBtn: prodNumber['quantity'] > 1
+        //           ? () => BlocProvider.of<LocalCartBloc>(context, listen: false)
+        //             ..add(
+        //                 LocalCartItemPutEvent(id: prodNumber['key'], prodData: {
+        //               "id": prodNumber["id"],
+        //               "name": prodNumber['name'],
+        //               "quantity": prodNumber['quantity'] + 1,
+        //               "sale_price": prodNumber["sale_price"] *
+        //                   (prodNumber['quantity'] + 1),
+        //               "regular_price": prodNumber["regular_price"] *
+        //                   (prodNumber['quantity'] + 1)
+        //             }))
+        //           : null),
+        // )
       ],
     );
   }
