@@ -1,72 +1,97 @@
-// import 'dart:convert';
-// import 'package:dio/dio.dart';
-// import 'package:http/http.dart' as http;
-// import 'package:shop/Backend/Model/user.dart';
-// import 'package:shop/utils/app_constants.dart';
-// import 'package:shop/utils/http_services.dart';
-// import 'package:shop/utils/shared_helper.dart';
+import 'package:dio/dio.dart';
 
-// class RegLoginResp {
-//   Future<dynamic> registerResp(
-//       {String? email, String? phone, String? name, String? password}) async {
-//     final response = await postDioRequest(
-//       URLConstants.signUpApiUrl,
-//       data: {"email": email, "password": password},
-//     );
-//     print(response);
-//     if (response != null) {
-//       setCurrentUser(response);
-//       currentUser.value = User.fromJSON(response);
+import '/utils/app_constants.dart';
 
-//       // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
-//       currentUser.notifyListeners();
-//       return true;
-//     } else {
-//       print(response);
-//       return response;
-//     }
-//   }
+class RegLoginResp {
+  Future<dynamic> registerResp(
+      {String? email,
+      String? phone,
+      String? name,
+      String? password,
+      bool? isSeller,
+      String? fullname,
+      dynamic context}) async {
+    try {
+      Response response = await Dio().post(
+        URLConstants.signUpUrl,
+        data: {
+          "email": email,
+        },
+      );
+      print('response User ${response.statusCode}');
+      if (response.statusCode == 201 || response.statusCode == 200) {
+        // setCurrentUser(response.data['token']['access']);
+        // setUserType(response.data['isIdType']);
 
-// // ! Login Respositry
-//   Future<dynamic> loginResp({String? email, String? password}) async {
-//     final response = await postDioRequest(
-//       URLConstants.loginApiUrl,
-//       data: {"email": email, "password": password},
-//     );
-//     print(response);
-//     // print(response.statusCode);
-//     if (response != null) {
-//       // print(response);
-//       setCurrentUser(response);
-//       currentUser.value = User.fromJSON(response);
+        return response.data;
+      }
+      return response.data;
+    } on DioError catch (e) {
+      return e.response!.data;
+    }
+  }
 
-//       // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
-//       currentUser.notifyListeners();
+// ! Login Respositry
+  // Future<dynamic> loginResp(
+  //     {String? phone,
+  //     String? password,
+  //     bool? isSeller,
+  //     dynamic context}) async {
+  //   try {
+  //     print(phone);
 
-//       return true;
-//     } else {
-//       return response;
-//     }
-//   }
-// }
+  //     Response response = await Dio().post(
+  //       URLConstants.loginApiUrl,
+  //       data: {"phone": phone, "isIdType": isSeller, "password": password},
+  //     );
 
+  //     if (response.statusCode == 200) {
+  //       // setCurrentUser(response.data['token']['access']);
+  //       // setUserType(response.data['isIdType']);
+
+  //       return response.data;
+  //     }
+
+  //     return response.data;
+  //   } on DioError catch (e) {
+  //     return e.response!.data;
+  //   }
+  // }
+}
+
+// ! User Token
 // void setCurrentUser(response) async {
 //   if (response != null) {
-//     SharedHelper().setString('current_user', json.encode(response));
+//     var v = SharedHelper().setString('current_user', response);
 //   }
 // }
 
-// Future<User> getCurrentUser() async {
+// Future<String> getCurrentUser() async {
 //   SharedHelper shared = SharedHelper();
-//   currentUser.value =
-//       User.fromJSON(json.decode(await shared.getString('current_user')));
+//   dynamic tokn = await shared.getString('current_user');
 
-//   // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
-//   currentUser.notifyListeners();
-//   return currentUser.value;
+//   // print('getCureent user ${tokn}');
+//   return tokn;
 // }
 
+// ! LOGOUT METHOD
 // Future<void> logout() async {
-//   currentUser.value = User();
+//   // currentUser.value = User();
 //   await SharedHelper().remove('current_user');
+//   await SharedHelper().remove('userIdType');
+// }
+
+// ! CURRENT Screen
+// void setUserType(idType) async {
+//   if (idType != null) {
+//     var v = SharedHelper().setUserTypeScr('userIdType', idType);
+//   }
+// }
+
+// Future<bool> getUserType() async {
+//   SharedHelper shared = SharedHelper();
+//   dynamic idType = await shared.getUserTypeScr('userIdType');
+
+//   // print('getCureent user ${idType}');
+//   return idType;
 // }

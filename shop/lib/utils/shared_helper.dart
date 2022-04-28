@@ -62,7 +62,45 @@ class ShopC {
         "regular_price": value["regular_price"]
       };
     }).toList();
-    return data.reversed.toList();
+
+
+    final orderData = shoppingBox.keys.map((key) {
+      final value = shoppingBox.get(key);
+      return {
+        "key": key,
+        "product_id": value["id"],
+        "quantity": value['quantity'],
+       
+      };
+    }).toList();
+
+    // ! Price Logic
+    final subPriceList = [];
+    final mrpPriceList = [];
+    dynamic subPrice = 0;
+    dynamic mrpPrice = 0;
+    dynamic shipPrice = 0;
+
+    for (var i in data) {
+      subPriceList.add(i['sale_price']);
+      mrpPriceList.add(i['regular_price']);
+    }
+
+    subPrice = subPriceList.reduce((a, b) => a + b);
+
+    mrpPrice = mrpPriceList.reduce((a, b) => a + b);
+
+    if (subPrice < 10000) {
+      shipPrice = 70;
+    }
+    // return data.reversed.toList();
+    return {
+      "data": data.reversed.toList(),
+      "subPrice": subPrice,
+      "mrpPrice": mrpPrice,
+      "shipPrice": shipPrice,
+      "orderData" :orderData
+    };
   }
 
 // Create new item

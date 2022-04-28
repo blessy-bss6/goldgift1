@@ -1,4 +1,3 @@
-import '../Model/product.dart';
 import '/utils/app_constants.dart';
 import '/utils/http_services.dart';
 import 'package:http/http.dart' as http;
@@ -12,11 +11,11 @@ class ProdHomeRespo {
         "?consumer_key=${URLConstants.Key}&consumer_secret=${URLConstants.password}";
 
     final response = await http.get(Uri.parse(url));
-    print(response.statusCode);
+    // print(response.statusCode);
 
     if (response.statusCode == 200) {
       dynamic data = jsonDecode(response.body);
-      print(data);
+      // print(data);
 
       return data;
 
@@ -52,7 +51,7 @@ class ProdHomeRespo {
     //     "?consumer_key=${URLConstants.Key}&consumer_secret=${URLConstants.password}";
 
     final response = await getDioRequest(url);
-    print(response);
+    // print(response);
     if (response != null) {
       return response;
     } else {

@@ -10,4 +10,7 @@ class URLConstants {
   //API Product
 
   static const categorysUrl = "/wp-json/wp/v2/categories";
+
+  static const orderUrl = "/wp-json/wc/v3/orders";
+  static const signUpUrl = "/wp-json/wc/v3/customers";
 }

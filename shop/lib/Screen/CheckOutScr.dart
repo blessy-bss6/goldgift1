@@ -2,130 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:shop/Elements/baseAppbar.dart';
 import 'package:shop/Elements/button.dart';
 import 'package:shop/Elements/formfield.dart';
-import 'package:shop/Elements/imgScr.dart';
-import 'package:shop/common/order_cart_item.dart';
+
 import 'package:shop/utils/common.dart';
 import 'package:shop/utils/style.dart';
 
 import 'Order.dart';
 import 'addressScr.dart';
 
-// class CheckOutScreen extends StatefulWidget {
-//   CheckOutScreen({Key? key}) : super(key: key);
-
-//   @override
-//   State<CheckOutScreen> createState() => _CheckOutScreenState();
-// }
-
-// class _CheckOutScreenState extends State<CheckOutScreen> {
-//   int? _groupValue;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       body: CustomScrollView(
-//         slivers: [
-//           // ! Sliver app Bar
-
-//           SliverAppBars(
-//             title: 'CheckOut Screen',
-//           ),
-
-// SliverToBoxAdapter(
-//   child: Padding(
-//     padding: const EdgeInsets.all(8.0),
-//     child: Column(
-//       crossAxisAlignment: CrossAxisAlignment.start,
-//       // mainAxisAlignment: MainAxisAlignment.start,
-//       children: [
-//         Txt(
-//           t: 'Delivery Address',
-//           style: labelTextStyle,
-//         ),
-//         ListView.builder(
-//           shrinkWrap: true,
-//           itemCount: 2,
-//           itemBuilder: (context, i) {
-//             return OrderIdAdrContent(
-//               value: i,
-//               groupVal: _groupValue ?? 0,
-//               t2: 'batla House, Sikar,jaipur ',
-//               onChanged: (val) => setState(() {
-//                 _groupValue = i;
-//               }),
-//             );
-//           },
-//         ),
-//         Center(
-//           child: Btn(
-//             alignment: Alignment.center,
-//             height: 30,
-//             width: 100,
-//             btnName: 'Add Address',
-//             color: coffeColor,
-//             txtColor: txtWhiteColor,
-//           ),
-//         ),
-//         Divider(),
-//       ],
-//     ),
-//   ),
-// ),
-
-//           SliverList(
-//             delegate: SliverChildBuilderDelegate(
-//               (BuildContext context, int i) => Padding(
-//                 padding: EdgeInsets.symmetric(horizontal: 10),
-//                 child: Container(
-//                   decoration: BoxDecoration(
-//                       border: Border.all(width: 1, color: borderColor)),
-//                   child: Row(
-//                     // crossAxisAlignment: CrossAxisAlignment.start,
-//                     mainAxisAlignment: MainAxisAlignment.spaceAround,
-//                     children: [
-//                       Pics(
-//                         src: 'assets/images/indianGod.png',
-//                         width: 120,
-//                         height: 100,
-//                       ),
-//                       BasicProdDetail(),
-//                       IconBtn(icon: Icons.delete, size: 20),
-//                     ],
-//                   ),
-//                 ),
-//               ),
-//               childCount: 5,
-//             ),
-//           ),
-
-//           SliverToBoxAdapter(
-//             child: Column(
-//               children: [Divider(), PriceList()],
-//             ),
-//           ),
-
-//           //  ! Sliver Product Content
-//         ],
-//       ),
-//       bottomNavigationBar: Padding(
-//         padding: const EdgeInsets.all(20),
-//         child: Btn(
-//           height: 45,
-//           width: double.infinity,
-//           btnName: 'Order',
-//           txtColor: txtWhiteColor,
-//           color: coffeColor,
-//           onTap: () => navigationPush(context, OrderScreen()),
-//         ),
-//       ),
-//     );
-//   }
-// }
-
-// !n
-
 class CheckOutScreen extends StatefulWidget {
-  const CheckOutScreen({Key? key}) : super(key: key);
+  final dynamic cartData;
+  final dynamic shipPrice;
+  final dynamic subPrice;
+  const CheckOutScreen({Key? key, this.cartData, this.shipPrice, this.subPrice})
+      : super(key: key);
 
   @override
   State<CheckOutScreen> createState() => _CheckOutScreenState();
@@ -168,6 +57,10 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
 
   final TextEditingController orderDesController = TextEditingController();
 
+  dynamic billing;
+  dynamic shipping;
+  dynamic description;
+
   @override
   Widget build(BuildContext context) {
     _saveMethod() async {
@@ -178,8 +71,41 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
       }
       _formKey.currentState!.save();
       if (isvalid == true) {
-        print("condtion is true");
-        navigationPush(context, OrderScreen());
+        // print("condtion is true");
+
+        setState(() {
+          billing = {
+            "first_name": fNameController.text,
+            "last_name": lNameController.text,
+            "company": companyController.text,
+            "address_1": street1Controller.text,
+            "address_2": street2Controller.text,
+            "city": townController.text,
+            "state": stateController.text,
+            "postcode": pinCodeController.text,
+            "country": countryController.text,
+            "email": emailController.text,
+            "phone": mobileController.text
+          };
+
+          shipping = {
+            "first_name": fNameController2.text,
+            "last_name": lNameController2.text,
+            "company": companyController2.text,
+            "address_1": street1Controller2.text,
+            "address_2": street2Controller2.text,
+            "city": townController2.text,
+            "state": stateController2.text,
+            "postcode": pinCodeController2.text,
+            "country": countryController2.text,
+            "phone": mobileController.text
+          };
+
+          description = orderDesController.text;
+        });
+
+        
+        navigationPush(context, OrderScreen(billing:billing,shipping:shipping,description:description));
       }
     }
 
@@ -208,7 +134,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                   mobileController: mobileController,
                 ),
                 // ! Create an Account
-            
+
                 Row(
                   children: [
                     Checkbox(
@@ -238,7 +164,8 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                 // ! Shpping Billing Address
                 Container(
                     child: value2 == true
-                        ? ListView(shrinkWrap: true,
+                        ? ListView(
+                            shrinkWrap: true,
                             // mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Text('Shpping Address ', style: labelTextStyle),
@@ -258,7 +185,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                             ],
                           )
                         : null),
-            
+
                 EditTextField(
                   textAlign: TextAlign.left,
                   txtColor: txtBlackColor,

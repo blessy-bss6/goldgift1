@@ -40,8 +40,7 @@ Future postDioRequest(String url,
   // print('Header' + headers.toString());
   try {
     response = await dio.post(url,
-        data: data,
-        options: Options(headers: newheaders != null ? newheaders : headers));
+        data: data,);
   } on DioError catch (e) {
     // print('Response' + e.response!.data.toString());
     return e.response!.data;
@@ -76,7 +75,7 @@ Future putDioRequest(String url, var body, {String? header}) async {
 }
 
 // ! Delete Request
-Future delDioRequest(String url, Map<String, dynamic> body) async {
+Future delDioRequest(String url, {Map<String, dynamic> ?body}) async {
   Response response;
 
   print('URL ' + url);

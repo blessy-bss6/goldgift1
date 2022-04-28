@@ -28,29 +28,29 @@ class LocalCartBloc extends Bloc<LocalCartEvent, LocalCartState> {
       dynamic user = shoping.refreshItems();
 
       if (user != null) {
-        final subPriceList = [];
-        final mrpPriceList = [];
-        dynamic subPrice = 0;
-        dynamic mrpPrice = 0;
-        dynamic shipPrice = 0;
+        // final subPriceList = [];
+        // final mrpPriceList = [];
+        // dynamic subPrice = 0;
+        // dynamic mrpPrice = 0;
+        // dynamic shipPrice = 0;
 
-        for (var i in user) {
-          subPriceList.add(i['sale_price']);
-          mrpPriceList.add(i['regular_price']);
-        }
+        // for (var i in user) {
+        //   subPriceList.add(i['sale_price']);
+        //   mrpPriceList.add(i['regular_price']);
+        // }
 
-        subPrice = subPriceList.reduce((a, b) => a + b);
+        // subPrice = subPriceList.reduce((a, b) => a + b);
 
-        mrpPrice = mrpPriceList.reduce((a, b) => a + b);
+        // mrpPrice = mrpPriceList.reduce((a, b) => a + b);
 
-        if (subPrice < 10000) {
-          shipPrice = 70;
-        }
+        // if (subPrice < 10000) {
+        //   shipPrice = 70;
+        // }
 
-        emit(LocalCartSuccessState(data: user, priceData: {
-          "subPrice": subPrice,
-          "mrpPrice": mrpPrice,
-          "shipPrice": shipPrice
+        emit(LocalCartSuccessState(data: user['data'], priceData: {
+          "subPrice": user['subPrice'],
+          "mrpPrice": user['mrpPrice'],
+          "shipPrice": user['shipPrice']
         }));
       }
       // emit(LocalCartInitialState());
@@ -67,7 +67,7 @@ class LocalCartBloc extends Bloc<LocalCartEvent, LocalCartState> {
       shoping.createItem(event.prodData);
       dynamic user = shoping.refreshItems();
       if (user != null) {
-        emit(LocalCartSuccessState(data: user));
+        emit(LocalCartSuccessState(data: user['data']));
       } else {
         // snackBar(event.context, user['msg'] ?? '');
         emit(LocalCartInitialState());
@@ -88,33 +88,12 @@ class LocalCartBloc extends Bloc<LocalCartEvent, LocalCartState> {
       dynamic user = shoping.refreshItems();
 
       if (user != null) {
-        final subPriceList = [];
-        final mrpPriceList = [];
-        dynamic subPrice = 0;
-        dynamic mrpPrice = 0;
-        dynamic shipPrice = 0;
-
-        for (var i in user) {
-          subPriceList.add(i['sale_price']);
-          mrpPriceList.add(i['regular_price']);
-        }
-
-        subPrice = subPriceList.reduce((a, b) => a + b);
-
-        mrpPrice = mrpPriceList.reduce((a, b) => a + b);
-
-        if (subPrice < 499) {
-          shipPrice = 70;
-        }
-
-        emit(LocalCartSuccessState(data: user, priceData: {
-          "subPrice": subPrice,
-          "mrpPrice": mrpPrice,
-          "shipPrice": shipPrice
+        emit(LocalCartSuccessState(data: user['data'], priceData: {
+          "subPrice": user['subPrice'],
+          "mrpPrice": user['mrpPrice'],
+          "shipPrice": user['shipPrice']
         }));
- 
       }
-
     } catch (e) {
       emit(LocalCartFailedState());
     }
@@ -129,32 +108,11 @@ class LocalCartBloc extends Bloc<LocalCartEvent, LocalCartState> {
       dynamic user = shoping.refreshItems();
 
       if (user != null) {
-     
-        final subPriceList = [];
-        final mrpPriceList = [];
-        dynamic subPrice = 0;
-        dynamic mrpPrice = 0;
-        dynamic shipPrice = 0;
-
-        for (var i in user) {
-          subPriceList.add(i['sale_price']);
-          mrpPriceList.add(i['regular_price']);
-        }
-
-        subPrice = subPriceList.reduce((a, b) => a + b);
-
-        mrpPrice = mrpPriceList.reduce((a, b) => a + b);
-
-        if (subPrice < 499) {
-          shipPrice = 70;
-        }
-
-        emit(LocalCartSuccessState(data: user, priceData: {
-          "subPrice": subPrice,
-          "mrpPrice": mrpPrice,
-          "shipPrice": shipPrice
+        emit(LocalCartSuccessState(data: user['data'], priceData: {
+          "subPrice": user['subPrice'],
+          "mrpPrice": user['mrpPrice'],
+          "shipPrice": user['shipPrice']
         }));
- 
       } else {
         emit(LocalCartInitialState());
       }

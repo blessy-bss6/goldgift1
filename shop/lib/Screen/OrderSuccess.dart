@@ -12,14 +12,14 @@ class OrderCompleteScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: BaseAppBar(
+      appBar: AppBar(
+        backgroundColor: coffeColor,
         centerTitle: true,
-        title: 'Order Complete',
-        leadingOnTap: () => navigationPush(
-            context,
-            UserNavigationBar(
-              currentTab: 0,
-            )),
+        title: Text('Order Complete',style: appBarTS,),
+        leading: new IconButton(
+          icon: new Icon(Icons.arrow_back),
+          onPressed: () => navigationPushReplacement(context, UserNavigationBar(currentTab: 0,)),
+        ),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,

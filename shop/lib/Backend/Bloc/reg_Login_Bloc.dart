@@ -1,102 +1,82 @@
-// import 'package:bloc/bloc.dart';
-// import 'package:equatable/equatable.dart';
-// import '../Resp/reg_login_resp.dart';
+import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
+import '../Resp/reg_login_resp.dart';
 
-// class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
-//   RegLoginResp userRespository = RegLoginResp();
+class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
+  RegLoginResp userRespository = RegLoginResp();
 
-//   RegisterBloc() : super(InitialState()) {
-//     on<LoginBtnEvent>(_loginMethod);
-//     on<SignUpBtnEvent>(_registerMethod);
+  RegisterBloc() : super(InitialState()) {
+    // on<LoginBtnEvent>(_loginMethod);
+    on<SignUpBtnEvent>(_registerMethod);
+  }
+  // void _loginMethod(LoginBtnEvent event, Emitter emit) async {
+  //   // print(event);
+  //   emit(LoadingState());
+  //   try {
+  //     var user = await userRespository.loginResp(
+  //         email: event.email, password: event.password);
+  //     // print('user data $user');
+  //     if (user == true) {
+  //       emit(SuccessState());
+  //     }
+  //     emit(InitialState());
+  //   } catch (e) {
+  //     emit(FailedState());
+  //   }
+  // }
 
-//     // ! Login Button Fires
+  // ! SignUp
+  void _registerMethod(SignUpBtnEvent event, Emitter emit) async {
+    // print(event);
+    emit(LoadingState());
+    try {
+      var user = await userRespository.registerResp(
+        email: event.email,
+      );
+      // print('user data $user');
+      if (user != false) {
+        emit(SuccessState());
+      }
+      emit(InitialState());
+    } catch (e) {
+      emit(FailedState());
+    }
+  }
+}
 
-//     // on<LoginBtnEvent>((event, emit) async {
-//     //   print(event);
-//     //   emit(LoadingState());
-//     //   try {
-//     //     var user = await userRespository.loginResp(
-//     //         email: event.email, password: event.password);
+// ! Event For Signup
+abstract class RegisterEvent extends Equatable {
+  const RegisterEvent();
 
-//     //     if (user == true) {
-//     //       emit(SuccessState());
-//     //     }
-//     //     emit(InitialState());
-//     //   } catch (e) {
-//     //     emit(FailedState());
-//     //   }
-//     // });
-//   }
-//   void _loginMethod(LoginBtnEvent event, Emitter emit) async {
-//     // print(event);
-//     emit(LoadingState());
-//     try {
-//       var user = await userRespository.loginResp(
-//           email: event.email, password: event.password);
-//       // print('user data $user');
-//       if (user == true) {
-//         emit(SuccessState());
-//       }
-//       emit(InitialState());
-//     } catch (e) {
-//       emit(FailedState());
-//     }
-//   }
+  @override
+  List<Object> get props => [];
+}
 
-//   // ! SignUp
-//   void _registerMethod(SignUpBtnEvent event, Emitter emit) async {
-//     // print(event);
-//     emit(LoadingState());
-//     try {
-//       var user = await userRespository.registerResp(
-//           phone: event.phone,
-//           name: event.fullname,
-//           email: event.email,
-//           password: event.password);
-//       // print('user data $user');
-//       if (user == true) {
-//         emit(SuccessState());
-//       }
-//       emit(InitialState());
-//     } catch (e) {
-//       emit(FailedState());
-//     }
-//   }
-// }
+class SignUpBtnEvent extends RegisterEvent {
+  final String? email, password, fullname, phone;
+  SignUpBtnEvent({this.email, this.fullname, this.phone, this.password});
+}
 
-// // ! Event For Signup
-// abstract class RegisterEvent extends Equatable {
-//   const RegisterEvent();
+class LoginBtnEvent extends RegisterEvent {
+  final String? email, password;
+  LoginBtnEvent({this.email, this.password});
+}
 
-//   @override
-//   List<Object> get props => [];
-// }
+// ! 3. STATE FOR REGISTER
+abstract class RegisterState extends Equatable {
+  const RegisterState();
 
-// class SignUpBtnEvent extends RegisterEvent {
-//   final String? email, password, fullname, phone;
-//   SignUpBtnEvent({this.email, this.fullname, this.phone, this.password});
-// }
+  @override
+  List<Object> get props => [];
+}
 
-// class LoginBtnEvent extends RegisterEvent {
-//   final String? email, password;
-//   LoginBtnEvent({this.email, this.password});
-// }
+class InitialState extends RegisterState {}
 
-// // ! 3. STATE FOR REGISTER
-// abstract class RegisterState extends Equatable {
-//   const RegisterState();
+class LoadingState extends RegisterState {}
 
-//   @override
-//   List<Object> get props => [];
-// }
+class SuccessState extends RegisterState {}
 
-// class InitialState extends RegisterState {}
-
-// class LoadingState extends RegisterState {}
-
-// class SuccessState extends RegisterState {}
-
-// class FailedState extends RegisterState {
-//   final String? message;
-//   FailedState({this.message});
-// }
+class FailedState extends RegisterState {
+  final String? message;
+  FailedState({this.message});
+}

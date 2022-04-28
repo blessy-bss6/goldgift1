@@ -9,6 +9,18 @@ validateField(String value) {
     return null;
 }
 
+validateEmail(String value) {
+  bool validEmail = RegExp(
+          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+      .hasMatch(value);
+  if (value.isEmpty)
+    return 'Email is Required.';
+  else if (!value.contains('@'))
+     return 'Enter Valid Email.'; 
+  else
+    return null;
+}
+
 validateMobile(String value) {
   if (value.isEmpty)
     return 'Mobile Number is Required.';

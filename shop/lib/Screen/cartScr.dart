@@ -12,9 +12,9 @@ import 'CheckOutScr.dart';
 import 'a.dart';
 
 class CartScreen extends StatefulWidget {
-  final int? salesPrice;
-  final int? discountPrice;
-  CartScreen({Key? key, this.discountPrice, this.salesPrice}) : super(key: key);
+  CartScreen({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<CartScreen> createState() => _CartScreenState();
@@ -23,6 +23,7 @@ class CartScreen extends StatefulWidget {
 class _CartScreenState extends State<CartScreen> {
   dynamic priceData = 0;
   dynamic bottomBtn = false;
+  dynamic cartData;
 
   // @override
   // void initState() {
@@ -43,9 +44,11 @@ class _CartScreenState extends State<CartScreen> {
             if (state.data.length > 0) {
               // print(state.data);
               setState(() {
-                shipPrice = state.priceData!['shipPrice'];
-                mrpPrice = state.priceData!['mrpPrice'];
-                subPrice = state.priceData!['subPrice'];
+                cartData = state.data;
+                priceData = state.priceData;
+                // shipPrice = state.priceData!['shipPrice'];
+                // mrpPrice = state.priceData!['mrpPrice'];
+                // subPrice = state.priceData!['subPrice'];
                 bottomBtn = true;
               });
             } else {
@@ -69,7 +72,8 @@ class _CartScreenState extends State<CartScreen> {
                       SliverList(
                         delegate: SliverChildBuilderDelegate(
                           (BuildContext context, int i) => Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 10),
                             child: Container(
                               decoration: BoxDecoration(
                                   border:
@@ -157,10 +161,9 @@ class _CartScreenState extends State<CartScreen> {
                   Divider(),
                   PriceList(
                     // prodNumber: priceData,
-                  shipPrice: shipPrice,
-                  mrpPrice: mrpPrice,
-                  subPrice: subPrice,
-                  
+                    shipPrice: priceData['shipPrice'],
+                    mrpPrice: priceData['mrpPrice'],
+                    subPrice: priceData['subPrice'],
                   ),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(20.0, 9.0, 20.0, 5.0),
@@ -185,8 +188,10 @@ class _CartScreenState extends State<CartScreen> {
 class CartButn extends StatelessWidget {
   final dynamic prodNumber;
 
-  const CartButn({Key? key, this.prodNumber,})
-      : super(key: key);
+  const CartButn({
+    Key? key,
+    this.prodNumber,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -229,7 +234,6 @@ class CartButn extends StatelessWidget {
                                     prodNumber['Fixedregular_price'] *
                                         (prodNumber['quantity'] - 1)
                               }));
-                   
                       }
                     : null,
               ),
@@ -267,7 +271,6 @@ class CartButn extends StatelessWidget {
                             "regular_price": prodNumber['Fixedregular_price'] *
                                 (prodNumber['quantity'] + 1)
                           }));
-                
                   }),
             ),
           )

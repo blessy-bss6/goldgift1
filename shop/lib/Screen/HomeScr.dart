@@ -57,7 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
       body: BlocConsumer<HomeBloc, HomeState>(
           listener: (context, state) {},
           builder: (context, state) {
-            print(state);
+            // print(state);
             if (state is HomeSuccessState) {
               return CustomScrollView(
                 slivers: [
