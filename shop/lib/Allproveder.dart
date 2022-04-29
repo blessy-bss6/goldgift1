@@ -7,12 +7,13 @@ import 'Backend/Bloc/localCart_Bloc.dart';
 import 'Backend/Bloc/order_Bloc.dart';
 import 'Backend/Bloc/prod_Bloc.dart';
 
+import 'Backend/Bloc/reg_Login_Bloc.dart';
 import 'Backend/Bloc/subCategory_Bloc.dart';
 
 class MainBloc {
   static List<SingleChildWidget> allBlocs() {
     return [
-      // BlocProvider(create: (ctx) => RegisterBloc()),
+      BlocProvider(create: (ctx) => RegisterBloc()),
       BlocProvider(create: (ctx) => ProductBloc()),
       BlocProvider(create: (ctx) => HomeBloc()),
       BlocProvider(create: (ctx) => CategoryBloc()),

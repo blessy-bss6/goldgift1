@@ -67,21 +67,17 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
     // print(event);
     emit(OrderLoadingState());
     try {
-      
       dynamic user = orderResp.orderPostResp(
           lineItem: event.orderData,
           billing: event.billing,
           shipping: event.shipping,
           payMode: event.payMode,
           payTitle: event.payTitle);
-      print(user);
+      // print(user);
       if (user != false) {
-        
-         
-        navigationPush(event.context, OrderCompleteScreen());
-       
-        emit(OrderCompleteState());
+        navigationPush(event.context, OrderCompleteScreen(email:event.billing['email']));
 
+        emit(OrderCompleteState());
       } else {
         // snackBar(event.context, user['msg'] ?? '');
         emit(OrderInitialState());
@@ -181,7 +177,9 @@ class OrderSuccessState extends OrderState {
   OrderSuccessState({this.data, this.priceData});
 }
 
-class OrderCompleteState extends OrderState {}
+class OrderCompleteState extends OrderState {
+  OrderCompleteState();
+}
 
 class OrderFailedState extends OrderState {
   final String? message;

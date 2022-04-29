@@ -44,10 +44,10 @@ class OrderRespo {
     try {
       Response response = await Dio().post(url, data: formData);
 
-      print(response.statusCode);
+      // print(response.statusCode);
       // print(response.data);
       if (response.statusCode == 201) {
-        print(response.data);
+        // print(response.data);
         return true;
       } else {
         return false;

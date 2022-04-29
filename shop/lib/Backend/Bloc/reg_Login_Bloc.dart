@@ -1,5 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import '../../Screen/bottomNav.dart';
+import '../../utils/common.dart';
 import '../Resp/reg_login_resp.dart';
 
 class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
@@ -33,8 +35,13 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
       var user = await userRespository.registerResp(
         email: event.email,
       );
-      // print('user data $user');
+      print('user data $user');
       if (user != false) {
+        navigationPushReplacement(
+            event.context,
+            UserNavigationBar(
+              currentTab: 0,
+            ));
         emit(SuccessState());
       }
       emit(InitialState());
@@ -53,8 +60,9 @@ abstract class RegisterEvent extends Equatable {
 }
 
 class SignUpBtnEvent extends RegisterEvent {
-  final String? email, password, fullname, phone;
-  SignUpBtnEvent({this.email, this.fullname, this.phone, this.password});
+  final String? email;
+  dynamic context;
+  SignUpBtnEvent({this.email, this.context});
 }
 
 class LoginBtnEvent extends RegisterEvent {

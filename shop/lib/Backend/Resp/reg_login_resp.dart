@@ -1,22 +1,20 @@
+import 'dart:html';
+
 import 'package:dio/dio.dart';
 
 import '/utils/app_constants.dart';
 
 class RegLoginResp {
-  Future<dynamic> registerResp(
-      {String? email,
-      String? phone,
-      String? name,
-      String? password,
-      bool? isSeller,
-      String? fullname,
-      dynamic context}) async {
+  Future<dynamic> registerResp({String? email, dynamic context}) async {
     try {
+      print("resp email $email");
+      FormData formData = FormData.fromMap({
+        "email": email,
+      });
+
       Response response = await Dio().post(
         URLConstants.signUpUrl,
-        data: {
-          "email": email,
-        },
+        data: formData,
       );
       print('response User ${response.statusCode}');
       if (response.statusCode == 201 || response.statusCode == 200) {

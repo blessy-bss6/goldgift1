@@ -47,7 +47,7 @@ class _OrderScreenState extends State<OrderScreen> {
       body: BlocProvider(
         create: (BuildContext context) => OrderBloc()..add(FetchOrderEvent()),
         child: BlocConsumer<OrderBloc, OrderState>(listener: (context, state) {
-          print(state);
+          // print(state);
           if (state is OrderCompleteState) {
             BlocProvider.of<RegisterBloc>(context, listen: false)
               ..add(SignUpBtnEvent(
