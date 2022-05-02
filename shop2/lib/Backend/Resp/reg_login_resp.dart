@@ -1,46 +1,64 @@
 import 'package:dio/dio.dart';
 import 'package:shop2/utils/app_constants.dart';
-
+import 'package:wp_json_api/models/responses/wp_user_login_response.dart';
+import 'package:wp_json_api/wp_json_api.dart';
+import 'dart:convert';
 import '../../utils/shared_helper.dart';
 
 class RegLoginResp {
+  //  Future<dynamic> curretnUserResp(
+  //     {dynamic username}) async {
+  //   try {
+  //     Response response = await Dio().post(
+  //         "https://liveprojects.co.in/goldgift/wp-json/wc/v3/customers" +
+  //             "?consumer_key=${URLConstants.Key}&consumer_secret=${URLConstants.password}",
+  //         // data: formData,
+  //         data: {"email": email, "password": password, "username": username}
+  //         // data: formData
+  //         );
+  //     print('response User ${response.statusCode}');
+
+  //     print(response.statusCode);
+  //     if (response.statusCode == 201 || response.statusCode == 200) {
+  //       print(response.data);
+
+  //       loginResp(username: username, password: password);
+  //       return true;
+  //     }
+
+  //     return false;
+  //   } on DioError catch (e) {
+  //     print(e);
+  //     return e.response!.data;
+  //   }
+  // }      // print("resp email ${email.runtimeType}");
+  //     // print("resp password $password");
+  //     print("respusernam $username");
+
   Future<dynamic> registerResp(
-      {String? email,
-      String? password,
-      String? username,
+      {dynamic email,
+      dynamic password,
+      dynamic username,
       dynamic context}) async {
     try {
-      print("resp email $email");
-      print("resp password $password");
-      print("respusernam $username");
-      FormData formData = FormData.fromMap(
-          {"email": email, "password": password, "username": username});
+      // print("resp email ${email.runtimeType}");
+      // print("resp password $password");
+      // print("respusernam $username");
 
       Response response = await Dio().post(
-        // URLConstants.signUpUrl +
-        //     "?consumer_key=${URLConstants.Key}&consumer_secret=${URLConstants.password}",
-        // URLConstants.signUpUrl,
-     "https://liveprojects.co.in/goldgift/wp-json/wc/v3/customers?consumer_key=ck_e574cd75f0fedf68fda0fa8fd99c17f54665a4c6&consumer_secret=cs_9e084118b1fdba78c85c24b6a209fdf382057e5e",
-        // data: formData,
-        data: {"email": email, "password": password, "username": username}
-      );
+          "https://liveprojects.co.in/goldgift/wp-json/wc/v3/customers" +
+              "?consumer_key=${URLConstants.Key}&consumer_secret=${URLConstants.password}",
+          // data: formData,
+          data: {"email": email, "password": password, "username": username}
+          // data: formData
+          );
       print('response User ${response.statusCode}');
 
-      //   FormData formData2 = FormData.fromMap(
-      //     {"email": email, "password": "$password", "username": username});
-      //  Response response2 = await Dio().post(
-      //   // URLConstants.loginUrl,
-      //   "https://liveprojects.co.in/goldgift/wp-json/api/v1/token",
-      //   data:formData2,
-      // );
       print(response.statusCode);
       if (response.statusCode == 201 || response.statusCode == 200) {
         print(response.data);
-        // if (response2.data['jwt_token'] != null) {
-        //   print(response2.data['jwt_token']);
-        //   setCurrentUser(response2.data['jwt_token']);
-        // setUserType(response.data['isIdType']);
-        loginResp(username: username, password: password);
+
+        loginResp(email: email, password: password);
         return true;
       }
 
@@ -53,44 +71,36 @@ class RegLoginResp {
 
 // ! Login Respositry
   Future<dynamic> loginResp(
-      {String? username, String? password, dynamic context}) async {
+      {dynamic email, dynamic password, dynamic context}) async {
     try {
-      print(username);
-      print(password);
+      // print("resp email ${email.runtimeType}");
+      //     print("resp email ${email}");
+      String url = "https://liveprojects.co.in/goldgift/wp-json/wc/v3/customers" +
+          "?consumer_key=${URLConstants.Key}&consumer_secret=${URLConstants.password}&email=${email}";
+      Response res2 = await Dio().get(url);
+      // print(res2.statusCode);
+      // print(res2.data[0]['username']);
+      if (res2.statusCode == 200) {
+        Response response = await Dio().post(
+          "https://liveprojects.co.in/goldgift/wp-json/api/v1/token",
+          data: {
+            "username": res2.data[0]['username'],
+            "password": password,
+          },
+        );
+        // print(response.statusCode);
 
-      // FormData formData =
-      //     FormData.fromMap({"password": password, "username": username});
+        Map valueMap = jsonDecode(response.data);
 
-      Response response = await Dio().post(
-        "https://liveprojects.co.in/goldgift/wp-json/api/v1/token",
-        // data: formData
-        data: {
-          "username": username,
-          "password": password,
-        },
-        // options: Options(headers: {
-        //   "Access-Control-Allow-Origin":
-        //       "*", // Required for CORS support to work
-        //   "Access-Control-Allow-Credentials":
-        //       true, // Required for cookies, authorization headers with HTTPS
-        //   "Access-Control-Allow-Headers":
-        //       "Origin,Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,locale",
-        //   "Access-Control-Allow-Methods": "POST, OPTIONS"
-        // }
-        // )
-      );
-      print(response.statusCode);
+        print(valueMap);
+        // print(valueMap['jwt_token'].id);
+        if (valueMap['jwt_token'] != null) {
+          setCurrentUser(valueMap['jwt_token']);
+          setUserType(res2.data[0]['id']);
+          getCurrentUser();
 
-      print(response.data);
-      // dynamic dat = response.data as Map;
-      // print(dat);
-      print(response.data["jwt_token"]);
-      if (response.data['jwt_token'] != null) {
-        setCurrentUser(response.data['jwt_token']);
-        // setUserType(response.data['isIdType']);
-        getCurrentUser();
-
-        return true;
+          return true;
+        }
       }
 
       return false;
@@ -125,16 +135,16 @@ Future<void> logout() async {
 }
 
 // ! CURRENT Screen
-// void setUserType(idType) async {
-//   if (idType != null) {
-//     var v = SharedHelper().setUserTypeScr('userIdType', idType);
-//   }
-// }
+void setUserType(idType) async {
+  if (idType != null) {
+    var v = SharedHelper().setUserTypeScr('userIdType', idType);
+  }
+}
 
-// Future<bool> getUserType() async {
-//   SharedHelper shared = SharedHelper();
-//   dynamic idType = await shared.getUserTypeScr('userIdType');
+Future<bool> getUserType() async {
+  SharedHelper shared = SharedHelper();
+  dynamic idType = await shared.getUserTypeScr('userIdType');
 
-//   // print('getCureent user ${idType}');
-//   return idType;
-// }
+  print('getCureent user ${idType}');
+  return idType;
+}

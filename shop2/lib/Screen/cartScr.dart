@@ -148,7 +148,7 @@ class _CartScreenState extends State<CartScreen> {
           }
 
           return Center(
-            child: CircularProgressIndicator(),
+            child: Text('No Data ' ,style: labelTextStyle,),
           );
         }),
       ),

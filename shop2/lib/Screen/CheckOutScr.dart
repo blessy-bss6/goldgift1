@@ -145,105 +145,107 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
         padding: const EdgeInsets.all(8.0),
         child: Form(
             key: _formKey,
-            child: ListView(
-              shrinkWrap: true,
-              children: [
-                AddressField(
-                  fNameController: fNameController,
-                  lNameController: lNameController,
-                  companyController: companyController,
-                  countryController: countryController,
-                  townController: townController,
-                  stateController: stateController,
-                  street1Controller: street1Controller,
-                  street2Controller: street2Controller,
-                  pinCodeController: pinCodeController,
-                  emailController: emailController,
-                  mobileController: mobileController,
-                ),
-                // ! Create an Account
-
-                Container(
-                  child: isLogin == false
-                      ? EditTextField(
-                          textAlign: TextAlign.left,
-                          txtColor: txtBlackColor,
-                          formBox: true,
-                          fillColor: borderColor,
-                          headTxt: 'Passeord',
-                          // hintText: 'Enter First Name',
-                          controller: passwordController,
-                          vertical: 15,
-                          // validator: validateField,
-                          validator: (v) => validateField(v!),
-                        )
-                      : null,
-                ),
-
-                // Row(
-                //   children: [
-                //     Checkbox(
-                //       value: value1,
-                //       onChanged: (bool? value) {
-                //         setState(() {
-                //           value1 = value;
-                //         });
-                //       },
-                //     ),
-                //     Text('Create an Account', style: smallTextStyle),
-                //   ],
-                // ),
-                Row(
-                  children: [
-                    Checkbox(
-                      value: value2,
-                      onChanged: (bool? value) {
-                        setState(() {
-                          value2 = value;
-                        });
-                      },
-                    ),
-                    Text('shpping address', style: smallTextStyle),
-                  ],
-                ),
-                // ! Shpping Billing Address
-                Container(
-                    child: value2 == true
-                        ? ListView(
-                            shrinkWrap: true,
-                            // mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Text('Shpping Address ', style: labelTextStyle),
-                              AddressField(
-                                fieldShow: false,
-                                validate: value2 == true ? true : false,
-                                fNameController: fNameController2,
-                                lNameController: lNameController2,
-                                companyController: companyController2,
-                                countryController: countryController2,
-                                townController: townController2,
-                                stateController: stateController2,
-                                street1Controller: street1Controller2,
-                                street2Controller: street2Controller2,
-                                pinCodeController: pinCodeController2,
-                              ),
-                            ],
+            child: SingleChildScrollView(
+              child: Column(
+                // shrinkWrap: true,
+                children: [
+                  AddressField(
+                    fNameController: fNameController,
+                    lNameController: lNameController,
+                    companyController: companyController,
+                    countryController: countryController,
+                    townController: townController,
+                    stateController: stateController,
+                    street1Controller: street1Controller,
+                    street2Controller: street2Controller,
+                    pinCodeController: pinCodeController,
+                    emailController: emailController,
+                    mobileController: mobileController,
+                  ),
+                  // ! Create an Account
+            
+                  Container(
+                    child: isLogin == false
+                        ? EditTextField(
+                            textAlign: TextAlign.left,
+                            txtColor: txtBlackColor,
+                            formBox: true,
+                            fillColor: borderColor,
+                            headTxt: 'Passeord',
+                            // hintText: 'Enter First Name',
+                            controller: passwordController,
+                            vertical: 15,
+                            // validator: validateField,
+                            validator: (v) => validateField(v!),
                           )
-                        : null),
-
-                EditTextField(
-                  textAlign: TextAlign.left,
-                  txtColor: txtBlackColor,
-                  formBox: true,
-                  fillColor: borderColor,
-                  vertical: 15,
-                  controller: orderDesController,
-                  // minLines: 3,
-                  // maxLines: 4,
-                  headTxt: 'Description',
-                  hintText: 'Order Descrtiption (optional)',
-                )
-              ],
+                        : null,
+                  ),
+            
+                  // Row(
+                  //   children: [
+                  //     Checkbox(
+                  //       value: value1,
+                  //       onChanged: (bool? value) {
+                  //         setState(() {
+                  //           value1 = value;
+                  //         });
+                  //       },
+                  //     ),
+                  //     Text('Create an Account', style: smallTextStyle),
+                  //   ],
+                  // ),
+                  Row(
+                    children: [
+                      Checkbox(
+                        value: value2,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            value2 = value;
+                          });
+                        },
+                      ),
+                      Text('shpping address', style: smallTextStyle),
+                    ],
+                  ),
+                  // ! Shpping Billing Address
+                  Container(
+                      child: value2 == true
+                          ? ListView(
+                              shrinkWrap: true,
+                              // mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Text('Shpping Address ', style: labelTextStyle),
+                                AddressField(
+                                  fieldShow: false,
+                                  validate: value2 == true ? true : false,
+                                  fNameController: fNameController2,
+                                  lNameController: lNameController2,
+                                  companyController: companyController2,
+                                  countryController: countryController2,
+                                  townController: townController2,
+                                  stateController: stateController2,
+                                  street1Controller: street1Controller2,
+                                  street2Controller: street2Controller2,
+                                  pinCodeController: pinCodeController2,
+                                ),
+                              ],
+                            )
+                          : null),
+            
+                  EditTextField(
+                    textAlign: TextAlign.left,
+                    txtColor: txtBlackColor,
+                    formBox: true,
+                    fillColor: borderColor,
+                    vertical: 15,
+                    controller: orderDesController,
+                    // minLines: 3,
+                    // maxLines: 4,
+                    headTxt: 'Description',
+                    hintText: 'Order Descrtiption (optional)',
+                  )
+                ],
+              ),
             )),
       ),
       bottomNavigationBar: Padding(

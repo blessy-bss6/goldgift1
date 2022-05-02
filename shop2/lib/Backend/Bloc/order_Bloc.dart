@@ -47,11 +47,15 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
   }
 
   // ! Order Show Method
-  void _orderShowMethod(OrderShowEvent event, Emitter emit) async {
+   _orderShowMethod(OrderShowEvent event, Emitter emit) async {
     // print(event);
     emit(OrderLoadingState());
     try {
-      dynamic user = await orderResp.orderGetDataResp();
+       SharedHelper sharedHelper = SharedHelper();
+      dynamic id = await sharedHelper.getUserTypeScr('userIdType');
+      
+      // print(id);
+      dynamic user = await orderResp.orderGetDataResp(customer: id);
 
       if (user != null) {
         emit(OrderSuccessState(data: user));
@@ -73,7 +77,7 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
           shipping: event.shipping,
           payMode: event.payMode,
           payTitle: event.payTitle);
-      print(user);
+      // print(user);
       if (user == true) {
       
 
@@ -146,10 +150,10 @@ class OrderItemAddEvent extends OrderEvent {
 }
 
 class OrderShowEvent extends OrderEvent {
-  final dynamic prodData;
-  final dynamic context;
+   dynamic customer;
+   dynamic context;
 
-  OrderShowEvent({this.prodData, this.context});
+  OrderShowEvent({this.customer, this.context});
   @override
   List<Object> get props => [];
 }

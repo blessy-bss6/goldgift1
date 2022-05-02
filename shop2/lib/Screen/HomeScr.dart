@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shop2/Backend/Resp/reg_login_resp.dart';
+import 'package:shop2/Screen/splashScr.dart';
 
 import '../Elements/button.dart';
 import '../Elements/drawers.dart';
@@ -57,124 +59,132 @@ class _HomeScreenState extends State<HomeScreen> {
           builder: (context, state) {
             // print(state);
             // if (state is HomeSuccessState) {
-              return CustomScrollView(
-                slivers: [
-                  // ! Sliver app Bar
-                  SliverAppBar(
-                    // expandedHeight: 6.0,
-                    // flexibleSpace: const FlexibleSpaceBar(
-                    //   title: Text('Available seats'),
-                    // ),
-                    backgroundColor: coffeColor,
-                    title: Text(
-                      'Gold Gift Ideas',
-                      style: whiteTextStyle,
-                    ),
-                    centerTitle: true,
-                    bottom: PreferredSize(
-                        preferredSize: Size.fromHeight(60),
-                        child: Container(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 5.0, horizontal: 15.0),
-                            child: SearchBox(
-                              controller: searchController,
-                            ),
+            return CustomScrollView(
+              slivers: [
+                // ! Sliver app Bar
+                SliverAppBar(
+                  // expandedHeight: 6.0,
+                  // flexibleSpace: const FlexibleSpaceBar(
+                  //   title: Text('Available seats'),
+                  // ),
+                  backgroundColor: coffeColor,
+                  title: Text(
+                    'Gold Gift Ideas',
+                    style: whiteTextStyle,
+                  ),
+                  centerTitle: true,
+                  bottom: PreferredSize(
+                      preferredSize: Size.fromHeight(60),
+                      child: Container(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 5.0, horizontal: 15.0),
+                          child: SearchBox(
+                            controller: searchController,
                           ),
-                        )),
-                    actions: <Widget>[
-                      IconButton(
-                        icon: const Icon(Icons.login),
-                        tooltip: 'Login',
-                        onPressed: () => navigationPush(context, LoginScreen()),
-                      ),
-                      IconButton(
-                        icon: const Icon(Icons.shopping_bag),
-                        tooltip: 'Cart',
-                        onPressed: () => navigationPush(context, CartScreen()),
-                      ),
-                    ],
-                  ),
-                  SliverList(
-                    delegate: SliverChildListDelegate([
-                      ImgSlider(),
-                      // CategoryListItem(cateList: state.category)
-                    ]),
-                  ),
+                        ),
+                      )),
+                  actions: <Widget>[
+                    IconButton(
+                      icon: const Icon(Icons.login),
+                      tooltip: 'Login',
+                      onPressed: () => navigationPush(context, LoginScreen()),
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.login_outlined),
+                      tooltip: 'Log Out',
+                      onPressed: () {
+                        logout();
+                        navigationPush(context, SplashScreen());
+                      },
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.shopping_bag),
+                      tooltip: 'Cart',
+                      onPressed: () => navigationPush(context, CartScreen()),
+                    ),
+                  ],
+                ),
+                SliverList(
+                  delegate: SliverChildListDelegate([
+                    ImgSlider(),
+                    // CategoryListItem(cateList: state.category)
+                  ]),
+                ),
 
-                  // ! First List
-                  SliverPadding(
-                    padding: const EdgeInsets.all(2),
-                    sliver: SliverToBoxAdapter(
-                      child: Column(
-                        children: [
-                          Divider(),
-                          Container(
-                              alignment: Alignment.center,
-                              child: Text(
-                                'Special Offers ',
-                                style: labelTextStyle,
-                              )),
-                        ],
-                      ),
+                // ! First List
+                SliverPadding(
+                  padding: const EdgeInsets.all(2),
+                  sliver: SliverToBoxAdapter(
+                    child: Column(
+                      children: [
+                        Divider(),
+                        Container(
+                            alignment: Alignment.center,
+                            child: Text(
+                              'Special Offers ',
+                              style: labelTextStyle,
+                            )),
+                      ],
                     ),
                   ),
-                  SliverPadding(
-                    padding: const EdgeInsets.all(4.0),
-                    sliver: SliverGrid(
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          childAspectRatio: MediaQuery.of(context).size.width /
-                              (MediaQuery.of(context).size.height / 1.9),
-                          mainAxisSpacing: 10.0,
-                          crossAxisSpacing: 10.0,
-                        ),
-                        delegate: SliverChildBuilderDelegate((context, index) {
-                          return CategeoryGridProdList(
-                            // onTap: () => navigationPush(context, ProductShowScreen()),
-                            imageUrl: catList[index]['pic'],
-                            title: catList[index]['name'],
-                          );
-                        }, childCount: catList.length)),
-                  ),
-
-                  // ! First List
-                  SliverPadding(
-                    padding: const EdgeInsets.all(3),
-                    sliver: SliverToBoxAdapter(
-                      child: Column(
-                        children: [
-                          Divider(),
-                          Container(
-                              alignment: Alignment.center,
-                              child: Text(
-                                'For Return Gift',
-                                style: labelTextStyle,
-                              )),
-                        ],
+                ),
+                SliverPadding(
+                  padding: const EdgeInsets.all(4.0),
+                  sliver: SliverGrid(
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        childAspectRatio: MediaQuery.of(context).size.width /
+                            (MediaQuery.of(context).size.height / 1.9),
+                        mainAxisSpacing: 10.0,
+                        crossAxisSpacing: 10.0,
                       ),
+                      delegate: SliverChildBuilderDelegate((context, index) {
+                        return CategeoryGridProdList(
+                          // onTap: () => navigationPush(context, ProductShowScreen()),
+                          imageUrl: catList[index]['pic'],
+                          title: catList[index]['name'],
+                        );
+                      }, childCount: catList.length)),
+                ),
+
+                // ! First List
+                SliverPadding(
+                  padding: const EdgeInsets.all(3),
+                  sliver: SliverToBoxAdapter(
+                    child: Column(
+                      children: [
+                        Divider(),
+                        Container(
+                            alignment: Alignment.center,
+                            child: Text(
+                              'For Return Gift',
+                              style: labelTextStyle,
+                            )),
+                      ],
                     ),
                   ),
-                  SliverPadding(
-                    padding: const EdgeInsets.all(5.0),
-                    sliver: SliverGrid(
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          childAspectRatio: MediaQuery.of(context).size.width /
-                              (MediaQuery.of(context).size.height / 1.9),
-                          mainAxisSpacing: 10.0,
-                          crossAxisSpacing: 10.0,
-                        ),
-                        delegate: SliverChildBuilderDelegate((context, index) {
-                          return CategeoryGridProdList(
-                            // onTap: () => navigationPush(context, ProductShowScreen()),
-                            imageUrl: 'assets/images/Oxidized.png',
-                            title: 'product',
-                          );
-                        }, childCount: 6)),
-                  )
-                ],
-              );
+                ),
+                SliverPadding(
+                  padding: const EdgeInsets.all(5.0),
+                  sliver: SliverGrid(
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        childAspectRatio: MediaQuery.of(context).size.width /
+                            (MediaQuery.of(context).size.height / 1.9),
+                        mainAxisSpacing: 10.0,
+                        crossAxisSpacing: 10.0,
+                      ),
+                      delegate: SliverChildBuilderDelegate((context, index) {
+                        return CategeoryGridProdList(
+                          // onTap: () => navigationPush(context, ProductShowScreen()),
+                          imageUrl: 'assets/images/Oxidized.png',
+                          title: 'product',
+                        );
+                      }, childCount: 6)),
+                )
+              ],
+            );
             // }
 
             // return Center(

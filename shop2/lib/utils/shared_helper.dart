@@ -35,21 +35,21 @@ class SharedHelper {
   }
 
   // // ! Geeting User Type
-  // void setUserTypeScr(String idkey, bool idvalue) async {
-  //   final iduserType = await SharedPreferences.getInstance();
-  //   await iduserType.setBool(idkey, idvalue);
-  // }
+  void setUserTypeScr(String idkey, int idvalue) async {
+    final iduserType = await SharedPreferences.getInstance();
+    await iduserType.setInt(idkey, idvalue);
+  }
 
-  // Future<bool> getUserTypeScr(String idkey) async {
-  //   final iduserType = await SharedPreferences.getInstance();
-  //   // return iduserType.getString(idkey)!;
-  //   return iduserType.getBool(idkey)!;
-  // }
+  Future<int> getUserTypeScr(String idkey) async {
+    final iduserType = await SharedPreferences.getInstance();
+    // return iduserType.getString(idkey)!;
+    return iduserType.getInt(idkey)!;
+  }
 
-  // Future<bool> usercontainsKey(String idkey) async {
-  //   final prefs = await SharedPreferences.getInstance();
-  //   return prefs.containsKey(idkey);
-  // }
+  Future<bool> usercontainsKey(String idkey) async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.containsKey(idkey);
+  }
 }
 
 // 1 Cart With Local DataBase

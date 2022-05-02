@@ -25,11 +25,16 @@ class _SplashScreenState extends State<SplashScreen> {
 
   checkLogin() async {
     bool isLogin = await sharedHelper.containsKey('current_user');
-    print('splash Login $isLogin');
+    bool isD = await sharedHelper.containsKey('userIdType');
+    // print('splash Login $isLogin');
+    
     if (isLogin) {
+      dynamic id = await sharedHelper.getUserTypeScr('userIdType');
+      print(id);
       // currentUser.value = await getCurrentUser();
       // print(currentUser.value.token);
-      print('splash Login $isLogin');
+      // print('splash Login $isLogin');
+      // print('splash Login $isD');
       navigationRemoveUntil(
           context,
           UserNavigationBar(

@@ -16,8 +16,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(AuthLoadingState());
     try {
       var user = await userRespository.loginResp(
-          username: event.username, password: event.password);
-      print('user data $user');
+          email: event.email, password: event.password);
+      // print('user data $user');
       if (user == true) {
         emit(AuthSuccessState());
       }
@@ -33,11 +33,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(AuthLoadingState());
     try {
       var user = await userRespository.registerResp(
-        email: event.email,password:event.password,username: event.username
-      );
+          email: event.email,
+          password: event.password,
+          username: event.username);
       print('user data $user');
       if (user == true) {
-        
         emit(AuthSuccessState());
       }
       emit(AuthInitialState());
@@ -56,14 +56,16 @@ abstract class AuthEvent extends Equatable {
 }
 
 class SignUpBtnEvent extends AuthEvent {
-  final String? email, password, username;
+  dynamic password, username;
+  dynamic email;
   dynamic context;
-  SignUpBtnEvent({this.email,this.password, this.username, this.context});
+  SignUpBtnEvent({this.email, this.password, this.username, this.context});
 }
 
 class LoginBtnEvent extends AuthEvent {
-  final String? username, password;
-  LoginBtnEvent({this.username, this.password});
+  dynamic password;
+  dynamic email;
+  LoginBtnEvent({this.email, this.password});
 }
 
 // ! 3. STATE FOR Auth

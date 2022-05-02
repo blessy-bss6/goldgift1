@@ -92,13 +92,14 @@ class RegisterScreen extends StatelessWidget {
                   textAlign: TextAlign.left,
                   txtColor: txtBlackColor,
                   formBox: true,
+                  keyboardType: TextInputType.emailAddress,
                   fillColor: borderColor,
                   headTxt: 'Email',
                   hintText: 'Enter Email',
                   controller: emailController,
                   vertical: 15,
-                  // validator: validateField,
-                  validator: (v) => validateEmail(v!),
+                
+                  // validator: (v) => validateEmail(v!),
                 ),
                 heightSizedBox(10.0),
                 EditTextField(

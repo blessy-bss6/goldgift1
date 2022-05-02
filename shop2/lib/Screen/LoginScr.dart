@@ -14,7 +14,7 @@ import 'bottomNav.dart';
 class LoginScreen extends StatelessWidget {
   LoginScreen({Key? key}) : super(key: key);
 
-  final TextEditingController userNameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
@@ -35,7 +35,7 @@ class LoginScreen extends StatelessWidget {
         await BlocProvider.of<AuthBloc>(context, listen: false)
           ..add(LoginBtnEvent(
             password: passwordController.text,
-            username: userNameController.text,
+            email: emailController.text,
           ));
       }
     }
@@ -58,16 +58,29 @@ class LoginScreen extends StatelessWidget {
             key: _formKey,
             child: Column(
               children: [
+                // EditTextField(
+                //   textAlign: TextAlign.left,
+                //   txtColor: txtBlackColor,
+                //   formBox: true,
+                //   fillColor: borderColor,
+                //   headTxt: 'Email',
+                //   hintText: 'Enter Email',
+                //   controller: userNameController,
+                //   vertical: 15,
+                //   validator: (v) => validateEmail(v!),
+                // ),
                 EditTextField(
                   textAlign: TextAlign.left,
                   txtColor: txtBlackColor,
                   formBox: true,
+                  keyboardType: TextInputType.emailAddress,
                   fillColor: borderColor,
-                  headTxt: 'Username',
-                  hintText: 'Enter Username',
-                  controller: userNameController,
+                  headTxt: 'Email',
+                  hintText: 'Enter Email',
+                  controller: emailController,
                   vertical: 15,
-                  validator: (v) => validateField(v!),
+
+                  // validator: (v) => validateEmail(v!),
                 ),
                 heightSizedBox(10.0),
                 EditTextField(

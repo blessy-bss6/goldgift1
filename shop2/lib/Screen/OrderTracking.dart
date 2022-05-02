@@ -1,43 +1,80 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../Backend/Bloc/order_Bloc.dart';
 import '../Elements/button.dart';
 import '../Elements/imgScr.dart';
 import '../common/order_cart_item.dart';
 import '../common/dialogBoxS.dart';
 import '../utils/style.dart';
 
-class OrderTrackingScreen extends StatelessWidget {
+class OrderTrackingScreen extends StatefulWidget {
   const OrderTrackingScreen({Key? key}) : super(key: key);
 
   @override
+  State<OrderTrackingScreen> createState() => _OrderTrackingScreenState();
+}
+
+class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
+  OrderBloc orderBloc = OrderBloc();
+
+  @override
+  void initState() {
+    orderBloc = BlocProvider.of<OrderBloc>(context, listen: false);
+    orderBloc.add(OrderShowEvent());
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Container(
-      child: ListView.builder(
-          itemCount: 2,
-          shrinkWrap: true,
-          itemBuilder: (context, i) {
-            return Container(
-                margin: EdgeInsets.all(8.0),
-                decoration: BoxDecoration(
-                    color: offWhiteColor,
-                    border: Border.all(
-                      color: borderColor,
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: BlocConsumer<OrderBloc, OrderState>(
+          listener: ((context, state) {}),
+          builder: (context, state) {
+            print(state);
+            if (state is OrderSuccessState) {
+              print(state.data.runtimeType);
+              // print(lData);
+              // List lData = state.data as List<dynamic>;
+              return state.data.isEmpty
+                  ? Center(
+                      child: Text('No Data'),
                     )
-                    // border: Border(
-                    //     bottom: BorderSide(
-                    //         width: 1.0,
-                    //         color: Color.fromARGB(255, 221, 214, 214)))
-                    ),
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        '#Order Id: 8888888',
-                        style: labelTextStyle,
-                      ),
-                      Divider(),
-                      TrackingProdContent()
-                    ]));
+                  : Container(
+                      child: ListView.builder(
+                          itemCount: state.data.length,
+                          shrinkWrap: true,
+                          itemBuilder: (context, i) {
+                            return Container(
+                                margin: EdgeInsets.all(8.0),
+                                decoration: BoxDecoration(
+                                    color: offWhiteColor,
+                                    border: Border.all(
+                                      color: borderColor,
+                                    )
+                                    // border: Border(
+                                    //     bottom: BorderSide(
+                                    //         width: 1.0,
+                                    //         color: Color.fromARGB(255, 221, 214, 214)))
+                                    ),
+                                child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        '#Order Id: 8888888',
+                                        style: labelTextStyle,
+                                      ),
+                                      Divider(),
+                                      // TrackingProdContent()
+                                    ]));
+                          }),
+                    );
+            }
+            return Center(
+              child: CircularProgressIndicator(),
+            );
           }),
     );
   }
