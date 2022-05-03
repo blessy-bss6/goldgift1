@@ -50,9 +50,10 @@ class ProductListScreen extends StatelessWidget {
                           ),
                           delegate:
                               SliverChildBuilderDelegate((context, index) {
+                            print(state.data[index]);
                             return CategeoryGridProdList(
                               // onTap: () => navigationPush(context, ProductShowScreen()),
-                              imageUrl: 'assets/images/Wooden-Pooja-Mandir.png',
+                              imageUrl: '${state.data[index]["images"].length>0 ? state.data[index]["images"][0]['src']: '' }',
                               title: state.data[index]['name'],
                               onTap: () => navigationPush(
                                   context,
@@ -119,9 +120,10 @@ class ProductSubCategoryScreen extends StatelessWidget {
                           ),
                           delegate:
                               SliverChildBuilderDelegate((context, index) {
+                            print('${state.data[index]}');
                             return CategeoryGridProdList(
                               // onTap: () => navigationPush(context, ProductShowScreen()),
-                              imageUrl: 'assets/images/Wooden-Pooja-Mandir.png',
+                              imageUrl: '${state.data[index]["images"][0]['src']}',
                               title: state.data[index]['name'],
                               onTap: () => navigationPush(
                                   context,

@@ -165,7 +165,9 @@ class BasicProdDetail extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Txt(
-          t: '${prodNumber['name'].toString().length > 10 ? prodNumber['name'].toString().substring(0, 40) + "\n" + prodNumber['name'].toString().substring(40, 80) : prodNumber['name']}',
+          t: '${prodNumber['name'].toString().length >= 20 ? prodNumber['name'].toString().substring(0, 20) 
+          // +  "\n" + prodNumber['name'].toString().substring(20, 40) 
+           : prodNumber['name']}',
           fontSize: 15,
           fontWeight: FontWeight.bold,
         ),

@@ -71,50 +71,59 @@ class _CartScreenState extends State<CartScreen> {
 
                       SliverList(
                         delegate: SliverChildBuilderDelegate(
-                          (BuildContext context, int i) => Padding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 10),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  border:
-                                      Border.all(width: 1, color: borderColor)),
-                              child: Row(
-                                // crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  Pics(
-                                    src: 'assets/images/indianGod.png',
-                                    width: 120,
-                                    height: 100,
-                                  ),
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      BasicProdDetail(
-                                        prodNumber: state.data[i],
-                                      ),
-                                      CartButn(
-                                        prodNumber: state.data[i],
-                                      )
-                                    ],
-                                  ),
-                                  IconBtn(
-                                      icon: Icons.delete,
-                                      size: 20,
-                                      onPressed:
-                                          () => // shoping.deleteItem(currentItem['key']),
-                                              BlocProvider.of<LocalCartBloc>(
-                                                  context,
-                                                  listen: false)
-                                                ..add(LocalCartItemDelEvent(
-                                                    id: state.data[i]['key'])))
-                                ],
+                          (BuildContext context, int i) {
+                            print(state.data[i]["pic"]);
+                            return Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 10),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    border: Border.all(
+                                        width: 1, color: borderColor)),
+                                child: Row(
+                                  // crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    Pics(
+                                      networkImg: true,
+                                      src: '${state.data[i]["pic"]}',
+                                      width: 120,
+                                      height: 100,
+                                    ),
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        BasicProdDetail(
+                                          prodNumber: state.data[i],
+                                        ),
+                                        CartButn(
+                                          prodNumber: state.data[i],
+                                          pic: state.data[i]['pic'],
+                                          
+                                        ),
+                                        SizedBox(height: 10.0),
+                                      ],
+                                    ),
+                                    IconBtn(
+                                        icon: Icons.delete,
+                                        size: 20,
+                                        onPressed:
+                                            () => // shoping.deleteItem(currentItem['key']),
+                                                BlocProvider.of<LocalCartBloc>(
+                                                    context,
+                                                    listen: false)
+                                                  ..add(LocalCartItemDelEvent(
+                                                      id: state.data[i]
+                                                          ['key'])))
+                                  ],
+                                ),
                               ),
-                            ),
-                          ),
+                            );
+                          },
                           childCount: state.data.length,
                         ),
                       ),
@@ -148,7 +157,10 @@ class _CartScreenState extends State<CartScreen> {
           }
 
           return Center(
-            child: Text('No Data ' ,style: labelTextStyle,),
+            child: Text(
+              'No Data ',
+              style: labelTextStyle,
+            ),
           );
         }),
       ),
@@ -187,14 +199,20 @@ class _CartScreenState extends State<CartScreen> {
 // !
 class CartButn extends StatelessWidget {
   final dynamic prodNumber;
+  dynamic pic;
+  dynamic onPressed;
 
-  const CartButn({
+  CartButn({
     Key? key,
     this.prodNumber,
+    this.onPressed,
+    this.pic,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    // print('produNuber $prodNumber');
+    // print('produNuber ${}');
     return Container(
       height: 25,
       // width: getWidth(context) / 4,
@@ -215,6 +233,7 @@ class CartButn extends StatelessWidget {
                 icon: Icon(Icons.remove),
                 iconSize: 18,
                 // color: color,
+                // onPressed: onPressed,
                 onPressed: prodNumber['quantity'] > 1
                     ? () {
                         BlocProvider.of<LocalCartBloc>(context, listen: false)
@@ -223,6 +242,7 @@ class CartButn extends StatelessWidget {
                               prodData: {
                                 "id": prodNumber["id"],
                                 "name": prodNumber['name'],
+                                "pic": pic,
                                 "quantity": prodNumber['quantity'] - 1,
                                 "Fixedsale_price":
                                     prodNumber['Fixedsale_price'],
@@ -262,6 +282,7 @@ class CartButn extends StatelessWidget {
                           prodData: {
                             "id": prodNumber["id"],
                             "name": prodNumber['name'],
+                            "pic":pic,
                             "quantity": prodNumber['quantity'] + 1,
                             "Fixedsale_price": prodNumber['Fixedsale_price'],
                             "Fixedregular_price":

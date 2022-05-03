@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
@@ -84,6 +86,8 @@ class LocalCartBloc extends Bloc<LocalCartEvent, LocalCartState> {
     // print(event);
     emit(LocalCartLoadingState());
     try {
+      
+
       shoping.updateItem(event.id, event.prodData);
       dynamic user = shoping.refreshItems();
 

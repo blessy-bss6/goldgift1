@@ -33,7 +33,6 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
           builder: (context, state) {
             print(state);
             if (state is OrderSuccessState) {
-              print(state.data.runtimeType);
               // print(lData);
               // List lData = state.data as List<dynamic>;
               return state.data.isEmpty
@@ -63,17 +62,18 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        '#Order Id: 8888888',
+                                        '#Order Id: ${state.data[i]['id']}',
                                         style: labelTextStyle,
                                       ),
                                       Divider(),
-                                      // TrackingProdContent()
+                                      TrackingProdContent(
+                                          prodNumber: state.data[i])
                                     ]));
                           }),
                     );
             }
             return Center(
-              child: CircularProgressIndicator(),
+              child: Text('No Data'),
             );
           }),
     );
@@ -81,7 +81,8 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
 }
 
 class TrackingProdContent extends StatefulWidget {
-  TrackingProdContent({Key? key}) : super(key: key);
+  dynamic prodNumber;
+  TrackingProdContent({Key? key, this.prodNumber}) : super(key: key);
 
   @override
   State<TrackingProdContent> createState() => _TrackingProdContentState();
@@ -90,83 +91,94 @@ class TrackingProdContent extends StatefulWidget {
 class _TrackingProdContentState extends State<TrackingProdContent> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Shipped',
-            style: labelTextStyle,
-          ),
-
-          TrackDetContent(
-            value: 0.75,
-          ),
-          Divider(),
-          // ! Product Deatils
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  Pics(
-                    src: 'assets/images/indianGod.png',
-                    width: 80,
-                    height: 50,
-                  ),
-                  BasicProdDetail(
-                    cartBtn: false,
-                    mrpTxt: false,
-                  ),
-                ],
-              ),
-              InkWell(
-                  onTap: () {},
-                  child: Container(
-                    margin: EdgeInsets.symmetric(horizontal: 6),
-                    alignment: Alignment.topRight,
-                    child: Txt(
-                      t: 'Cancel',
-                      color: redColor,
-                    ),
-                  ))
-            ],
-          ),
-          // Divider(),
-          // !  Button For View More
-          Center(
-            child: Btn(
-              margin: EdgeInsets.only(bottom: 5),
-              width: 120,
-              btnName: 'view more',
-              txtColor: txtWhiteColor,
-              color: coffeColor,
-              height: 30,
-              onTap: () async {
-                await showDialog(
-                  context: context,
-                  // barrierDismissible: false,
-                  builder: (BuildContext context) {
-                    return AlertBox(
-                      title: 'Order Details',
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          PriceList(
-                            heading: 'Price',
-                          ),
-                          Divider(),
-                        ],
-                      ),
-                    );
-                  },
-                );
-              },
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Container(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Status: ${widget.prodNumber['status']}',
+              style: labelTextStyle,
             ),
-          )
-        ],
+
+            // TrackDetContent(
+            //   value: 0.75,
+            // ),
+            Divider(),
+            // ! Product Deatils
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  child: ListView.builder(itemCount: widget.prodNumber['line_items'].length,
+                    itemBuilder: (context, i) {
+                    return Text('${widget.prodNumber['line_items'][i]['name']}');
+                  }),
+                ),
+
+                // Row(
+                //   children: [
+                //     // Pics(networkImg: true,
+                //     //   src: '${widget.prodNumber['image']['src'] }' ,
+                //     //   width: 80,
+                //     //   height: 50,
+                //     // ),
+                //     // BasicProdDetail(
+                //     //   cartBtn: false,
+                //     //   mrpTxt: false,
+                //     // ),
+
+                //   ],
+                // ),
+                InkWell(
+                    onTap: () {},
+                    child: Container(
+                      margin: EdgeInsets.symmetric(horizontal: 6),
+                      alignment: Alignment.topRight,
+                      child: Txt(
+                        t: 'Cancel',
+                        color: redColor,
+                      ),
+                    ))
+              ],
+            ),
+            // Divider(),
+            // !  Button For View More
+            Center(
+              child: Btn(
+                margin: EdgeInsets.only(bottom: 5),
+                width: 120,
+                btnName: 'view more',
+                txtColor: txtWhiteColor,
+                color: coffeColor,
+                height: 30,
+                onTap: () async {
+                  await showDialog(
+                    context: context,
+                    // barrierDismissible: false,
+                    builder: (BuildContext context) {
+                      return AlertBox(
+                        title: 'Order Details',
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            PriceList(
+                              heading: 'Price',
+                            ),
+                            Divider(),
+                          ],
+                        ),
+                      );
+                    },
+                  );
+                },
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

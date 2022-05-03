@@ -125,7 +125,7 @@ class ImgHorizontalList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.all(5),
-      // color: Colors.red,
+   
       height: cheight ?? 55,
       width: double.infinity,
       child: ListView.builder(
@@ -135,38 +135,26 @@ class ImgHorizontalList extends StatelessWidget {
           itemBuilder: (context, i) {
             return InkWell(
               onTap: () {
-                callBack(prodList[i]);
-                // print('pics ${prodList[i]}');
+                callBack(prodList[i]['src']);
+                print('pics ${prodList[i]['src'] }');
               },
               child: Column(
                 children: [
                   Container(
-                    decoration: prodList[i] == itemBorder
+                    decoration: prodList[i]['src'] == itemBorder
                         ? BoxDecoration(
-                            border: Border.all(width: 1, color: Colors.green),
+                            border: Border.all(width: 1, color: Color.fromARGB(255, 208, 218, 208)),
                             borderRadius: BorderRadius.circular(5))
                         : null,
-                    child: Pics(
+                    child: Pics(networkImg: true,
                       // margin: EdgeInsets.all(3),
-                      src: '${prodList[i]}',
+                      src: '${prodList[i]['src']}',
                       width: 50,
                       height: 50,
                     ),
                   ),
-                  // heightSizedBox(3.0),
-                  Container(
-                    child: btn != null
-                        ? Btn(
-                            padding: EdgeInsets.all(2),
-                            color: redColor,
-                            height: 20,
-                            btnName: 'DELETE',
-                            style: TextStyle(
-                              color: txtWhiteColor,
-                              fontSize: 12,
-                            ))
-                        : null,
-                  )
+          
+                  
                 ],
               ),
             );

@@ -26,7 +26,7 @@ class _SplashScreenState extends State<SplashScreen> {
   checkLogin() async {
     bool isLogin = await sharedHelper.containsKey('current_user');
     bool isD = await sharedHelper.containsKey('userIdType');
-    // print('splash Login $isLogin');
+    print('splash Login $isLogin');
     
     if (isLogin) {
       dynamic id = await sharedHelper.getUserTypeScr('userIdType');

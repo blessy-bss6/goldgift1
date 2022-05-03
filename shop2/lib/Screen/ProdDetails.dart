@@ -29,14 +29,14 @@ class _ProdDetailScreenState extends State<ProdDetailScreen> {
   //   // 'assets/images/watermelon.png',
   // ];
 
-  // dynamic listImgSrc;
+  dynamic listImgSrc;
 
-  // imgcallBack(dynamic imgSrc) {
-  //   // print('callBack $imgSrc');
-  //   setState(() {
-  //     listImgSrc = imgSrc;
-  //   });
-  // }
+  imgcallBack(dynamic imgSrc) {
+    // print('callBack $imgSrc');
+    setState(() {
+      listImgSrc = imgSrc;
+    });
+  }
 
   dynamic description;
   @override
@@ -63,24 +63,28 @@ class _ProdDetailScreenState extends State<ProdDetailScreen> {
               child: Column(
                 children: [
                   // ! Image Section
+                    heightSizedBox(13.0),
                   Container(
                     alignment: Alignment.center,
                     // color: Colors.red,
-                    child: Pics(
-                      src: 'assets/images/Wooden-Pooja-Mandir.png',
+                    child: Pics(networkImg: true,
+                     src: '${widget.prodNumber["images"].length>0 ? widget.prodNumber["images"][0]['src']: ''}',
+                      // src: 'assets/images/Wooden-Pooja-Mandir.png',
                       width: 300,
                       height: 200,
                     ),
                   ),
-                  heightSizedBox(5.0),
+                  heightSizedBox(10.0),
                   //  Image List Section
-                  // ImgHorizontalList(
-                  //   cheight: 80,
-                  //   prodList: img,
-                  //   callBack: imgcallBack,
-                  //   itemBorder:
-                  //       listImgSrc != null ? listImgSrc.toString() : null,
-                  // ),
+                  Container(
+                    child: widget.prodNumber["images"].length>0 ? ImgHorizontalList(
+                      cheight: 80,
+                      prodList: widget.prodNumber["images"],
+                      callBack: imgcallBack,
+                      itemBorder:
+                          listImgSrc != null ? listImgSrc.toString() : null,
+                    ):null
+                  ),
                   // !  Product Content
                   ProdDetailsContent(prodNumber: widget.prodNumber),
 
@@ -108,6 +112,7 @@ class _ProdDetailScreenState extends State<ProdDetailScreen> {
               ..add(LocalCartItemAddEvent(prodData: {
                 "id": widget.prodNumber['id'],
                 "name": widget.prodNumber['name'],
+                "pic": '${widget.prodNumber["images"].length > 0 ? widget.prodNumber["images"][0]['src'].toString() : ''}' ,
                 "quantity": 1,
                 "Fixedsale_price": int.parse(widget.prodNumber["sale_price"]),
                 "Fixedregular_price":
@@ -186,7 +191,9 @@ class _ProdDetailsContentState extends State<ProdDetailsContent> {
           // alignment: Alignment.topLeft,
           child: Txt(
             // t: widget.prodNumber['name'],
-            t: '${widget.prodNumber['name'].toString().length > 10 ? widget.prodNumber['name'].toString().substring(0, 50) + "\n" + widget.prodNumber['name'].toString().substring(50, 90) : widget.prodNumber['name']}',
+            t: '${widget.prodNumber['name'].toString().length >= 20 ? widget.prodNumber['name'].toString().substring(0, 25) 
+            // + "\n" + widget.prodNumber['name'].toString().substring(40, 80) 
+             : widget.prodNumber['name']}',
             fontSize: 15,
             style: labelTextStyle,
             fontWeight: FontWeight.bold,

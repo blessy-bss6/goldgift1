@@ -11,7 +11,7 @@ import 'reg_Login_Bloc.dart';
 class OrderBloc extends Bloc<OrderEvent, OrderState> {
   ShopC shoping = ShopC();
   OrderRespo orderResp = OrderRespo();
-
+  SharedHelper sharedHelper = SharedHelper();
   OrderBloc() : super(OrderInitialState()) {
     on<FetchOrderEvent>(_orderMethod);
 
@@ -19,6 +19,7 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
     on<OrderItemAddEvent>(_orderAddMethod);
 
     // // ! Update Order and Wishlist
+    on<OrderItemUpdateEvent>(_orderUpdateMethod);
     on<OrderShowEvent>(_orderShowMethod);
 
     // ! Delete Order and Wishlist
@@ -31,7 +32,7 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
     // print(event);
     emit(OrderLoadingState());
     try {
-      dynamic user =await shoping.refreshItems();
+      dynamic user = await shoping.refreshItems();
 
       if (user != null) {
         emit(OrderSuccessState(data: user['data'], priceData: {
@@ -47,13 +48,13 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
   }
 
   // ! Order Show Method
-   _orderShowMethod(OrderShowEvent event, Emitter emit) async {
+  _orderShowMethod(OrderShowEvent event, Emitter emit) async {
     // print(event);
     emit(OrderLoadingState());
     try {
-       SharedHelper sharedHelper = SharedHelper();
+      SharedHelper sharedHelper = SharedHelper();
       dynamic id = await sharedHelper.getUserTypeScr('userIdType');
-      
+
       // print(id);
       dynamic user = await orderResp.orderGetDataResp(customer: id);
 
@@ -67,24 +68,48 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
   }
 
   //  ============ Order AND WISHLIST PRODUCT ADD ======================
-   _orderAddMethod(OrderItemAddEvent event, Emitter emit) async {
+  _orderAddMethod(OrderItemAddEvent event, Emitter emit) async {
     // print(event);
     emit(OrderLoadingState());
     try {
-      dynamic user =await orderResp.orderPostResp(
+      dynamic user = await orderResp.orderPostResp(
           lineItem: event.orderData,
+          userId: event.userId,
           billing: event.billing,
           shipping: event.shipping,
           payMode: event.payMode,
           payTitle: event.payTitle);
-      // print(user);
-      if (user == true) {
-      
+      print(user);
+      if (user != false) {
+        emit(OrderCompleteState(data: user));
 
+        // navigationPush(event.context, OrderCompleteScreen(email:event.billing['email']));
+      } else {
+        // snackBar(event.context, user['msg'] ?? '');
+        emit(OrderInitialState());
+      }
+    } catch (e) {
+      emit(OrderFailedState());
+    }
+  }
+
+  _orderUpdateMethod(OrderItemUpdateEvent event, Emitter emit) async {
+    // print(event);
+        dynamic userIds = await sharedHelper.getUserTypeScr('userIdType');
+    emit(OrderLoadingState());
+    try {
+  
+      dynamic user = await orderResp.orderUpdateResp(
+          customerId: userIds, orderId:event.orderId);
+      // print(user);
+      if (user != false) {
         emit(OrderCompleteState());
-                  navigationPush(
-            event.context, OrderCompleteScreen());
-          // navigationPush(event.context, OrderCompleteScreen(email:event.billing['email']));
+        // navigationPush(
+        //     event.context,
+        //     OrderCompleteScreen(
+        //       orderId: user['id'],
+        //     ));
+        // navigationPush(event.context, OrderCompleteScreen(email:event.billing['email']));
       } else {
         // snackBar(event.context, user['msg'] ?? '');
         emit(OrderInitialState());
@@ -99,7 +124,7 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
     // print(event);
     emit(OrderLoadingState());
     try {
-      dynamic user =await orderResp.orderDeleteResp();
+      dynamic user = await orderResp.orderDeleteResp();
 
       if (user != null) {
         emit(OrderSuccessState(
@@ -136,6 +161,7 @@ class OrderItemAddEvent extends OrderEvent {
   final dynamic billing;
   final dynamic shipping;
   final dynamic payTitle;
+  final dynamic userId;
   final dynamic context;
 
   OrderItemAddEvent(
@@ -144,16 +170,27 @@ class OrderItemAddEvent extends OrderEvent {
       this.shipping,
       this.payMode,
       this.payTitle,
+      this.userId,
       this.context});
   @override
   List<Object> get props => [];
 }
 
 class OrderShowEvent extends OrderEvent {
-   dynamic customer;
-   dynamic context;
+  dynamic customer;
+
+  dynamic context;
 
   OrderShowEvent({this.customer, this.context});
+  @override
+  List<Object> get props => [];
+}
+
+class OrderItemUpdateEvent extends OrderEvent {
+  dynamic customerId;
+  dynamic context;
+  dynamic orderId;
+  OrderItemUpdateEvent({this.customerId, this.orderId, this.context});
   @override
   List<Object> get props => [];
 }
@@ -185,7 +222,8 @@ class OrderSuccessState extends OrderState {
 }
 
 class OrderCompleteState extends OrderState {
-  OrderCompleteState();
+  final dynamic data;
+  OrderCompleteState({this.data});
 }
 
 class OrderFailedState extends OrderState {

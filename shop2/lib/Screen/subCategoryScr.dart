@@ -30,15 +30,15 @@ class SubCategoryScreen extends StatelessWidget {
                       slivers: [
                         SliverAppBars(
                           title: 'SubCategory List',
-                          bottomChild: Container(
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 5.0, horizontal: 15.0),
-                              child: SearchBox(
-                                controller: searchController,
-                              ),
-                            ),
-                          ),
+                          // bottomChild: Container(
+                          //   child: Padding(
+                          //     padding: const EdgeInsets.symmetric(
+                          //         vertical: 5.0, horizontal: 15.0),
+                          //     child: SearchBox(
+                          //       controller: searchController,
+                          //     ),
+                          //   ),
+                          // ),
                         ),
 
                         // ! Category List
@@ -57,10 +57,10 @@ class SubCategoryScreen extends StatelessWidget {
                               ),
                               delegate:
                                   SliverChildBuilderDelegate((context, index) {
-                                print(state.data[index]['src']);
+                                // print(state.data[3]);
                                 return CategeoryGridProdList(
                                   // onTap: () => navigationPush(context, ProductShowScreen()),
-                                  imageUrl: '${state.data[index]['src']}',
+                                  imageUrl: '${state.data[index]["image"] !=null? state.data[index]["image"]['src'] :'' }',
                                   title: '${state.data[index]['name']}',
                                   onTap: () => navigationPush(
                                       context,

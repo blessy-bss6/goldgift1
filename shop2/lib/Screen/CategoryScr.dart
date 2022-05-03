@@ -24,7 +24,6 @@ class _CategoryScreenState extends State<CategoryScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-    
       body: BlocProvider(
         create: (BuildContext context) =>
             CategoryBloc()..add(FetchCategoryEvent()),
@@ -71,9 +70,9 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                 delegate: SliverChildBuilderDelegate(
                                     (context, index) {
                                   return CategeoryGridProdList(
-                                    imageUrl: null,
+                                    // imageUrl: null,
 
-                                    // imageUrl: state.data[index]['image']['src'] ??null,
+                                    imageUrl:'${state.data[index]["image"] != null ? state.data[index]["image"]['src'] : ''}',
                                     title: '${state.data[index]['name']}',
                                     onTap: () => navigationPush(
                                         context,
@@ -87,45 +86,50 @@ class _CategoryScreenState extends State<CategoryScreen> {
                           ),
 
                           SliverToBoxAdapter(
-                            child: Row(children: [
-                              Expanded(
-                                  child: Center(
-                                child: Btn(
-                                  height: 40,
-                                  btnName: 'LoadMore',
-                                  color: darkBlueColor,
-                                  onTap: () {
-                                    setState(() {
-                                      pageNum = pageNum + 1;
-                                    });
-                                    BlocProvider.of<CategoryBloc>(context,
-                                        listen: false)
-                                      ..add(FetchCategoryEvent(
-                                          pageNum: pageNum.toString()));
-                                  },
-                                ),
-                              )),
-                              Expanded(
-                                  child: Container(
-                                      child: pageNum > 1
-                                          ? Btn(
-                                              height: 40,
-                                              btnName: 'Previous',
-                                              color: darkBlueColor,
-                                              onTap: () {
-                                                setState(() {
-                                                  pageNum = pageNum - 1;
-                                                });
-                                                BlocProvider.of<CategoryBloc>(
-                                                    context,
-                                                    listen: false)
-                                                  ..add(FetchCategoryEvent(
-                                                      pageNum:
-                                                          pageNum.toString()));
-                                              },
-                                            )
-                                          : null)),
-                            ]),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row( mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                Expanded(
+                                    child: Center(
+                                  child: Btn(
+                                    height: 40,
+                                    btnName: 'LoadMore',
+                                    color: darkBlueColor,
+                                    onTap: () {
+                                      setState(() {
+                                        pageNum = pageNum + 1;
+                                      });
+                                      BlocProvider.of<CategoryBloc>(context,
+                                          listen: false)
+                                        ..add(FetchCategoryEvent(
+                                            pageNum: pageNum.toString()));
+                                    },
+                                  ),
+                                )),
+                                SizedBox(width: 2.0,),
+                                Expanded(
+                                    child: Container(
+                                        child: pageNum > 1
+                                            ? Btn(
+                                                height: 40,
+                                                btnName: 'Previous',
+                                                color: darkBlueColor,
+                                                onTap: () {
+                                                  setState(() {
+                                                    pageNum = pageNum - 1;
+                                                  });
+                                                  BlocProvider.of<CategoryBloc>(
+                                                      context,
+                                                      listen: false)
+                                                    ..add(FetchCategoryEvent(
+                                                        pageNum:
+                                                            pageNum.toString()));
+                                                },
+                                              )
+                                            : null)),
+                              ]),
+                            ),
                           )
                         ],
                       )
@@ -160,6 +164,7 @@ class CategeoryGridProdList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("imnage usr $imageUrl");
     return InkWell(
         onTap: onTap,
         child: Container(
@@ -178,7 +183,7 @@ class CategeoryGridProdList extends StatelessWidget {
                   child: Container(
                       child: imageUrl != null
                           ? Image.network(
-                              imageUrl!,
+                              imageUrl !=null ?imageUrl! :'',
                               width: 150,
                               height: 100,
                               // padding: EdgeInsets.all(2),

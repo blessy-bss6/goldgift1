@@ -63,7 +63,8 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
   dynamic billing;
   dynamic shipping;
   dynamic description;
-  bool? isLogin;
+  bool? isLogin =false;
+  dynamic userId;
 
   SharedHelper sharedHelper = SharedHelper();
 
@@ -77,14 +78,19 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
 
   _checkLogin() async {
     bool isLog = await sharedHelper.containsKey('current_user');
+    bool isUser = await sharedHelper.containsKey('userIdType');
+
+    dynamic userIds = await sharedHelper.getUserTypeScr('userIdType');
 
     setState(() {
       isLogin = isLog;
+      userId = isUser == true ? userIds : 0;
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    print('isLogin in checkout $isLogin');
     _saveMethod() async {
       var isvalid = _formKey.currentState!.validate();
 
@@ -130,7 +136,8 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
             context,
             OrderScreen(
                 isLogin: isLogin,
-                password:passwordController.text,
+                userId: userId,
+                password: passwordController.text,
                 billing: billing,
                 shipping: shipping,
                 description: description));
@@ -163,7 +170,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                     mobileController: mobileController,
                   ),
                   // ! Create an Account
-            
+
                   Container(
                     child: isLogin == false
                         ? EditTextField(
@@ -171,7 +178,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                             txtColor: txtBlackColor,
                             formBox: true,
                             fillColor: borderColor,
-                            headTxt: 'Passeord',
+                            headTxt: 'Password',
                             // hintText: 'Enter First Name',
                             controller: passwordController,
                             vertical: 15,
@@ -180,7 +187,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                           )
                         : null,
                   ),
-            
+
                   // Row(
                   //   children: [
                   //     Checkbox(
@@ -231,7 +238,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                               ],
                             )
                           : null),
-            
+
                   EditTextField(
                     textAlign: TextAlign.left,
                     txtColor: txtBlackColor,

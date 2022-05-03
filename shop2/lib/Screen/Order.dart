@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shop2/Screen/paymentScr.dart';
 import '../Backend/Bloc/order_Bloc.dart';
 import '../Backend/Resp/orderResp.dart';
 import '../Elements/baseAppbar.dart';
@@ -19,12 +20,14 @@ class OrderScreen extends StatefulWidget {
   final dynamic description;
   final bool? isLogin;
   final String? password;
+  final dynamic userId;
   OrderScreen(
       {Key? key,
       this.billing,
       this.shipping,
       this.password,
       this.description,
+      this.userId,
       this.isLogin})
       : super(key: key);
 
@@ -58,7 +61,7 @@ class _OrderScreenState extends State<OrderScreen> {
           //   create: (BuildContext context) => OrderBloc()..add(FetchOrderEvent()),
           //   child:
           BlocConsumer<OrderBloc, OrderState>(listener: (context, state) {
-        // print(state);
+        print(state);
         if (state is OrderCompleteState) {
           if (widget.isLogin == false) {
             BlocProvider.of<AuthBloc>(context, listen: false)
@@ -66,6 +69,13 @@ class _OrderScreenState extends State<OrderScreen> {
                   email: widget.billing['email'],
                   password: widget.password,
                   username: widget.billing['email']));
+            navigationPush(
+                context,
+                OrderCompleteScreen(
+                  orderId: state.data['id'],
+                ));
+          } else {
+            navigationPush(context, OrderCompleteScreen());
           }
         }
       }, builder: (context, state) {
@@ -167,17 +177,21 @@ class _OrderScreenState extends State<OrderScreen> {
                         txtColor: txtWhiteColor,
                         color: coffeColor,
                         onTap: () {
-                          if (widget.billing != null) {
-                            BlocProvider.of<OrderBloc>(context, listen: false)
-                              ..add(OrderItemAddEvent(
-                                  orderData: priceData['orderData'],
-                                  billing: widget.billing,
-                                  shipping: widget.shipping,
-                                  context: context));
-                            setState(() {
-                              bottomBtn = false;
-                            });
-                          }
+                          PaymentMethod payMode = new PaymentMethod();
+                          payMode.initPaymentGateway();
+
+                          // if (widget.billing != null) {
+                          //   BlocProvider.of<OrderBloc>(context, listen: false)
+                          //     ..add(OrderItemAddEvent(
+                          //         userId: widget.userId,
+                          //         orderData: priceData['orderData'],
+                          //         billing: widget.billing,
+                          //         shipping: widget.shipping,
+                          //         context: context));
+                          //   setState(() {
+                          //     bottomBtn = false;
+                          //   });
+                          // }
                         }),
                   ],
                 ),

@@ -64,6 +64,7 @@ class ShopC {
         "key": key,
         "id": value["id"],
         "name": value["name"],
+        "pic": value["pic"],
         "quantity": value['quantity'],
         "Fixedsale_price": value["Fixedsale_price"],
         "Fixedregular_price": value["Fixedregular_price"],
@@ -72,16 +73,16 @@ class ShopC {
       };
     }).toList();
 
-
     final orderData = shoppingBox.keys.map((key) {
       final value = shoppingBox.get(key);
       return {
         "key": key,
         "product_id": value["id"],
         "quantity": value['quantity'],
-       
       };
     }).toList();
+
+    
 
     // ! Price Logic
     final subPriceList = [];
@@ -108,7 +109,7 @@ class ShopC {
       "subPrice": subPrice,
       "mrpPrice": mrpPrice,
       "shipPrice": shipPrice,
-      "orderData" :orderData
+      "orderData": orderData
     };
   }
 
