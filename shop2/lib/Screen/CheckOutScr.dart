@@ -139,7 +139,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                 userId: userId,
                 password: passwordController.text,
                 billing: billing,
-                shipping: shipping,
+                shipping: shipping,subPrice:widget.subPrice,
                 description: description));
       }
     }

@@ -100,8 +100,8 @@ class ShopC {
 
     mrpPrice = mrpPriceList.reduce((a, b) => a + b);
 
-    if (subPrice < 10000) {
-      shipPrice = 70;
+    if (subPrice < 500) {
+      shipPrice = 0;
     }
     // return data.reversed.toList();
     return {

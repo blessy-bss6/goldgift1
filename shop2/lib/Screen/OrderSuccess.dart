@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../Backend/Bloc/order_Bloc.dart';
+import '../Backend/Resp/payment_Resp.dart';
 import '../Elements/baseAppbar.dart';
 import '../Elements/button.dart';
 import '../utils/common.dart';
@@ -13,7 +14,11 @@ import 'bottomNav.dart';
 class OrderCompleteScreen extends StatefulWidget {
   final String? email;
   dynamic orderId;
-  OrderCompleteScreen({Key? key, this.orderId, this.email}) : super(key: key);
+  dynamic transcationId;
+  dynamic ammount;
+  OrderCompleteScreen(
+      {Key? key, this.orderId, this.email, this.ammount, this.transcationId})
+      : super(key: key);
 
   @override
   State<OrderCompleteScreen> createState() => _OrderCompleteScreenState();
@@ -24,6 +29,7 @@ class _OrderCompleteScreenState extends State<OrderCompleteScreen> {
   dynamic isLogin = false;
   SharedHelper sharedHelper = SharedHelper();
 
+  PaymentResp payresp = PaymentResp();
   @override
   void initState() {
     // TODO: implement initState
@@ -35,7 +41,6 @@ class _OrderCompleteScreenState extends State<OrderCompleteScreen> {
   _checkLogin() async {
     bool isUser = await sharedHelper.containsKey('userIdType');
     bool isLog = await sharedHelper.containsKey('current_user');
-   
 
     setState(() {
       isLogin = isLog;
@@ -45,7 +50,8 @@ class _OrderCompleteScreenState extends State<OrderCompleteScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print("orderSuccess $userId");
+    print("transcatin Id ${widget.transcationId}");
+    print("transcatin Id ${widget.ammount}");
     return Scaffold(
       appBar: AppBar(
         backgroundColor: coffeColor,
@@ -65,12 +71,21 @@ class _OrderCompleteScreenState extends State<OrderCompleteScreen> {
                       customerId: userId,
                       orderId: widget.orderId,
                       context: context));
+
+                payresp.paymentCapturedResp(
+                    transcationId: "${widget.transcationId}",
+                    ammount: int.parse(widget.ammount.toString()));
+
                 navigationPushReplacement(
                     context,
                     UserNavigationBar(
                       currentTab: 0,
                     ));
               } else {
+                payresp.paymentCapturedResp(
+                    transcationId:  "${widget.transcationId}",
+                    ammount: int.parse(widget.ammount.toString()));
+
                 navigationPushReplacement(
                     context,
                     UserNavigationBar(

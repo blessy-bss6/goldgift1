@@ -69,10 +69,13 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                 ),
                                 delegate: SliverChildBuilderDelegate(
                                     (context, index) {
+                                  // print(
+                                  //     "category item images ${state.data[index]} ${state.data[index]["image"]['src']}");
                                   return CategeoryGridProdList(
                                     // imageUrl: null,
 
-                                    imageUrl:'${state.data[index]["image"] != null ? state.data[index]["image"]['src'] : ''}',
+                                    imageUrl:
+                                        '${state.data[index]["image"] != null ? state.data[index]["image"]['src'] : 'assets/imgs/prodcat2.png'}',
                                     title: '${state.data[index]['name']}',
                                     onTap: () => navigationPush(
                                         context,
@@ -88,47 +91,51 @@ class _CategoryScreenState extends State<CategoryScreen> {
                           SliverToBoxAdapter(
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
-                              child: Row( mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                Expanded(
-                                    child: Center(
-                                  child: Btn(
-                                    height: 40,
-                                    btnName: 'LoadMore',
-                                    color: darkBlueColor,
-                                    onTap: () {
-                                      setState(() {
-                                        pageNum = pageNum + 1;
-                                      });
-                                      BlocProvider.of<CategoryBloc>(context,
-                                          listen: false)
-                                        ..add(FetchCategoryEvent(
-                                            pageNum: pageNum.toString()));
-                                    },
-                                  ),
-                                )),
-                                SizedBox(width: 2.0,),
-                                Expanded(
-                                    child: Container(
-                                        child: pageNum > 1
-                                            ? Btn(
-                                                height: 40,
-                                                btnName: 'Previous',
-                                                color: darkBlueColor,
-                                                onTap: () {
-                                                  setState(() {
-                                                    pageNum = pageNum - 1;
-                                                  });
-                                                  BlocProvider.of<CategoryBloc>(
-                                                      context,
-                                                      listen: false)
-                                                    ..add(FetchCategoryEvent(
-                                                        pageNum:
-                                                            pageNum.toString()));
-                                                },
-                                              )
-                                            : null)),
-                              ]),
+                              child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Expanded(
+                                        child: Center(
+                                      child: Btn(
+                                        height: 40,
+                                        btnName: 'LoadMore',
+                                        color: darkBlueColor,
+                                        onTap: () {
+                                          setState(() {
+                                            pageNum = pageNum + 1;
+                                          });
+                                          BlocProvider.of<CategoryBloc>(context,
+                                              listen: false)
+                                            ..add(FetchCategoryEvent(
+                                                pageNum: pageNum.toString()));
+                                        },
+                                      ),
+                                    )),
+                                    SizedBox(
+                                      width: 2.0,
+                                    ),
+                                    Expanded(
+                                        child: Container(
+                                            child: pageNum > 1
+                                                ? Btn(
+                                                    height: 40,
+                                                    btnName: 'Previous',
+                                                    color: darkBlueColor,
+                                                    onTap: () {
+                                                      setState(() {
+                                                        pageNum = pageNum - 1;
+                                                      });
+                                                      BlocProvider.of<
+                                                              CategoryBloc>(
+                                                          context,
+                                                          listen: false)
+                                                        ..add(FetchCategoryEvent(
+                                                            pageNum: pageNum
+                                                                .toString()));
+                                                    },
+                                                  )
+                                                : null)),
+                                  ]),
                             ),
                           )
                         ],
@@ -183,7 +190,7 @@ class CategeoryGridProdList extends StatelessWidget {
                   child: Container(
                       child: imageUrl != null
                           ? Image.network(
-                              imageUrl !=null ?imageUrl! :'',
+                              imageUrl != null ? imageUrl! : '',
                               width: 150,
                               height: 100,
                               // padding: EdgeInsets.all(2),

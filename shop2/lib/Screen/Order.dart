@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:shop2/Screen/paymentScr.dart';
 import '../Backend/Bloc/order_Bloc.dart';
 import '../Backend/Resp/orderResp.dart';
@@ -21,6 +22,7 @@ class OrderScreen extends StatefulWidget {
   final bool? isLogin;
   final String? password;
   final dynamic userId;
+  final dynamic subPrice;
   OrderScreen(
       {Key? key,
       this.billing,
@@ -28,6 +30,7 @@ class OrderScreen extends StatefulWidget {
       this.password,
       this.description,
       this.userId,
+      this.subPrice,
       this.isLogin})
       : super(key: key);
 
@@ -42,6 +45,7 @@ class _OrderScreenState extends State<OrderScreen> {
   ShopC shoping = ShopC();
   OrderRespo orderResp = OrderRespo();
   OrderBloc orderB = OrderBloc();
+  late Razorpay _razorpay;
 
   @override
   void initState() {
@@ -50,19 +54,83 @@ class _OrderScreenState extends State<OrderScreen> {
     orderB = BlocProvider.of<OrderBloc>(context, listen: false);
     orderB.add(FetchOrderEvent());
 
+    _razorpay = new Razorpay();
+    _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
+    _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
+    _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
+
     super.initState();
+  }
+
+  void _handlePaymentSuccess(PaymentSuccessResponse response) {
+    print('Success Response: ${response} ');
+    print('Success Response: ${response.paymentId}');
+    print('Success Response: ${response.orderId}');
+    print('Success Response: ${response.signature}');
+    if (widget.billing != null) {
+      BlocProvider.of<OrderBloc>(context, listen: false)
+        ..add(OrderItemAddEvent(
+            userId: widget.userId,
+            orderData: priceData['orderData'],
+            billing: widget.billing,
+            shipping: widget.shipping,
+            transcationId: response.paymentId,
+            payMode: response.signature,
+            // ammount: priceData['subPrice'] + priceData['shipPrice'],
+
+            context: context));
+      setState(() {
+        bottomBtn = false;
+      });
+    }
+  }
+
+  void _handlePaymentError(PaymentFailureResponse response) {
+    print('Error Response: $response');
+    snackBar(context, 'Error Payment Not Successs', bgColor: redColor);
+  }
+
+  void _handleExternalWallet(ExternalWalletResponse response) {
+    print('External SDK Response: $response');
+  }
+
+  void openCheckout() async {
+    var options = {
+      'key': 'rzp_test_Bsl88j2I6mxRJt',
+      'amount': ' ${(priceData['subPrice'] + priceData['shipPrice']) * 100}',
+      'name': '',
+      'description': '',
+      'retry': {'enabled': true, 'max_count': 1},
+      'send_sms_hash': true,
+      "currency": "INR",
+      'prefill': {
+        'contact': '${widget.billing['phone']}',
+        'email': '${widget.billing['email']}'
+      },
+      'external': {
+        'wallets': ['paytm']
+      }
+    };
+
+    try {
+      _razorpay.open(options);
+    } catch (e) {
+      debugPrint('Error: e');
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _razorpay.clear();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body:
-          // BlocProvider(
-          //   create: (BuildContext context) => OrderBloc()..add(FetchOrderEvent()),
-          //   child:
-          BlocConsumer<OrderBloc, OrderState>(listener: (context, state) {
-        print(state);
+      body: BlocConsumer<OrderBloc, OrderState>(listener: (context, state) {
         if (state is OrderCompleteState) {
+          print(state.data['total'].runtimeType);
           if (widget.isLogin == false) {
             BlocProvider.of<AuthBloc>(context, listen: false)
               ..add(SignUpBtnEvent(
@@ -72,10 +140,18 @@ class _OrderScreenState extends State<OrderScreen> {
             navigationPush(
                 context,
                 OrderCompleteScreen(
-                  orderId: state.data['id'],
-                ));
+                    orderId: state.data['id'],
+                    transcationId: "${state.data['transaction_id']}",
+                    ammount: state.data['total']));
           } else {
-            navigationPush(context, OrderCompleteScreen());
+            // navigationPush(context, OrderCompleteScreen());
+            print(state.data['total'].runtimeType);
+            navigationPush(
+                context,
+                OrderCompleteScreen(
+                    orderId: state.data['id'],
+                    transcationId: "${state.data['transaction_id']}",
+                    ammount: state.data['total']));
           }
         }
       }, builder: (context, state) {
@@ -86,25 +162,6 @@ class _OrderScreenState extends State<OrderScreen> {
                     SliverAppBars(
                       title: 'Order Screen',
                     ),
-
-                    // SliverToBoxAdapter(
-                    //   child: Padding(
-                    //     padding: const EdgeInsets.all(8.0),
-                    //     child: Column(
-                    //       crossAxisAlignment: CrossAxisAlignment.start,
-                    //       // mainAxisAlignment: MainAxisAlignment.start,
-                    //       children: [
-                    //         Txt(
-                    //           t: 'Delivery Address',
-                    //           style: labelTextStyle,
-                    //         ),
-                    //         OrderIdAdrContent(
-                    //           t2: 'batla House, Sikar,jaipur ',
-                    //         ),
-                    //       ],
-                    //     ),
-                    //   ),
-                    // ),
 
                     SliverList(
                       delegate: SliverChildBuilderDelegate(
@@ -119,7 +176,8 @@ class _OrderScreenState extends State<OrderScreen> {
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
                                 Pics(
-                                  src: 'assets/images/indianGod.png',
+                                  networkImg: true,
+                                  src: state.data[i]['pic'],
                                   width: 120,
                                   height: 100,
                                 ),
@@ -177,8 +235,7 @@ class _OrderScreenState extends State<OrderScreen> {
                         txtColor: txtWhiteColor,
                         color: coffeColor,
                         onTap: () {
-                          PaymentMethod payMode = new PaymentMethod();
-                          payMode.initPaymentGateway();
+                          openCheckout();
 
                           // if (widget.billing != null) {
                           //   BlocProvider.of<OrderBloc>(context, listen: false)

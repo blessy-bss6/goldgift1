@@ -77,9 +77,9 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
           userId: event.userId,
           billing: event.billing,
           shipping: event.shipping,
-          payMode: event.payMode,
+          payMode: event.payMode, transcationId: event.transcationId,
           payTitle: event.payTitle);
-      print(user);
+      // print(user);
       if (user != false) {
         emit(OrderCompleteState(data: user));
 
@@ -95,12 +95,11 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
 
   _orderUpdateMethod(OrderItemUpdateEvent event, Emitter emit) async {
     // print(event);
-        dynamic userIds = await sharedHelper.getUserTypeScr('userIdType');
+    dynamic userIds = await sharedHelper.getUserTypeScr('userIdType');
     emit(OrderLoadingState());
     try {
-  
       dynamic user = await orderResp.orderUpdateResp(
-          customerId: userIds, orderId:event.orderId);
+          customerId: userIds, orderId: event.orderId);
       // print(user);
       if (user != false) {
         emit(OrderCompleteState());
@@ -124,9 +123,16 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
     // print(event);
     emit(OrderLoadingState());
     try {
-      dynamic user = await orderResp.orderDeleteResp();
+      dynamic user =
+          await orderResp.orderDeleteResp(id: event.id, ammount: event.ammount);
 
-      if (user != null) {
+          SharedHelper sharedHelper = SharedHelper();
+      dynamic id = await sharedHelper.getUserTypeScr('userIdType');
+
+      // print(id);
+      dynamic usr = await orderResp.orderGetDataResp(customer: id);
+
+      if (usr != null) {
         emit(OrderSuccessState(
           data: user,
         ));
@@ -163,6 +169,7 @@ class OrderItemAddEvent extends OrderEvent {
   final dynamic payTitle;
   final dynamic userId;
   final dynamic context;
+  dynamic transcationId;
 
   OrderItemAddEvent(
       {required this.orderData,
@@ -170,6 +177,7 @@ class OrderItemAddEvent extends OrderEvent {
       this.shipping,
       this.payMode,
       this.payTitle,
+      this.transcationId,
       this.userId,
       this.context});
   @override
@@ -196,9 +204,10 @@ class OrderItemUpdateEvent extends OrderEvent {
 }
 
 class OrderItemDelEvent extends OrderEvent {
-  final int id;
+  final dynamic id;
+  dynamic ammount;
   final dynamic context;
-  OrderItemDelEvent({required this.id, this.context});
+  OrderItemDelEvent({required this.id, this.context, this.ammount});
   @override
   List<Object> get props => [];
 }

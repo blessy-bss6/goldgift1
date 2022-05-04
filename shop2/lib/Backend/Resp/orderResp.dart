@@ -1,14 +1,12 @@
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
-
-import '../../utils/shared_helper.dart';
 import '/utils/app_constants.dart';
 import '/utils/http_services.dart';
+import 'payment_Resp.dart';
 
 class OrderRespo {
+
   Future<dynamic> orderGetDataResp({dynamic customer}) async {
-    print(customer);
+   
     String url = URLConstants.baseUrl +
         URLConstants.orderUrl +
         "?customer=$customer" +
@@ -37,6 +35,7 @@ class OrderRespo {
       dynamic lineItem,
       dynamic payMode,
       dynamic userId,
+      dynamic transcationId,
       dynamic payTitle}) async {
     // String url2 =
     //     "https://liveprojects.co.in/goldgift/wp-json/wc/v3/orders?consumer_key=ck_e574cd75f0fedf68fda0fa8fd99c17f54665a4c6&consumer_secret=cs_9e084118b1fdba78c85c24b6a209fdf382057e5e";
@@ -50,7 +49,8 @@ class OrderRespo {
       "payment_method_title": "$payTitle",
       "billing": billing,
       "shipping": shipping,
-      "customer_id": userId
+      "customer_id": userId,
+      "transaction_id": transcationId,
     });
 
     try {
@@ -59,7 +59,8 @@ class OrderRespo {
       // print(response.statusCode);
       // print(response.data);
       if (response.statusCode == 201 || response.statusCode == 200) {
-        print(response.data);
+        // print(response.data);
+
         return response.data;
       } else {
         return false;
@@ -72,8 +73,8 @@ class OrderRespo {
   }
 
   Future<dynamic> orderUpdateResp({dynamic customerId, dynamic orderId}) async {
-    print("customerId $customerId");
-      print("orderId $orderId");
+    // print("customerId $customerId");
+    //   print("orderId $orderId");
     String url = URLConstants.baseUrl +
         URLConstants.orderUrl +
         "/$orderId" +
@@ -97,20 +98,27 @@ class OrderRespo {
     } on DioError catch (e) {}
   }
 
-  Future<dynamic> orderDeleteResp({String? id}) async {
+  Future<dynamic> orderDeleteResp({dynamic id, dynamic ammount}) async {
+    print(id);
+
     String url = URLConstants.baseUrl +
         URLConstants.orderUrl +
-        "/$id"
-            "?consumer_key=${URLConstants.Key}&consumer_secret=${URLConstants.password}";
-    final response = await delDioRequest(
-      url,
-    );
-    print(response);
-    if (response) {
-      return response;
-    } else {
-      print(response);
-      return response;
+        "/$id" +
+        "?consumer_key=${URLConstants.Key}&consumer_secret=${URLConstants.password}";
+
+    try {
+      Response response = await Dio().delete(url);
+
+      print(response.statusCode);
+      if (response.statusCode == 200) {
+      
+        return response;
+      } else {
+        print(response);
+        return response;
+      }
+    } on DioError catch (e) {
+      print(e);
     }
   }
 }

@@ -91,7 +91,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       onPressed: () => navigationPush(context, LoginScreen()),
                     ),
                     IconButton(
-                      icon: const Icon(Icons.login_outlined),
+                      icon: const Icon(Icons.logout),
                       tooltip: 'Log Out',
                       onPressed: () {
                         logout();

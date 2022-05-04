@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../Backend/Bloc/order_Bloc.dart';
+import '../Backend/Resp/payment_Resp.dart';
 import '../Elements/button.dart';
 import '../Elements/imgScr.dart';
 import '../common/order_cart_item.dart';
@@ -29,13 +30,14 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: BlocConsumer<OrderBloc, OrderState>(
-          listener: ((context, state) {}),
+          listener: (context, state) {},
           builder: (context, state) {
             print(state);
             if (state is OrderSuccessState) {
               // print(lData);
+              // print(state.data);
               // List lData = state.data as List<dynamic>;
-              return state.data.isEmpty
+              return state.data.length <= 0 || state.data.isEmpty
                   ? Center(
                       child: Text('No Data'),
                     )
@@ -44,31 +46,34 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
                           itemCount: state.data.length,
                           shrinkWrap: true,
                           itemBuilder: (context, i) {
-                            return Container(
-                                margin: EdgeInsets.all(8.0),
-                                decoration: BoxDecoration(
-                                    color: offWhiteColor,
-                                    border: Border.all(
-                                      color: borderColor,
-                                    )
-                                    // border: Border(
-                                    //     bottom: BorderSide(
-                                    //         width: 1.0,
-                                    //         color: Color.fromARGB(255, 221, 214, 214)))
-                                    ),
-                                child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        '#Order Id: ${state.data[i]['id']}',
-                                        style: labelTextStyle,
+                            return Card(
+                              child: Container(
+                                  margin: EdgeInsets.all(8.0),
+                                  decoration: BoxDecoration(
+                                      color: offWhiteColor,
+                                      border: Border.all(
+                                        color: borderColor,
+                                      )
+                                      // border: Border(
+                                      //     bottom: BorderSide(
+                                      //         width: 1.0,
+                                      //         color: Color.fromARGB(255, 221, 214, 214)))
                                       ),
-                                      Divider(),
-                                      TrackingProdContent(
-                                          prodNumber: state.data[i])
-                                    ]));
+                                  child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          '#Order Id: ${state.data[i]['id']}',
+                                          style: labelTextStyle,
+                                        ),
+                                        Divider(),
+                                        TrackingProdContent(
+                                            prodNumber: state.data[i])
+                                      ])),
+                            );
                           }),
                     );
             }
@@ -89,6 +94,7 @@ class TrackingProdContent extends StatefulWidget {
 }
 
 class _TrackingProdContentState extends State<TrackingProdContent> {
+  PaymentResp payresp = PaymentResp();
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -98,43 +104,28 @@ class _TrackingProdContentState extends State<TrackingProdContent> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'Status: ${widget.prodNumber['status']}',
-              style: labelTextStyle,
-            ),
-
-            // TrackDetContent(
-            //   value: 0.75,
-            // ),
-            Divider(),
-            // ! Product Deatils
             Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Container(
-                  child: ListView.builder(itemCount: widget.prodNumber['line_items'].length,
-                    itemBuilder: (context, i) {
-                    return Text('${widget.prodNumber['line_items'][i]['name']}');
-                  }),
+                Text(
+                  'Status: ${widget.prodNumber['status']}',
+                  style: labelTextStyle,
                 ),
-
-                // Row(
-                //   children: [
-                //     // Pics(networkImg: true,
-                //     //   src: '${widget.prodNumber['image']['src'] }' ,
-                //     //   width: 80,
-                //     //   height: 50,
-                //     // ),
-                //     // BasicProdDetail(
-                //     //   cartBtn: false,
-                //     //   mrpTxt: false,
-                //     // ),
-
-                //   ],
-                // ),
                 InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      print(widget.prodNumber['transaction_id']);
+                      print(widget.prodNumber['total']);
+                      BlocProvider.of<OrderBloc>(context, listen: false)
+                        ..add(OrderItemDelEvent(
+                            ammount: widget.prodNumber['total'],
+                            id: widget.prodNumber['id'],
+                            context: context));
+                      payresp.paymentRefundResp(
+                          transcationId:
+                              "${widget.prodNumber['transaction_id']}",
+                          ammount:
+                              int.parse(widget.prodNumber['total'].toString()));
+                    },
                     child: Container(
                       margin: EdgeInsets.symmetric(horizontal: 6),
                       alignment: Alignment.topRight,
@@ -142,14 +133,32 @@ class _TrackingProdContentState extends State<TrackingProdContent> {
                         t: 'Cancel',
                         color: redColor,
                       ),
-                    ))
+                    )),
               ],
+            ),
+
+            // TrackDetContent(
+            //   value: 0.75,
+            // ),
+            Divider(),
+            // ! Product Deatils
+            Container(
+              child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: widget.prodNumber['line_items'].length,
+                  itemBuilder: (context, i) {
+                    return Column(
+                      children: [
+                        Text('${widget.prodNumber['line_items'][i]['name']}'),
+                      ],
+                    );
+                  }),
             ),
             // Divider(),
             // !  Button For View More
             Center(
               child: Btn(
-                margin: EdgeInsets.only(bottom: 5),
+                margin: EdgeInsets.only(bottom: 5, top: 10),
                 width: 120,
                 btnName: 'view more',
                 txtColor: txtWhiteColor,
@@ -164,11 +173,27 @@ class _TrackingProdContentState extends State<TrackingProdContent> {
                         title: 'Order Details',
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            PriceList(
-                              heading: 'Price',
-                            ),
                             Divider(),
+                            Text(
+                              'DiscountPrice :-                             ${widget.prodNumber['discount_total']}',
+                              style: labelTextStyle,
+                            ),
+                            Text(
+                              'ShippingPrice :-                             ${widget.prodNumber['shipping_total']}',
+                              style: labelTextStyle,
+                            ),
+                            Text(
+                              'Total :-                                             ${widget.prodNumber['total']}',
+                              style: labelTextStyle,
+                            ),
+
+                            // PriceList(
+                            //   heading: 'Price',
+                            // ),
+                            // Divider(),
                           ],
                         ),
                       );
@@ -177,6 +202,37 @@ class _TrackingProdContentState extends State<TrackingProdContent> {
                 },
               ),
             )
+            // Center(
+            //   child: Btn(
+            //     margin: EdgeInsets.only(bottom: 5,top:10),
+            //     width: 120,
+            //     btnName: 'view more',
+            //     txtColor: txtWhiteColor,
+            //     color: coffeColor,
+            //     height: 30,
+            //     onTap: () async {
+            //       await showDialog(
+            //         context: context,
+            //         // barrierDismissible: false,
+            //         builder: (BuildContext context) {
+            //           return AlertBox(
+            //             title: 'Order Details',
+            //             child: Column(
+            //               mainAxisSize: MainAxisSize.min,
+            //               children: [
+            //                  Text('${widget.prodNumber['line_items'][i]['name']}'
+            //                 // PriceList(
+            //                 //   heading: 'Price',
+            //                 // ),
+            //                 // Divider(),
+            //               ],
+            //             ),
+            //           );
+            //         },
+            //       );
+            //     },
+            //   ),
+            // )
           ],
         ),
       ),
