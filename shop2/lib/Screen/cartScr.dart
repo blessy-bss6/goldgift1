@@ -26,6 +26,7 @@ class _CartScreenState extends State<CartScreen> {
   dynamic priceData = 0;
   dynamic bottomBtn = false;
   dynamic cartData;
+  dynamic appBarBtn = false;
 
   dynamic loadMore = true;
 
@@ -57,98 +58,104 @@ class _CartScreenState extends State<CartScreen> {
           }
         }, builder: (context, state) {
           if (state is LocalCartSuccessState) {
-            return state.data.isNotEmpty
-                ? CustomScrollView(
-                    slivers: [
-                      // ! Sliver app Bar
+            return
+                // state.data.length>0
+                //     ?
+                CustomScrollView(
+              slivers: [
+                // ! Sliver app Bar
 
-                      SliverAppBars(
-                        title: 'Cart Screen',
-                      ),
+                SliverAppBars(
+                  title: 'Cart Screen',
+                ),
 
-                      SliverList(
-                        delegate: SliverChildBuilderDelegate(
-                          (BuildContext context, int i) {
-                            print(state.data[i]["pic"]);
-                            return Padding(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 10),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    border: Border.all(
-                                        width: 1, color: borderColor)),
-                                child: Row(
-                                  // crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: [
-                                    Pics(
-                                      networkImg: true,
-                                      src: '${state.data[i]["pic"]}',
-                                      width: 120,
-                                      height: 100,
-                                    ),
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        BasicProdDetail(
-                                          prodNumber: state.data[i],
-                                        ),
-                                        CartButn(
-                                          prodNumber: state.data[i],
-                                          pic: state.data[i]['pic'],
-                                        ),
-                                        SizedBox(height: 10.0),
-                                      ],
-                                    ),
-                                    IconBtn(
-                                        icon: Icons.delete,
-                                        size: 20,
-                                        onPressed:
-                                            () => // shoping.deleteItem(currentItem['key']),
-                                                BlocProvider.of<LocalCartBloc>(
-                                                    context,
-                                                    listen: false)
-                                                  ..add(LocalCartItemDelEvent(
-                                                      id: state.data[i]
-                                                          ['key'])))
-                                  ],
-                                ),
+                SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (BuildContext context, int i) {
+                      return Padding(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                        child: Container(
+                          decoration: BoxDecoration(
+                              border: Border.all(width: 1, color: borderColor)),
+                          child: Row(
+                            // crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Pics(
+                                networkImg: true,
+                                src: '${state.data[i]["pic"]}',
+                                width: 120,
+                                height: 100,
                               ),
-                            );
-                          },
-                          childCount: state.data.length,
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  BasicProdDetail(
+                                    prodNumber: state.data[i],
+                                  ),
+                                  CartButn(
+                                    prodNumber: state.data[i],
+                                    pic: state.data[i]['pic'],
+                                  ),
+                                  SizedBox(height: 10.0),
+                                ],
+                              ),
+                              IconBtn(
+                                  icon: Icons.delete,
+                                  size: 20,
+                                  onPressed: () {
+                                    // shoping.deleteItem(currentItem['key']),
+                                    BlocProvider.of<LocalCartBloc>(context,
+                                        listen: false)
+                                      ..add(LocalCartItemDelEvent(
+                                          id: state.data[i]['key']));
+                                  })
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
-                  )
-                : CustomScrollView(slivers: [
-                    // ! Sliver app Bar
+                      );
+                    },
+                    childCount: state.data.length,
+                  ),
+                ),
+              ],
+            );
+            // : CustomScrollView(slivers: [
+            //     // ! Sliver app Bar
 
-                    SliverAppBars(
-                      title: 'Cart Screen',
-                    ),
-                    SliverToBoxAdapter(
-                        child: Center(
-                      child: Text('No Data'),
-                    )),
-                  ]);
-          } else {
-            Timer(
-                Duration(seconds: 3),
-                () => setState(() {
-                      loadMore = false;
-                    }));
-            return loadMore == true
-                ? Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : Center(
-                    child: Text('No Data'),
-                  );
+            //     SliverAppBars(
+            //       title: 'Cart Screen',
+            //     ),
+            //     SliverToBoxAdapter(
+            //         child: Center(
+            //       child: Text('No Data'),
+            //     )),
+            //   ]);
+          }
+          else {
+
+            // Timer(
+            //     Duration(seconds: 3),
+            //     () => setState(() {
+            //           loadMore = false;
+            //           bottomBtn = false;
+            //         }));
+            return  CustomScrollView(slivers: [
+            //     // ! Sliver app Bar
+
+                SliverAppBars(
+                  title: 'Cart Screen',
+                ),
+                SliverToBoxAdapter(
+                    child: Center(
+                  child: Text('No Data'),
+                )),
+              ]);
+          // return Center(
+          //   child: CircularProgressIndicator(),
+          // );
           }
         }),
       ),

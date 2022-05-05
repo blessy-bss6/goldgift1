@@ -117,15 +117,26 @@ class _ProdDetailScreenState extends State<ProdDetailScreen> {
                   // !  Product Content
                   ProdDetailsContent(prodNumber: widget.prodNumber),
 
-                  Container(
-                    height: 80,
-                    child: ListView.builder(
-                      itemCount: varitonData.length,
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (context, i) {
-                      return Text('i $i');
-                    }),
-                  ),
+                  // Container(
+                  //   height: 30,
+                  //   child: ListView.builder(
+                  //       itemCount: varitonData.length,
+                  //       scrollDirection: Axis.horizontal,
+                  //       itemBuilder: (context, i) {
+                  //         return Btn(
+                  //           margin: EdgeInsets.all(5),
+                  //           onTap: () {
+
+                  //           },
+                  //           alignment: Alignment.bottomLeft,
+                  //           height: 25,
+                  //           // width: 0,
+                  //           btnName: '${varitonData[i]["attributes"][0]["option"]}',
+                  //           txtColor: offWhiteColor,
+                  //           color: offgreenColor,
+                  //         );
+                  //       }),
+                  // ),
 
                   Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -221,16 +232,16 @@ class _ProdDetailsContentState extends State<ProdDetailsContent> {
             fontWeight: FontWeight.bold,
           ),
         ),
-        Container(
-          margin: EdgeInsets.only(top: 5, left: 10),
-          alignment: Alignment.topLeft,
-          child: Txt(
-            // textAlign: TextAlign.left,
-            t: '${quantity != null ? quantity : 1} KG',
-            fontSize: 20,
-            color: greyColor,
-          ),
-        ),
+        // Container(
+        //   margin: EdgeInsets.only(top: 5, left: 10),
+        //   alignment: Alignment.topLeft,
+        //   child: Txt(
+        //     // textAlign: TextAlign.left,
+        //     t: '${quantity != null ? quantity : 1} KG',
+        //     fontSize: 20,
+        //     color: greyColor,
+        //   ),
+        // ),
 
         // Container(
         //   margin: EdgeInsets.only(top: 5, left: 10),
