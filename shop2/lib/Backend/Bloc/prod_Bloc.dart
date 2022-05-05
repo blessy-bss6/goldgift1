@@ -11,20 +11,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     on<FetchProdEvent>(_prodMethod);
     on<FetchSubProdEvent>(_subProdMethod);
   }
-  // void _homeMethod(FetchHomeEvent event, Emitter emit) async {
-  //   // print(event);
-  //   emit(ProdLoadingState());
-  //   try {
-  //     var user = await prodResp.homeResp();
-  //     // print('user data $user');
-  //     if (user == true) {
-  //       emit(ProdSuccessState());
-  //     }
-  //     emit(ProdInitialState());
-  //   } catch (e) {
-  //     emit(ProdFailedState());
-  //   }
-  // }
+  
 
   void _prodMethod(FetchProdEvent event, Emitter emit) async {
     // print(event);

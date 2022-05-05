@@ -8,7 +8,7 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
   CategoryRespo cateResp = CategoryRespo();
 
   CategoryBloc() : super(CategoryInitialState()) {
-    // on<FetchHomeEvent>(_homeMethod);
+
     on<FetchCategoryEvent>(_categoryMethod);
   }
 

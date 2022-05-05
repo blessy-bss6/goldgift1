@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:html/parser.dart';
 import '../Backend/Bloc/prod_Bloc.dart';
+import '../Backend/Resp/prod_home_Resp.dart';
 import '../Elements/baseAppbar.dart';
 import '../Elements/button.dart';
 import '../Elements/imgScr.dart';
@@ -20,15 +22,6 @@ class ProdDetailScreen extends StatefulWidget {
 }
 
 class _ProdDetailScreenState extends State<ProdDetailScreen> {
-  // final List img = [
-  //   'assets/images/IndianGod.png',
-  //   'assets/images/god-idols.png',
-  //   // // 'assets/images/snacks.png',
-  //   'assets/images/Brass.png',
-  //   // 'assets/images/pulse.png',
-  //   // 'assets/images/watermelon.png',
-  // ];
-
   dynamic listImgSrc;
 
   imgcallBack(dynamic imgSrc) {
@@ -38,15 +31,47 @@ class _ProdDetailScreenState extends State<ProdDetailScreen> {
     });
   }
 
+  dynamic varitonData;
+
+  ProdHomeRespo prodVerResp = ProdHomeRespo();
+
   dynamic description;
   @override
   void initState() {
     // TODO: implement initState
-    description = HtmlTags.removeTag(
-        htmlString: widget.prodNumber['description'],
-        callBack: (string) => print(string));
-
+    vartionFun();
+    htmlRemove();
     super.initState();
+  }
+
+  vartionFun() async {
+    print(
+        "================================================================================================================================================================================");
+    print(widget.prodNumber["id"]);
+
+    dynamic data = await prodVerResp.prodVaritionResp(
+        productId: widget.prodNumber["id"].toString());
+
+    setState(() {
+      varitonData = data;
+    });
+    print(data);
+  }
+
+  String? htmlData;
+  htmlRemove() {
+    String html =
+        '<div><p>Hello</p>This is <br/>fluttercampus.com<span>,Bye!</span></div>';
+
+    var doc = parse(widget.prodNumber['description']);
+    if (doc.documentElement != null) {
+      String parsedstring = doc.documentElement!.text;
+      print("  html data =========== $parsedstring");
+      setState(() {
+        htmlData = parsedstring;
+      });
+      //output without space: HelloThis is fluttercampus.com,Bye!
+    }
   }
 
   @override
@@ -63,12 +88,14 @@ class _ProdDetailScreenState extends State<ProdDetailScreen> {
               child: Column(
                 children: [
                   // ! Image Section
-                    heightSizedBox(13.0),
+                  heightSizedBox(13.0),
                   Container(
                     alignment: Alignment.center,
                     // color: Colors.red,
-                    child: Pics(networkImg: true,
-                     src: '${widget.prodNumber["images"].length>0 ? widget.prodNumber["images"][0]['src']: ''}',
+                    child: Pics(
+                      networkImg: true,
+                      src:
+                          '${widget.prodNumber["images"].length > 0 ? widget.prodNumber["images"][0]['src'] : ''}',
                       // src: 'assets/images/Wooden-Pooja-Mandir.png',
                       width: 300,
                       height: 200,
@@ -76,24 +103,36 @@ class _ProdDetailScreenState extends State<ProdDetailScreen> {
                   ),
                   heightSizedBox(10.0),
                   //  Image List Section
-                  Container(
-                    child: widget.prodNumber["images"].length>0 ? ImgHorizontalList(
-                      cheight: 80,
-                      prodList: widget.prodNumber["images"],
-                      callBack: imgcallBack,
-                      itemBorder:
-                          listImgSrc != null ? listImgSrc.toString() : null,
-                    ):null
-                  ),
+                  // Container(
+                  //     child: widget.prodNumber["images"].length > 0
+                  //         ? ImgHorizontalList(
+                  //             cheight: 80,
+                  //             prodList: widget.prodNumber["images"],
+                  //             callBack: imgcallBack,
+                  //             itemBorder: listImgSrc != null
+                  //                 ? listImgSrc.toString()
+                  //                 : null,
+                  //           )
+                  //         : null),
                   // !  Product Content
                   ProdDetailsContent(prodNumber: widget.prodNumber),
+
+                  Container(
+                    height: 80,
+                    child: ListView.builder(
+                      itemCount: varitonData.length,
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (context, i) {
+                      return Text('i $i');
+                    }),
+                  ),
 
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Container(
                       alignment: Alignment.bottomCenter,
                       child: Txt(
-                        t: description.toString(),
+                        t: htmlData.toString(),
                         style: smallTextStyle,
                       ),
                     ),
@@ -112,7 +151,8 @@ class _ProdDetailScreenState extends State<ProdDetailScreen> {
               ..add(LocalCartItemAddEvent(prodData: {
                 "id": widget.prodNumber['id'],
                 "name": widget.prodNumber['name'],
-                "pic": '${widget.prodNumber["images"].length > 0 ? widget.prodNumber["images"][0]['src'].toString() : ''}' ,
+                "pic":
+                    '${widget.prodNumber["images"].length > 0 ? widget.prodNumber["images"][0]['src'].toString() : ''}',
                 "quantity": 1,
                 "Fixedsale_price": int.parse(widget.prodNumber["sale_price"]),
                 "Fixedregular_price":
@@ -147,24 +187,6 @@ class _ProdDetailsContentState extends State<ProdDetailsContent> {
   dynamic quantity;
   dynamic fullPrice;
 
-  // plusCallBack(dynamic cartItem) {
-  //   setState(() {
-  //     price = cartItem * 150;
-  //     quantity = cartItem;
-  //     fullPrice = cartItem * 300;
-  //     // print(' plus $cartItem');
-  //   });
-  // }
-
-  // minusCallBack(dynamic cartItem) {
-  //   setState(() {
-  //     // print('minus $cartItem');
-  //     price = cartItem * 150;
-  //     quantity = cartItem;
-  //     fullPrice = cartItem * 300;
-  //   });
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -191,9 +213,9 @@ class _ProdDetailsContentState extends State<ProdDetailsContent> {
           // alignment: Alignment.topLeft,
           child: Txt(
             // t: widget.prodNumber['name'],
-            t: '${widget.prodNumber['name'].toString().length >= 20 ? widget.prodNumber['name'].toString().substring(0, 25) 
-            // + "\n" + widget.prodNumber['name'].toString().substring(40, 80) 
-             : widget.prodNumber['name']}',
+            t: '${widget.prodNumber['name'].toString().length >= 20 ? widget.prodNumber['name'].toString().substring(0, 25)
+                // + "\n" + widget.prodNumber['name'].toString().substring(40, 80)
+                : widget.prodNumber['name']}',
             fontSize: 15,
             style: labelTextStyle,
             fontWeight: FontWeight.bold,

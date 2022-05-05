@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../utils/shared_helper.dart';
 import '../utils/style.dart';
 
 import 'OrderDetScr.dart';
@@ -28,43 +29,45 @@ class _UserNavigationBarState extends State<UserNavigationBar> {
     _selectTab(widget.currentTab!);
   }
 
+  SharedHelper sharedHelper = SharedHelper();
+  dynamic isLogin = false;
+
+  _checkLogin() async {
+    bool isUser = await sharedHelper.containsKey('userIdType');
+    bool isLog = await sharedHelper.containsKey('current_user');
+
+    setState(() {
+      isLogin = isLog;
+    });
+  }
+
   void _selectTab(int tabItem) {
     setState(() {
       widget.currentTab = tabItem;
       switch (tabItem) {
         case 0:
-          widget.currentPage = HomeScreen(
-              // sellerId: widget.sellerId,
-              );
+          widget.currentPage = HomeScreen();
           break;
         case 1:
-          widget.currentPage = CategoryScreen(
-              // sellerId: widget.sellerId,
-              );
+          widget.currentPage = CategoryScreen();
           break;
 
         case 2:
-          widget.currentPage = ProductListScreen(
-              // sellerId: widget.sellerId,
-              );
+          widget.currentPage = ProductListScreen();
           break;
         case 3:
-          widget.currentPage = OrderDeatilsScreen(
-              // sellerId: widget.sellerId,
-              );
+          widget.currentPage = CartScreen();
           break;
 
         case 4:
-          widget.currentPage = CartScreen();
+          widget.currentPage = ProfileScreen();
 
           break;
         case 5:
-          widget.currentPage = ProfileScreen();
-          // widget.currentPage = SelGeneratePromoCodes(sellerId: widget.sellerId);
+          widget.currentPage = OrderDeatilsScreen();
+          
           break;
-        // case 5:
-        //   widget.currentPage = Profile();
-        //   break;
+        
       }
     });
   }
@@ -123,23 +126,10 @@ class _UserNavigationBarState extends State<UserNavigationBar> {
             label: 'Product',
           ),
           BottomNavigationBarItem(
-            icon: Icon(
-              Icons.shop,
-              size: 22,
-              color: widget.currentTab == 3 ? coffeColor : Colors.black38,
-            ),
-            // icon: Image.asset(
-            //   'assets/icons/bottom-3.png',
-            //   height: 22,
-            //   color: widget.currentTab == 2 ? coffeColor : Colors.black38,
-            // ),
-            label: 'Order',
-          ),
-          BottomNavigationBarItem(
             icon: Image.asset(
               'assets/icons/bottom-4.png',
               height: 22,
-              color: widget.currentTab == 4 ? coffeColor : Colors.black38,
+              color: widget.currentTab == 3 ? coffeColor : Colors.black38,
             ),
             label: 'Cart',
           ),
@@ -147,9 +137,22 @@ class _UserNavigationBarState extends State<UserNavigationBar> {
             icon: Image.asset(
               'assets/icons/bottom-1.png',
               height: 22,
-              color: widget.currentTab == 5 ? coffeColor : Colors.black38,
+              color: widget.currentTab == 4 ? coffeColor : Colors.black38,
             ),
             label: 'Profile',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.shop,
+              size: 22,
+              color: widget.currentTab == 5 ? coffeColor : Colors.black38,
+            ),
+            // icon: Image.asset(
+            //   'assets/icons/bottom-3.png',
+            //   height: 22,
+            //   color: widget.currentTab == 2 ? coffeColor : Colors.black38,
+            // ),
+            label: 'Order',
           ),
         ],
       ),

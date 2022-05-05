@@ -69,8 +69,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                 ),
                                 delegate: SliverChildBuilderDelegate(
                                     (context, index) {
-                                  // print(
-                                  //     "category item images ${state.data[index]} ${state.data[index]["image"]['src']}");
+                             
                                   return CategeoryGridProdList(
                                     // imageUrl: null,
 
@@ -171,7 +170,7 @@ class CategeoryGridProdList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("imnage usr $imageUrl");
+    // print("imnage usr $imageUrl");
     return InkWell(
         onTap: onTap,
         child: Container(

@@ -103,12 +103,7 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
       // print(user);
       if (user != false) {
         emit(OrderCompleteState());
-        // navigationPush(
-        //     event.context,
-        //     OrderCompleteScreen(
-        //       orderId: user['id'],
-        //     ));
-        // navigationPush(event.context, OrderCompleteScreen(email:event.billing['email']));
+        
       } else {
         // snackBar(event.context, user['msg'] ?? '');
         emit(OrderInitialState());
@@ -133,8 +128,8 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
       dynamic usr = await orderResp.orderGetDataResp(customer: id);
 
       if (usr != null) {
-        emit(OrderSuccessState(
-          data: user,
+        emit(OrderDelSuccessState(
+          data: usr,
         ));
       } else {
         emit(OrderInitialState());
@@ -228,6 +223,12 @@ class OrderSuccessState extends OrderState {
   final dynamic data;
   final Map<String, dynamic>? priceData;
   OrderSuccessState({this.data, this.priceData});
+}
+
+class OrderDelSuccessState extends OrderState {
+  final dynamic data;
+  final Map<String, dynamic>? priceData;
+  OrderDelSuccessState({this.data, this.priceData});
 }
 
 class OrderCompleteState extends OrderState {

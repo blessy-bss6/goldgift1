@@ -46,7 +46,11 @@ class RegisterScreen extends StatelessWidget {
     }
 
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        backgroundColor: coffeColor,
+        title: Text('Register'),
+        centerTitle: true,
+      ),
       body: BlocConsumer<AuthBloc, AuthState>(listener: (context, state) {
         if (state is AuthSuccessState) {
           navigationPush(
@@ -99,7 +103,7 @@ class RegisterScreen extends StatelessWidget {
                   controller: emailController,
                   vertical: 15,
                 
-                  // validator: (v) => validateEmail(v!),
+                  validator: (v) => validateEmail(v!),
                 ),
                 heightSizedBox(10.0),
                 EditTextField(

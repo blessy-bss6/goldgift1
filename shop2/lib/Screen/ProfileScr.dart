@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:shop2/Screen/splashScr.dart';
+import '../Backend/Resp/reg_login_resp.dart';
 import '../Elements/baseAppbar.dart';
 import '../Screen/notificationScr.dart';
 import '../utils/common.dart';
@@ -56,8 +58,12 @@ class ProfileScreen extends StatelessWidget {
                 cardText: 'Term & Condition ', icon: Icons.policy_outlined),
             ProfileCard(
               cardText: 'Logout',
-              icon: Icons.logout,
+              icon: Icons.logout, onTap: (){
+                  logout();
+                navigationPush(context, SplashScreen());
+              },
             )
+            
           ],
         ),
       ),

@@ -1,37 +1,47 @@
+import 'package:flutter/material.dart';
+import 'package:html/parser.dart';
 
+class CheckProd extends StatefulWidget {
+  CheckProd({Key? key}) : super(key: key);
 
+  @override
+  State<CheckProd> createState() => _CheckProdState();
+}
 
+class _CheckProdState extends State<CheckProd> {
+  List<dynamic> data = [];
+  String? htmlData;
+  @override
+  void initState() {
+    htmlRemove();
+    super.initState();
+  }
 
+  htmlRemove() {
+    String html =
+        '<div><p>Hello</p>This is <br/>fluttercampus.com<span>,Bye!</span></div>';
 
+    var doc = parse(html);
+    if (doc.documentElement != null) {
+      String parsedstring = doc.documentElement!.text;
+      print(parsedstring);
+      setState(() {
+        htmlData = parsedstring;
+      });
+      //output without space: HelloThis is fluttercampus.com,Bye!
+    }
+  }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Container(
+          child:Center(
+                  child: Text(htmlData.toString()),
+                )),
+    );
+  }
+}
 
 // import '../utils/shared_helper.dart';
 

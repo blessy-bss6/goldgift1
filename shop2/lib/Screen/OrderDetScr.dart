@@ -20,12 +20,15 @@ class _OrderDeatilsScreenState extends State<OrderDeatilsScreen> {
   dynamic pageName = 'Tracking';
   PaymentResp payresp = PaymentResp();
 
+  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: BaseAppBar(
-          centerTitle: true,
-          title: 'Order Details ',
+        appBar: AppBar(
+          centerTitle: true, backgroundColor: coffeColor,
+          title: Text('Order Details ',),
+          automaticallyImplyLeading: false,
           // bottomChild: Row(
           //   children: [
           //     Expanded(
@@ -51,22 +54,7 @@ class _OrderDeatilsScreenState extends State<OrderDeatilsScreen> {
         ),
         body: Container(
           child: OrderTrackingScreen(),
-          // child: Center(
-          //   child: InkWell(
-          //       onTap: () {
-          //         payresp.paymentRefundResp(
-          //             transcationId: "pay_JR9DO38jCAzN4c",
-          //             ammount: int.parse(2.toString()));
-          //       },
-          //       child: Container(
-          //         margin: EdgeInsets.symmetric(horizontal: 6),
-          //         alignment: Alignment.topRight,
-          //         child: Txt(
-          //           t: 'Cancel',
-          //           color: redColor,
-          //         ),
-          //       )),
-          // ),
+         
         ));
     // body: Container(
     //   child: pageName == 'History'

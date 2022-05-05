@@ -41,7 +41,11 @@ class LoginScreen extends StatelessWidget {
     }
 
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+         backgroundColor: coffeColor,
+         title: Text('Login'), 
+         centerTitle: true,
+      ),
       body: BlocConsumer<AuthBloc, AuthState>(listener: (context, state) {
         if (state is AuthSuccessState) {
           navigationPush(
@@ -58,17 +62,7 @@ class LoginScreen extends StatelessWidget {
             key: _formKey,
             child: Column(
               children: [
-                // EditTextField(
-                //   textAlign: TextAlign.left,
-                //   txtColor: txtBlackColor,
-                //   formBox: true,
-                //   fillColor: borderColor,
-                //   headTxt: 'Email',
-                //   hintText: 'Enter Email',
-                //   controller: userNameController,
-                //   vertical: 15,
-                //   validator: (v) => validateEmail(v!),
-                // ),
+         
                 EditTextField(
                   textAlign: TextAlign.left,
                   txtColor: txtBlackColor,
@@ -80,7 +74,7 @@ class LoginScreen extends StatelessWidget {
                   controller: emailController,
                   vertical: 15,
 
-                  // validator: (v) => validateEmail(v!),
+                  validator: (v) => validateEmail(v!),
                 ),
                 heightSizedBox(10.0),
                 EditTextField(

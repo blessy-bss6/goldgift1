@@ -50,8 +50,7 @@ class _OrderCompleteScreenState extends State<OrderCompleteScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print("transcatin Id ${widget.transcationId}");
-    print("transcatin Id ${widget.ammount}");
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: coffeColor,
@@ -74,7 +73,7 @@ class _OrderCompleteScreenState extends State<OrderCompleteScreen> {
 
                 payresp.paymentCapturedResp(
                     transcationId: "${widget.transcationId}",
-                    ammount: int.parse(widget.ammount.toString()));
+                    ammount: double.parse(widget.ammount.toString()));
 
                 navigationPushReplacement(
                     context,
@@ -82,9 +81,10 @@ class _OrderCompleteScreenState extends State<OrderCompleteScreen> {
                       currentTab: 0,
                     ));
               } else {
+             
                 payresp.paymentCapturedResp(
-                    transcationId:  "${widget.transcationId}",
-                    ammount: int.parse(widget.ammount.toString()));
+                    transcationId: "${widget.transcationId}",
+                    ammount: double.parse(widget.ammount));
 
                 navigationPushReplacement(
                     context,

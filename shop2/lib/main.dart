@@ -6,6 +6,7 @@ import 'package:platform_device_id/platform_device_id.dart';
 import 'package:provider/provider.dart';
 
 import 'Allproveder.dart';
+import 'Screen/a.dart';
 import 'Screen/splashScr.dart';
 
 import 'package:wp_json_api/wp_json_api.dart';
@@ -35,6 +36,7 @@ class MyApp extends StatelessWidget {
             ),
         debugShowCheckedModeBanner: false,
         home: SplashScreen(),
+        // home: CheckProd() 
         // home:ProdScr()
       ),
     );

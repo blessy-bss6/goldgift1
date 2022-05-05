@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
@@ -63,10 +65,7 @@ class _OrderScreenState extends State<OrderScreen> {
   }
 
   void _handlePaymentSuccess(PaymentSuccessResponse response) {
-    print('Success Response: ${response} ');
-    print('Success Response: ${response.paymentId}');
-    print('Success Response: ${response.orderId}');
-    print('Success Response: ${response.signature}');
+
     if (widget.billing != null) {
       BlocProvider.of<OrderBloc>(context, listen: false)
         ..add(OrderItemAddEvent(
@@ -125,12 +124,14 @@ class _OrderScreenState extends State<OrderScreen> {
     _razorpay.clear();
   }
 
+  dynamic loadMore = true;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocConsumer<OrderBloc, OrderState>(listener: (context, state) {
         if (state is OrderCompleteState) {
-          print(state.data['total'].runtimeType);
+      
           if (widget.isLogin == false) {
             BlocProvider.of<AuthBloc>(context, listen: false)
               ..add(SignUpBtnEvent(
@@ -145,7 +146,7 @@ class _OrderScreenState extends State<OrderScreen> {
                     ammount: state.data['total']));
           } else {
             // navigationPush(context, OrderCompleteScreen());
-            print(state.data['total'].runtimeType);
+
             navigationPush(
                 context,
                 OrderCompleteScreen(
@@ -156,7 +157,7 @@ class _OrderScreenState extends State<OrderScreen> {
         }
       }, builder: (context, state) {
         if (state is OrderSuccessState) {
-          return state.data.length > 0
+          return state.data.isNotEmpty 
               ? CustomScrollView(
                   slivers: [
                     SliverAppBars(
@@ -207,10 +208,22 @@ class _OrderScreenState extends State<OrderScreen> {
                   )),
                 ]);
         }
+         else {
+          Timer(
+              Duration(seconds: 3),
+              () => setState(() {
+                    loadMore = false;
+                  }));
+          return loadMore == false
+              ? Center(
+                  child: CircularProgressIndicator(),
+                )
+              : Center(
+                  child: Text('No Data'),
+                );
+        }
 
-        return Center(
-          child: CircularProgressIndicator(),
-        );
+       
       }),
       // ),
       bottomNavigationBar: bottomBtn == false

@@ -165,9 +165,9 @@ class BasicProdDetail extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Txt(
-          t: '${prodNumber['name'].toString().length >= 20 ? prodNumber['name'].toString().substring(0, 20) 
-          // +  "\n" + prodNumber['name'].toString().substring(20, 40) 
-           : prodNumber['name']}',
+          t: '${prodNumber['name'].toString().length >= 20 ? prodNumber['name'].toString().substring(0, 20)
+              // +  "\n" + prodNumber['name'].toString().substring(20, 40)
+              : prodNumber['name']}',
           fontSize: 15,
           fontWeight: FontWeight.bold,
         ),
@@ -194,37 +194,6 @@ class BasicProdDetail extends StatelessWidget {
             ),
           ],
         ),
-        // heightSizedBox(2.0),
-        // Container(
-        //   child: CartBtn(
-        //       plusBtn: () {
-        //         print('plusbtn');
-        //         BlocProvider.of<LocalCartBloc>(context, listen: false)
-        //           ..add(LocalCartItemPutEvent(id: prodNumber['key'], prodData: {
-        //             "id": prodNumber["id"],
-        //             "name": prodNumber['name'],
-        //             "quantity": prodNumber['quantity'] + 1,
-        //             "sale_price":
-        //                 prodNumber["sale_price"] * (prodNumber['quantity'] + 1),
-        //             "regular_price": prodNumber["regular_price"] *
-        //                 (prodNumber['quantity'] + 1)
-        //           }));
-        //       },
-        //       cartItem: prodNumber['quantity'],
-        //       minusBtn: prodNumber['quantity'] > 1
-        //           ? () => BlocProvider.of<LocalCartBloc>(context, listen: false)
-        //             ..add(
-        //                 LocalCartItemPutEvent(id: prodNumber['key'], prodData: {
-        //               "id": prodNumber["id"],
-        //               "name": prodNumber['name'],
-        //               "quantity": prodNumber['quantity'] + 1,
-        //               "sale_price": prodNumber["sale_price"] *
-        //                   (prodNumber['quantity'] + 1),
-        //               "regular_price": prodNumber["regular_price"] *
-        //                   (prodNumber['quantity'] + 1)
-        //             }))
-        //           : null),
-        // )
       ],
     );
   }

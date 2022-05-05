@@ -6,8 +6,7 @@ class CategoryRespo {
     String url = URLConstants.baseUrl +
         URLConstants.categoryUrl+"?page=$pageNum"
   "&consumer_key=${URLConstants.Key}&consumer_secret=${URLConstants.password}";
-    // String url =
-    //     "https://liveprojects.co.in/goldgift//wp-json/wc/v3/products/categories?page=1&consumer_key=ck_e574cd75f0fedf68fda0fa8fd99c17f54665a4c6&consumer_secret=cs_9e084118b1fdba78c85c24b6a209fdf382057e5e";
+    
     final response = await getDioRequest(url);
     // print("response data  $response");
     if (response != null) {
@@ -29,7 +28,7 @@ class CategoryRespo {
     if (response != null) {
       return response;
     } else {
-      print(response);
+      // print(response);
       return response;
     }
   }

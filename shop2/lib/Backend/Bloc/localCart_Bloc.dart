@@ -30,25 +30,7 @@ class LocalCartBloc extends Bloc<LocalCartEvent, LocalCartState> {
       dynamic user = shoping.refreshItems();
 
       if (user != null) {
-        // final subPriceList = [];
-        // final mrpPriceList = [];
-        // dynamic subPrice = 0;
-        // dynamic mrpPrice = 0;
-        // dynamic shipPrice = 0;
-
-        // for (var i in user) {
-        //   subPriceList.add(i['sale_price']);
-        //   mrpPriceList.add(i['regular_price']);
-        // }
-
-        // subPrice = subPriceList.reduce((a, b) => a + b);
-
-        // mrpPrice = mrpPriceList.reduce((a, b) => a + b);
-
-        // if (subPrice < 10000) {
-        //   shipPrice = 70;
-        // }
-
+       
         emit(LocalCartSuccessState(data: user['data'], priceData: {
           "subPrice": user['subPrice'],
           "mrpPrice": user['mrpPrice'],

@@ -14,13 +14,13 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     // print(event);
     emit(HomeLoadingState());
     try {
-      // var user = await prodResp.homeResp();
+      
       var prod = await prodResp.prodResp();
       var cate = await cateResp.categoryResp();
       // print('user data ${user['cate']}');
       // if (user != false)
       if (prod != false || cate != false) {
-        // emit(HomeSuccessState(product: user['prod'], category: user['cate']));
+    
         emit(HomeSuccessState(product: prod, category: cate));
       } else {
         emit(HomeInitialState());

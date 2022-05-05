@@ -26,19 +26,14 @@ class _SplashScreenState extends State<SplashScreen> {
   checkLogin() async {
     bool isLogin = await sharedHelper.containsKey('current_user');
     bool isD = await sharedHelper.containsKey('userIdType');
-    print('splash Login $isLogin');
-    
+
     if (isLogin) {
       dynamic id = await sharedHelper.getUserTypeScr('userIdType');
-      print(id);
-      // currentUser.value = await getCurrentUser();
-      // print(currentUser.value.token);
-      // print('splash Login $isLogin');
-      // print('splash Login $isD');
+
       navigationRemoveUntil(
           context,
           UserNavigationBar(
-            currentTab: 2,
+            currentTab: 0,
           ));
     } else {
       Timer(
@@ -57,15 +52,12 @@ class _SplashScreenState extends State<SplashScreen> {
       body: Padding(
         padding: const EdgeInsets.all(1.0),
         child: Container(
-          height: double.infinity, width: double.infinity,
+          height: double.infinity,
+          width: double.infinity,
           child: Pics(
             src: 'assets/imgs/goldspalsh.jpg',
             fit: BoxFit.cover,
           ),
-          // Text(
-          //   'Gold Gift Ideas',
-          //   style: labelTextStyle,
-          // )
         ),
       ),
     );

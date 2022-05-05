@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -25,12 +27,7 @@ class _CartScreenState extends State<CartScreen> {
   dynamic bottomBtn = false;
   dynamic cartData;
 
-  // @override
-  // void initState() {
-  //   // TODO: implement initState
-  //   super.initState();
-  //   calculatePrice();
-  // }
+  dynamic loadMore = true;
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +57,7 @@ class _CartScreenState extends State<CartScreen> {
           }
         }, builder: (context, state) {
           if (state is LocalCartSuccessState) {
-            return state.data.length > 0
+            return state.data.isNotEmpty
                 ? CustomScrollView(
                     slivers: [
                       // ! Sliver app Bar
@@ -103,7 +100,6 @@ class _CartScreenState extends State<CartScreen> {
                                         CartButn(
                                           prodNumber: state.data[i],
                                           pic: state.data[i]['pic'],
-                                          
                                         ),
                                         SizedBox(height: 10.0),
                                       ],
@@ -127,20 +123,6 @@ class _CartScreenState extends State<CartScreen> {
                           childCount: state.data.length,
                         ),
                       ),
-
-                      // SliverToBoxAdapter(
-                      //   child: bottomBtn == true
-                      //       ? Column(children: [
-                      //           Divider(),
-                      //           PriceList(
-                      //             prodNumber: priceData,
-                      //             shipPrice: state.priceData!['shipPrice'],
-                      //             mrpPrice: state.priceData!['mrpPrice'],
-                      //             subPrice: state.priceData!['subPrice'],
-                      //           ),
-                      //         ])
-                      //       : null,
-                      // )
                     ],
                   )
                 : CustomScrollView(slivers: [
@@ -154,14 +136,20 @@ class _CartScreenState extends State<CartScreen> {
                       child: Text('No Data'),
                     )),
                   ]);
+          } else {
+            Timer(
+                Duration(seconds: 3),
+                () => setState(() {
+                      loadMore = false;
+                    }));
+            return loadMore == true
+                ? Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : Center(
+                    child: Text('No Data'),
+                  );
           }
-
-          return Center(
-            child: Text(
-              'No Data ',
-              style: labelTextStyle,
-            ),
-          );
         }),
       ),
       // ),
@@ -282,7 +270,7 @@ class CartButn extends StatelessWidget {
                           prodData: {
                             "id": prodNumber["id"],
                             "name": prodNumber['name'],
-                            "pic":pic,
+                            "pic": pic,
                             "quantity": prodNumber['quantity'] + 1,
                             "Fixedsale_price": prodNumber['Fixedsale_price'],
                             "Fixedregular_price":
