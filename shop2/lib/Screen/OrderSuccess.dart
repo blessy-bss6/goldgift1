@@ -41,16 +41,16 @@ class _OrderCompleteScreenState extends State<OrderCompleteScreen> {
   _checkLogin() async {
     bool isUser = await sharedHelper.containsKey('userIdType');
     bool isLog = await sharedHelper.containsKey('current_user');
+    dynamic id = await sharedHelper.getUserTypeScr('userIdType');
 
     setState(() {
       isLogin = isLog;
-      // userId = isUser == true ? userIds : 0;
+      userId = id;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: coffeColor,
@@ -81,7 +81,6 @@ class _OrderCompleteScreenState extends State<OrderCompleteScreen> {
                       currentTab: 0,
                     ));
               } else {
-             
                 payresp.paymentCapturedResp(
                     transcationId: "${widget.transcationId}",
                     ammount: double.parse(widget.ammount));

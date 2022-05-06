@@ -82,8 +82,6 @@ class ShopC {
       };
     }).toList();
 
-    
-
     // ! Price Logic
     final subPriceList = [];
     final mrpPriceList = [];
@@ -96,14 +94,20 @@ class ShopC {
       mrpPriceList.add(i['regular_price']);
     }
 
-    subPrice = subPriceList.reduce((a, b) => a + b);
+    if (subPriceList.isNotEmpty && mrpPriceList.isNotEmpty) {
+      subPrice = subPriceList.reduce((a, b) => a + b);
 
-    mrpPrice = mrpPriceList.reduce((a, b) => a + b);
-
-    if (subPrice < 500) {
-      shipPrice = 0;
+      mrpPrice = mrpPriceList.reduce((a, b) => a + b);
+    } else {
+      subPrice = 0;
+      mrpPrice = 0;
     }
+
+    // if (subPrice < 500) {
+    //   shipPrice = 0;
+    // }
     // return data.reversed.toList();
+
     return {
       "data": data.reversed.toList(),
       "subPrice": subPrice,
@@ -129,7 +133,7 @@ class ShopC {
   }
 
 // Delete a single item
-  Future<void> deleteItem(int itemKey) async {
+  Future deleteItem(int itemKey) async {
     await shoppingBox.delete(itemKey);
   }
 }

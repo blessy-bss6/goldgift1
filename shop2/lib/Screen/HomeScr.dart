@@ -36,22 +36,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final TextEditingController? searchController = TextEditingController();
 
-  // List catList = [
-  //   {
-  //     "pic": "assets/imgs/prodcat1.png",
-  //     "name": "SILVER PLATED",
-  //     "product": 245
-  //   },
-  //   {
-  //     "pic": "assets/imgs/prodcat2.png",
-  //     "name": "GERMAN SILVER",
-  //     "product": 117
-  //   },
-  //   {"pic": "assets/imgs/prodcat3.png", "name": "COPPERWARE", "product": 36},
-  //   {"pic": "assets/imgs/prodcat4.png", "name": "BRASS ITEMS", "product": 121},
-  //   {"pic": "assets/imgs/prodcat5.png", "name": "POOJA MANDIR", "product": 25},
-  // ];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -98,12 +82,13 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ],
                   ),
-                  SliverList(
-                    delegate: SliverChildListDelegate([
-                      ImgSlider(),
-                      // CategoryListItem(cateList: state.category)
-                    ]),
-                  ),
+                  SliverToBoxAdapter(child: ImgSlider(),),
+                  // SliverList(
+                  //   delegate: SliverChildListDelegate([
+                  //     ImgSlider(),
+                  //     // CategoryListItem(cateList: state.category)
+                  //   ]),
+                  // ),
 
                   // ! First List
                   SliverPadding(

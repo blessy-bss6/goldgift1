@@ -14,19 +14,22 @@ class ImgSlider extends StatelessWidget {
       itemCount: items.length,
       itemBuilder: (context, itemIndex, realIndex) {
         return Container(
-            width: MediaQuery.of(context).size.width / 1.25,
-            margin: EdgeInsets.symmetric(horizontal: 5.0, vertical: 10.0),
+            // width: MediaQuery.of(context).size.width / 0.9,
+            width:double.infinity,
+            margin: EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
             decoration: BoxDecoration(),
             child: Pics(
               src: items[itemIndex],
-              fit: BoxFit.cover,
+              fit: BoxFit.contain,
               width: double.infinity,
             ));
       },
       options: CarouselOptions(
-        height: 150,
+        // height: 150,
+        height: 130,
+        
         // aspectRatio: 16 / 9,
-        // viewportFraction: 0.8,
+        viewportFraction: 1.0,
         initialPage: 0,
         enableInfiniteScroll: true,
         reverse: false,

@@ -28,7 +28,7 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
   }
 
   dynamic loadMore = true;
-   dynamic loadMore2 = true;
+  dynamic loadMore2 = true;
 
   @override
   Widget build(BuildContext context) {
@@ -40,40 +40,33 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
             // print(state);
 
             if (state is OrderDelSuccessState) {
-               
-              return  Container(
-                  child: state.data.isNotEmpty
-                      ? ListView.builder(
-                          itemCount: state.data.length,
-                          shrinkWrap: true,
-                          itemBuilder: (context, i) {
-                            return Card(
-                              child: Container(
-                                  margin: EdgeInsets.all(8.0),
-                                  decoration: BoxDecoration(
-                                      color: offWhiteColor,
-                                      border: Border.all(
-                                        color: borderColor,
-                                      )),
-                                  child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          '#Order Id: ${state.data[i]['id']}',
-                                          style: labelTextStyle,
-                                        ),
-                                        Divider(),
-                                        TrackingProdContent(
-                                            prodNumber: state.data[i])
-                                      ])),
-                            );
-                          })
-                      : Center(
-                          child: Text('No Data'),
-                        ));
+              return Container(
+                  child: ListView.builder(
+                      itemCount: state.data.length,
+                      shrinkWrap: true,
+                      itemBuilder: (context, i) {
+                        return Card(
+                          child: Container(
+                              margin: EdgeInsets.all(8.0),
+                              decoration: BoxDecoration(
+                                  color: offWhiteColor,
+                                  border: Border.all(
+                                    color: borderColor,
+                                  )),
+                              child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      '#Order Id: ${state.data[i]['id']}',
+                                      style: labelTextStyle,
+                                    ),
+                                    Divider(),
+                                    TrackingProdContent(
+                                        prodNumber: state.data[i])
+                                  ])),
+                        );
+                      }));
             }
 
             if (state is OrderSuccessState) {
@@ -112,7 +105,7 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
                         ));
             } else {
               Timer(
-                  Duration(seconds: 3),
+                  Duration(seconds: 5),
                   () => setState(() {
                         loadMore = false;
                       }));
@@ -246,7 +239,6 @@ class _TrackingProdContentState extends State<TrackingProdContent> {
                 },
               ),
             )
-            
           ],
         ),
       ),

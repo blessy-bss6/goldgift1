@@ -100,7 +100,7 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
     try {
       dynamic user = await orderResp.orderUpdateResp(
           customerId: userIds, orderId: event.orderId);
-      // print(user);
+      print(user);
       if (user != false) {
         emit(OrderCompleteState());
         

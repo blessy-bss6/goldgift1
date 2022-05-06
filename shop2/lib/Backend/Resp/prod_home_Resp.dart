@@ -7,8 +7,8 @@ import 'dart:convert';
 class ProdHomeRespo {
   Future<dynamic> prodResp() async {
     String url = URLConstants.baseUrl +
-        URLConstants.productUrl +
-        "?consumer_key=${URLConstants.Key}&consumer_secret=${URLConstants.password}";
+        URLConstants.productUrl + "?per_page=20"+
+        "&consumer_key=${URLConstants.Key}&consumer_secret=${URLConstants.password}";
 
     final response = await http.get(Uri.parse(url));
     // print(response.statusCode);

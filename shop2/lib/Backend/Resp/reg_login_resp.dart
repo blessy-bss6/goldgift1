@@ -6,23 +6,16 @@ import 'dart:convert';
 import '../../utils/shared_helper.dart';
 
 class RegLoginResp {
-  
-
   Future<dynamic> registerResp(
       {dynamic email,
       dynamic password,
       dynamic username,
       dynamic context}) async {
     try {
-   
-
       Response response = await Dio().post(
           "https://liveprojects.co.in/goldgift/wp-json/wc/v3/customers" +
               "?consumer_key=${URLConstants.Key}&consumer_secret=${URLConstants.password}",
-
-          data: {"email": email, "password": password, "username": username}
-  
-          );
+          data: {"email": email, "password": password, "username": username});
       // print('response User ${response.statusCode}');
 
       print(response.statusCode);
@@ -44,7 +37,6 @@ class RegLoginResp {
   Future<dynamic> loginResp(
       {dynamic email, dynamic password, dynamic context}) async {
     try {
-  
       String url = "https://liveprojects.co.in/goldgift/wp-json/wc/v3/customers" +
           "?consumer_key=${URLConstants.Key}&consumer_secret=${URLConstants.password}&email=${email}";
       Response res2 = await Dio().get(url);
@@ -61,7 +53,8 @@ class RegLoginResp {
 
         Map valueMap = jsonDecode(response.data);
 
-        // print(valueMap);
+        print(valueMap);
+        print(res2.data[0]['id']);
         // print(valueMap['jwt_token'].id);
         if (valueMap['jwt_token'] != null) {
           setCurrentUser(valueMap['jwt_token']);
@@ -96,12 +89,7 @@ Future<String> getCurrentUser() async {
   return tokn;
 }
 
-// ! LOGOUT METHOD
-Future<void> logout() async {
-  // currentUser.value = User();
-  await SharedHelper().remove('current_user');
-  await SharedHelper().remove('userIdType');
-}
+
 
 // ! CURRENT Screen
 void setUserType(idType) async {
@@ -116,4 +104,32 @@ Future<bool> getUserType() async {
 
   // print('getCureent user ${idType}');
   return idType;
+}
+
+// ! LOGOUT METHOD
+Future<void> logout() async {
+  // currentUser.value = User();
+  await SharedHelper().remove('current_user');
+  await SharedHelper().remove('userIdType');
+}
+
+Future<dynamic> userExists({dynamic email}) async {
+  // print(email);
+  try {
+    String url = "https://liveprojects.co.in/goldgift/wp-json/wc/v3/customers" +
+        "?consumer_key=${URLConstants.Key}&consumer_secret=${URLConstants.password}&email=${email}";
+    Response response = await Dio().get(url);
+    print(response.statusCode);
+    print(response.data.runtimeType);
+    if (response.data.length > 0) {
+      return true;
+    } else {
+      return false;
+    }
+
+    // if()
+  } on DioError catch (e) {
+    // print(e);
+    // print(e.response!.data);
+  }
 }

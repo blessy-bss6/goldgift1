@@ -12,6 +12,7 @@ import '../utils/style.dart';
 import '../Backend/Bloc/localCart_Bloc.dart';
 import 'CheckOutScr.dart';
 import 'a.dart';
+import 'bottomNav.dart';
 
 class CartScreen extends StatefulWidget {
   CartScreen({
@@ -29,136 +30,149 @@ class _CartScreenState extends State<CartScreen> {
   dynamic appBarBtn = false;
 
   dynamic loadMore = true;
+  LocalCartBloc localcartB = LocalCartBloc();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    localcartB = BlocProvider.of<LocalCartBloc>(context, listen: false);
+    localcartB.add(FetchLocalCartEvent());
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocProvider(
-        create: (BuildContext context) =>
-            LocalCartBloc()..add(FetchLocalCartEvent()),
-        child: BlocConsumer<LocalCartBloc, LocalCartState>(
-            listener: (context, state) {
-          if (state is LocalCartSuccessState) {
-            if (state.data.length > 0) {
-              // print(state.data);
-              setState(() {
-                cartData = state.data;
-                priceData = state.priceData;
-                // shipPrice = state.priceData!['shipPrice'];
-                // mrpPrice = state.priceData!['mrpPrice'];
-                // subPrice = state.priceData!['subPrice'];
-                bottomBtn = true;
-              });
-            } else {
-              setState(() {
-                priceData = 0;
-                bottomBtn = false;
-              });
-            }
+      body: BlocConsumer<LocalCartBloc, LocalCartState>(
+          listener: (context, state) {
+        if (state is LocalCartSuccessState) {
+          if (state.data.length > 0) {
+            // print(state.data);
+            setState(() {
+              cartData = state.data;
+              priceData = state.priceData;
+              // shipPrice = state.priceData!['shipPrice'];
+              // mrpPrice = state.priceData!['mrpPrice'];
+              // subPrice = state.priceData!['subPrice'];
+              bottomBtn = true;
+            });
+          } else {
+            setState(() {
+              priceData = 0;
+              bottomBtn = false;
+            });
           }
-        }, builder: (context, state) {
-          if (state is LocalCartSuccessState) {
-            return
-                // state.data.length>0
-                //     ?
-                CustomScrollView(
-              slivers: [
-                // ! Sliver app Bar
+        }
+      }, builder: (context, state) {
+        if (state is LocalCartSuccessState) {
+          return state.data.length > 0
+              ? CustomScrollView(
+                  slivers: [
+                    // ! Sliver app Bar
 
-                SliverAppBars(
-                  title: 'Cart Screen',
-                ),
+                    SliverAppBars(
+                        title: 'Cart Screen',
+                        leading: new IconButton(
+                            icon: new Icon(Icons.arrow_back),
+                            onPressed: () => navigationPushReplacement(
+                                  context,
+                                  UserNavigationBar(
+                                    currentTab: 0,
+                                  ),
+                                ))),
 
-                SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                    (BuildContext context, int i) {
-                      return Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                        child: Container(
-                          decoration: BoxDecoration(
-                              border: Border.all(width: 1, color: borderColor)),
-                          child: Row(
-                            // crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Pics(
-                                networkImg: true,
-                                src: '${state.data[i]["pic"]}',
-                                width: 120,
-                                height: 100,
-                              ),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                    SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                        (BuildContext context, int i) {
+                          return Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 10),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  border:
+                                      Border.all(width: 1, color: borderColor)),
+                              child: Row(
+                                // crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
                                 children: [
-                                  BasicProdDetail(
-                                    prodNumber: state.data[i],
+                                  Pics(
+                                    networkImg: true,
+                                    src: '${state.data[i]["pic"]}',
+                                    width: 120,
+                                    height: 100,
                                   ),
-                                  CartButn(
-                                    prodNumber: state.data[i],
-                                    pic: state.data[i]['pic'],
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      BasicProdDetail(
+                                        prodNumber: state.data[i],
+                                      ),
+                                      CartButn(
+                                        prodNumber: state.data[i],
+                                        pic: state.data[i]['pic'],
+                                      ),
+                                      SizedBox(height: 10.0),
+                                    ],
                                   ),
-                                  SizedBox(height: 10.0),
+                                  IconBtn(
+                                      icon: Icons.delete,
+                                      size: 20,
+                                      onPressed: () {
+                                        // shoping.deleteItem(currentItem['key']),
+                                        BlocProvider.of<LocalCartBloc>(context,
+                                            listen: false)
+                                          ..add(LocalCartItemDelEvent(
+                                              id: state.data[i]['key']));
+                                      })
                                 ],
                               ),
-                              IconBtn(
-                                  icon: Icons.delete,
-                                  size: 20,
-                                  onPressed: () {
-                                    // shoping.deleteItem(currentItem['key']),
-                                    BlocProvider.of<LocalCartBloc>(context,
-                                        listen: false)
-                                      ..add(LocalCartItemDelEvent(
-                                          id: state.data[i]['key']));
-                                  })
-                            ],
-                          ),
-                        ),
-                      );
-                    },
-                    childCount: state.data.length,
-                  ),
-                ),
-              ],
-            );
-            // : CustomScrollView(slivers: [
+                            ),
+                          );
+                        },
+                        childCount: state.data.length,
+                      ),
+                    ),
+                  ],
+                )
+              : CustomScrollView(slivers: [
+                  // ! Sliver app Bar
+
+                  SliverAppBars(
+                      title: 'Cart Screen',
+                      leading: new IconButton(
+                          icon: new Icon(Icons.arrow_back),
+                          onPressed: () => navigationPushReplacement(
+                                context,
+                                UserNavigationBar(
+                                  currentTab: 0,
+                                ),
+                              ))),
+
+                  SliverToBoxAdapter(
+                      child: Center(
+                    child: Text('No Data'),
+                  )),
+                ]);
+        } else {
+          return CustomScrollView(slivers: [
             //     // ! Sliver app Bar
 
-            //     SliverAppBars(
-            //       title: 'Cart Screen',
-            //     ),
-            //     SliverToBoxAdapter(
-            //         child: Center(
-            //       child: Text('No Data'),
-            //     )),
-            //   ]);
-          }
-          else {
-
-            // Timer(
-            //     Duration(seconds: 3),
-            //     () => setState(() {
-            //           loadMore = false;
-            //           bottomBtn = false;
-            //         }));
-            return  CustomScrollView(slivers: [
-            //     // ! Sliver app Bar
-
-                SliverAppBars(
-                  title: 'Cart Screen',
-                ),
-                SliverToBoxAdapter(
-                    child: Center(
-                  child: Text('No Data'),
-                )),
-              ]);
+            SliverAppBars(
+              title: 'Cart Screen',
+            ),
+            SliverToBoxAdapter(
+                child: Center(
+              child: Text('No Data'),
+            )),
+          ]);
           // return Center(
           //   child: CircularProgressIndicator(),
           // );
-          }
-        }),
-      ),
+        }
+      }),
       // ),
       bottomNavigationBar: Container(
         height: 200,

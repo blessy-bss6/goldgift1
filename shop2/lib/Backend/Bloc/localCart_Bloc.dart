@@ -30,7 +30,6 @@ class LocalCartBloc extends Bloc<LocalCartEvent, LocalCartState> {
       dynamic user = shoping.refreshItems();
 
       if (user != null) {
-       
         emit(LocalCartSuccessState(data: user['data'], priceData: {
           "subPrice": user['subPrice'],
           "mrpPrice": user['mrpPrice'],
@@ -68,8 +67,6 @@ class LocalCartBloc extends Bloc<LocalCartEvent, LocalCartState> {
     // print(event);
     emit(LocalCartLoadingState());
     try {
-      
-
       shoping.updateItem(event.id, event.prodData);
       dynamic user = shoping.refreshItems();
 
@@ -87,13 +84,19 @@ class LocalCartBloc extends Bloc<LocalCartEvent, LocalCartState> {
 
   // ! Delete for LocalCart AND WISHLIST
   void _localCartDeleteMethod(LocalCartItemDelEvent event, Emitter emit) async {
-    // print(event);
+    print(event);
     emit(LocalCartLoadingState());
     try {
-      shoping.deleteItem(event.id);
-      dynamic user = shoping.refreshItems();
+      dynamic us = shoping.deleteItem(event.id);
+        print('delete data $us');
+      dynamic user =  shoping.refreshItems();
+
+      print('cart dtaa $user');
+         
+
 
       if (user != null) {
+        // print('local cond   $user');
         emit(LocalCartSuccessState(data: user['data'], priceData: {
           "subPrice": user['subPrice'],
           "mrpPrice": user['mrpPrice'],
