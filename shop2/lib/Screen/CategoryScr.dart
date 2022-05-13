@@ -8,6 +8,7 @@ import '../utils/common.dart';
 import '../utils/style.dart';
 
 import '../Backend/Bloc/category_Bloc.dart';
+import 'bottomNav.dart';
 
 class CategoryScreen extends StatefulWidget {
   CategoryScreen({Key? key}) : super(key: key);
@@ -23,131 +24,135 @@ class _CategoryScreenState extends State<CategoryScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: BlocProvider(
-        create: (BuildContext context) =>
-            CategoryBloc()..add(FetchCategoryEvent()),
-        child: BlocConsumer<CategoryBloc, CategoryState>(
-            listener: (context, state) {},
-            builder: (context, state) {
-              // print(state);
-              if (state is CategorySuccessState) {
-                return state.data.length > 0
-                    ? CustomScrollView(
-                        slivers: [
-                          // ! Sliver app Bar
-                          SliverAppBar(
-                            title: Text('CategoryList'),
-                            centerTitle: true,
-                            automaticallyImplyLeading: false,
-                            backgroundColor: coffeColor,
-                            // title: 'Category List',
-                            // bottomChild: Container(
-                            //   child: Padding(
-                            //     padding: const EdgeInsets.symmetric(
-                            //         vertical: 5.0, horizontal: 15.0),
-                            //     child: SearchBox(
-                            //       controller: searchController,
-                            //     ),
-                            //   ),
-                            // ),
-                          ),
-
-                          // ! Category List
-                          SliverPadding(
-                            padding: const EdgeInsets.all(5.0),
-                            sliver: SliverGrid(
-                                gridDelegate:
-                                    SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2,
-                                  childAspectRatio:
-                                      MediaQuery.of(context).size.width /
-                                          (MediaQuery.of(context).size.height /
-                                              1.9),
-                                  mainAxisSpacing: 10.0,
-                                  crossAxisSpacing: 10.0,
-                                ),
-                                delegate: SliverChildBuilderDelegate(
-                                    (context, index) {
-                             
-                                  return CategeoryGridProdList(
-                                    // imageUrl: null,
-
-                                    imageUrl:
-                                        '${state.data[index]["image"] != null ? state.data[index]["image"]['src'] : 'assets/imgs/prodcat2.png'}',
-                                    title: '${state.data[index]['name']}',
-                                    onTap: () => navigationPush(
-                                        context,
-                                        SubCategoryScreen(
-                                          pageNum: pageNum.toString(),
-                                          parent: state.data[index]['parent']
-                                              .toString(),
-                                        )),
-                                  );
-                                }, childCount: state.data.length)),
-                          ),
-
-                          SliverToBoxAdapter(
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Expanded(
-                                        child: Center(
-                                      child: Btn(
-                                        height: 40,
-                                        btnName: 'LoadMore',
-                                        color: darkBlueColor,
-                                        onTap: () {
-                                          setState(() {
-                                            pageNum = pageNum + 1;
-                                          });
-                                          BlocProvider.of<CategoryBloc>(context,
-                                              listen: false)
-                                            ..add(FetchCategoryEvent(
-                                                pageNum: pageNum.toString()));
-                                        },
-                                      ),
-                                    )),
-                                    SizedBox(
-                                      width: 2.0,
-                                    ),
-                                    Expanded(
-                                        child: Container(
-                                            child: pageNum > 1
-                                                ? Btn(
-                                                    height: 40,
-                                                    btnName: 'Previous',
-                                                    color: darkBlueColor,
-                                                    onTap: () {
-                                                      setState(() {
-                                                        pageNum = pageNum - 1;
-                                                      });
-                                                      BlocProvider.of<
-                                                              CategoryBloc>(
-                                                          context,
-                                                          listen: false)
-                                                        ..add(FetchCategoryEvent(
-                                                            pageNum: pageNum
-                                                                .toString()));
-                                                    },
-                                                  )
-                                                : null)),
-                                  ]),
+    return WillPopScope(
+        onWillPop: () => willPopCallback(context, true,
+          widget: UserNavigationBar(currentTab: 0)),
+      child: Scaffold(
+        body: BlocProvider(
+          create: (BuildContext context) =>
+              CategoryBloc()..add(FetchCategoryEvent()),
+          child: BlocConsumer<CategoryBloc, CategoryState>(
+              listener: (context, state) {},
+              builder: (context, state) {
+                // print(state);
+                if (state is CategorySuccessState) {
+                  return state.data.length > 0
+                      ? CustomScrollView(
+                          slivers: [
+                            // ! Sliver app Bar
+                            SliverAppBar(
+                              title: Text('CategoryList'),
+                              centerTitle: true,
+                              automaticallyImplyLeading: false,
+                              backgroundColor: coffeColor,
+                              // title: 'Category List',
+                              // bottomChild: Container(
+                              //   child: Padding(
+                              //     padding: const EdgeInsets.symmetric(
+                              //         vertical: 5.0, horizontal: 15.0),
+                              //     child: SearchBox(
+                              //       controller: searchController,
+                              //     ),
+                              //   ),
+                              // ),
                             ),
-                          )
-                        ],
-                      )
-                    : Center(
-                        child: Text("No Data"),
-                      );
-              }
-
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            }),
+    
+                            // ! Category List
+                            SliverPadding(
+                              padding: const EdgeInsets.all(5.0),
+                              sliver: SliverGrid(
+                                  gridDelegate:
+                                      SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2,
+                                    childAspectRatio:
+                                        MediaQuery.of(context).size.width /
+                                            (MediaQuery.of(context).size.height /
+                                                1.9),
+                                    mainAxisSpacing: 10.0,
+                                    crossAxisSpacing: 10.0,
+                                  ),
+                                  delegate: SliverChildBuilderDelegate(
+                                      (context, index) {
+                               
+                                    return CategeoryGridProdList(
+                                      // imageUrl: null,
+    
+                                      imageUrl:
+                                          '${state.data[index]["image"] != null ? state.data[index]["image"]['src'] : 'assets/imgs/prodcat2.png'}',
+                                      title: '${state.data[index]['name']}',
+                                      onTap: () => navigationPush(
+                                          context,
+                                          SubCategoryScreen(
+                                            pageNum: pageNum.toString(),
+                                            parent: state.data[index]['parent']
+                                                .toString(),
+                                          )),
+                                    );
+                                  }, childCount: state.data.length)),
+                            ),
+    
+                            SliverToBoxAdapter(
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Expanded(
+                                          child: Center(
+                                        child: Btn(
+                                          height: 40,
+                                          btnName: 'LoadMore',
+                                          color: darkBlueColor,
+                                          onTap: () {
+                                            setState(() {
+                                              pageNum = pageNum + 1;
+                                            });
+                                            BlocProvider.of<CategoryBloc>(context,
+                                                listen: false)
+                                              ..add(FetchCategoryEvent(
+                                                  pageNum: pageNum.toString()));
+                                          },
+                                        ),
+                                      )),
+                                      SizedBox(
+                                        width: 2.0,
+                                      ),
+                                      Expanded(
+                                          child: Container(
+                                              child: pageNum > 1
+                                                  ? Btn(
+                                                      height: 40,
+                                                      btnName: 'Previous',
+                                                      color: darkBlueColor,
+                                                      onTap: () {
+                                                        setState(() {
+                                                          pageNum = pageNum - 1;
+                                                        });
+                                                        BlocProvider.of<
+                                                                CategoryBloc>(
+                                                            context,
+                                                            listen: false)
+                                                          ..add(FetchCategoryEvent(
+                                                              pageNum: pageNum
+                                                                  .toString()));
+                                                      },
+                                                    )
+                                                  : null)),
+                                    ]),
+                              ),
+                            )
+                          ],
+                        )
+                      : Center(
+                          child: Text("No Data"),
+                        );
+                }
+    
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              }),
+        ),
       ),
     );
   }

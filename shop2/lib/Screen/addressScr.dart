@@ -332,7 +332,7 @@ class AddressField extends StatelessWidget {
         txtColor: txtBlackColor,
         formBox: true,
         fillColor: borderColor,
-        hintText: 'Apartment , suit ,etc',
+        hintText: 'Apartment , suite ,etc',
         controller: street2Controller,
         vertical: 15,
         // validator: validateField,

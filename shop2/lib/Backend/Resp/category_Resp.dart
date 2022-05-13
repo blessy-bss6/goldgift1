@@ -4,7 +4,7 @@ import '/utils/http_services.dart';
 class CategoryRespo {
   Future<dynamic> categoryResp({String? pageNum = '1'}) async {
     String url = URLConstants.baseUrl +
-        URLConstants.categoryUrl+"?page=$pageNum&per_page=20"
+        URLConstants.categoryUrl+"?page=$pageNum&per_page=30"
   "&consumer_key=${URLConstants.Key}&consumer_secret=${URLConstants.password}";
     
     final response = await getDioRequest(url);
@@ -20,7 +20,7 @@ class CategoryRespo {
 
   Future<dynamic> subCategoryResp({String? pageNum, String ?parent}) async {
     String url = URLConstants.baseUrl +
-        URLConstants.categoryUrl + "?page=$pageNum&per_page=20&parent=$parent"
+        URLConstants.categoryUrl + "?page=$pageNum&per_page=30&parent=$parent"
         "&consumer_key=${URLConstants.Key}&consumer_secret=${URLConstants.password}";
 
     final response = await getDioRequest(url);

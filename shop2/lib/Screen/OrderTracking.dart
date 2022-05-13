@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shop2/Screen/bottomNav.dart';
+import 'package:shop2/utils/common.dart';
 import '../Backend/Bloc/order_Bloc.dart';
 import '../Backend/Resp/payment_Resp.dart';
 import '../Elements/button.dart';
@@ -32,92 +34,97 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: BlocConsumer<OrderBloc, OrderState>(
-          listener: (context, state) {},
-          builder: (context, state) {
-            // print(state);
-
-            if (state is OrderDelSuccessState) {
-              return Container(
-                  child: ListView.builder(
-                      itemCount: state.data.length,
-                      shrinkWrap: true,
-                      itemBuilder: (context, i) {
-                        return Card(
-                          child: Container(
-                              margin: EdgeInsets.all(8.0),
-                              decoration: BoxDecoration(
-                                  color: offWhiteColor,
-                                  border: Border.all(
-                                    color: borderColor,
-                                  )),
-                              child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      '#Order Id: ${state.data[i]['id']}',
-                                      style: labelTextStyle,
-                                    ),
-                                    Divider(),
-                                    TrackingProdContent(
-                                        prodNumber: state.data[i])
-                                  ])),
-                        );
-                      }));
-            }
-
-            if (state is OrderSuccessState) {
-              return Container(
-                  child: state.data.isNotEmpty
-                      ? ListView.builder(
-                          itemCount: state.data.length,
-                          shrinkWrap: true,
-                          itemBuilder: (context, i) {
-                            return Card(
-                              child: Container(
-                                  margin: EdgeInsets.all(8.0),
-                                  decoration: BoxDecoration(
-                                      color: offWhiteColor,
-                                      border: Border.all(
-                                        color: borderColor,
-                                      )),
-                                  child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          '#Order Id: ${state.data[i]['id']}',
-                                          style: labelTextStyle,
-                                        ),
-                                        Divider(),
-                                        TrackingProdContent(
-                                            prodNumber: state.data[i])
-                                      ])),
-                            );
-                          })
-                      : Center(
-                          child: Text('No Data'),
-                        ));
-            } else {
-              Timer(
-                  Duration(seconds: 5),
-                  () => setState(() {
-                        loadMore = false;
-                      }));
-              return loadMore == true
-                  ? Center(
-                      child: CircularProgressIndicator(),
-                    )
-                  : Center(
-                      child: Text('No Data'),
-                    );
-            }
-          }),
+    return WillPopScope( 
+      onWillPop: () =>  willPopCallback(context,true, widget:UserNavigationBar(currentTab: 0)),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: BlocConsumer<OrderBloc, OrderState>(
+            listener: (context, state) {},
+            builder: (context, state) {
+              // print(state);
+    
+              if (state is OrderDelSuccessState) {
+                return Container(
+                    child: ListView.builder(
+                        itemCount: state.data.length,
+                        shrinkWrap: true,
+                        itemBuilder: (context, i) {
+                          return Card(
+                            child: Container(
+                                margin: EdgeInsets.all(8.0),
+                                decoration: BoxDecoration(
+                                    color: offWhiteColor,
+                                    border: Border.all(
+                                      color: borderColor,
+                                    )),
+                                child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        '#Order Id: ${state.data[i]['id']}',
+                                        style: labelTextStyle,
+                                      ),
+                                      Divider(),
+                                      TrackingProdContent(
+                                          prodNumber: state.data[i])
+                                    ])),
+                          );
+                        }));
+              }
+    
+              if (state is OrderSuccessState) {
+                return Container(
+                    child: state.data.isNotEmpty
+                        ? ListView.builder(
+                            itemCount: state.data.length,
+                            shrinkWrap: true,
+                            itemBuilder: (context, i) {
+                              return Card(
+                                child: Container(
+                                    margin: EdgeInsets.all(8.0),
+                                    decoration: BoxDecoration(
+                                        color: offWhiteColor,
+                                        border: Border.all(
+                                          color: borderColor,
+                                        )),
+                                    child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            '#Order Id: ${state.data[i]['id']}',
+                                            style: labelTextStyle,
+                                          ),
+                                          Divider(),
+                                          TrackingProdContent(
+                                              prodNumber: state.data[i])
+                                        ])),
+                              );
+                            })
+                        : Center(
+                            child: Text('No Data'),
+                          ));
+              } else {
+                Timer(
+                    Duration(seconds: 5),
+                    () => setState(() {
+                          loadMore = false;
+                        }));
+                return
+                    loadMore == true
+                        ? Center(
+                            child: CircularProgressIndicator(),
+                          )
+                        :
+                    Center(
+                  child: Text('No Data'),
+                );
+              }
+            }),
+      ),
     );
   }
 }
@@ -215,15 +222,15 @@ class _TrackingProdContentState extends State<TrackingProdContent> {
                           children: [
                             Divider(),
                             Text(
-                              'DiscountPrice :-                             ${widget.prodNumber['discount_total']}',
+                              'DiscountPrice :-                       ${widget.prodNumber['discount_total']}',
                               style: labelTextStyle,
                             ),
                             Text(
-                              'ShippingPrice :-                             ${widget.prodNumber['shipping_total']}',
+                              'ShippingPrice :-                        ${widget.prodNumber['shipping_total']}',
                               style: labelTextStyle,
                             ),
                             Text(
-                              'Total :-                                             ${widget.prodNumber['total']}',
+                              'Total :-                                 ${widget.prodNumber['total']}',
                               style: labelTextStyle,
                             ),
 

@@ -40,9 +40,9 @@ navigationRemoveUntil(BuildContext context, Widget widget) {
       (Route<dynamic> route) => false);
 }
 
-navigationPushReplacement(BuildContext context, Widget widget) {
+navigationPushReplacement(BuildContext context, {Widget? widget}) {
   Navigator.pushReplacement(
-      context, MaterialPageRoute(builder: (context) => widget));
+      context, MaterialPageRoute(builder: (context) =>  widget!));
 }
 
 Future navigationPush(BuildContext context, Widget widget) {
@@ -59,13 +59,23 @@ Container verticalDivider(height) {
 }
 
 ScaffoldFeatureController<SnackBar, SnackBarClosedReason> snackBar(
-    BuildContext context, String message ,{Color ?bgColor,  Color? color, double? fontSize }) {
+    BuildContext context, String message,
+    {Color? bgColor, Color? color, double? fontSize}) {
   return ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar( 
+    SnackBar(
       backgroundColor: bgColor,
-      content: Text(message ,style: TextStyle(color: color, fontSize: fontSize),),
+      content: Text(
+        message,
+        style: TextStyle(color: color, fontSize: fontSize),
+      ),
     ),
   );
+}
+
+Future<bool> willPopCallback(BuildContext context, bool page,
+    {Widget? widget}) async {
+  navigationPushReplacement(context, widget: widget);
+  return Future.value(page);
 }
 
 // Future<bool?> flutterToast(String message) {

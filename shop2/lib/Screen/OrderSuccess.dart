@@ -51,72 +51,75 @@ class _OrderCompleteScreenState extends State<OrderCompleteScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: coffeColor,
-        centerTitle: true,
-        title: Text(
-          'Order Complete',
-          // style: appBarTS,
-          style: TextStyle(color: offWhiteColor),
+    return WillPopScope(
+      onWillPop: () async {
+        return false;
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: coffeColor,
+          centerTitle: true,
+          title: Text(
+            'Order Complete',
+            // style: appBarTS,
+            style: TextStyle(color: offWhiteColor),
+          ),
+          // automaticallyImplyLeading: false,
+          leading: new IconButton(
+              icon: new Icon(Icons.arrow_back),
+              onPressed: () {
+                if (isLogin == false) {
+                  BlocProvider.of<OrderBloc>(context, listen: false)
+                    ..add(OrderItemUpdateEvent(
+                        customerId: userId,
+                        orderId: widget.orderId,
+                        context: context));
+
+                  payresp.paymentCapturedResp(
+                      transcationId: "${widget.transcationId}",
+                      ammount: double.parse(widget.ammount.toString()));
+
+                  navigationPushReplacement(context,
+                      widget: UserNavigationBar(
+                        currentTab: 0,
+                      ));
+                } else {
+                  payresp.paymentCapturedResp(
+                      transcationId: "${widget.transcationId}",
+                      ammount: double.parse(widget.ammount));
+
+                  navigationPushReplacement(context,
+                      widget: UserNavigationBar(
+                        currentTab: 0,
+                      ));
+                }
+              }),
         ),
-        // automaticallyImplyLeading: false,
-        leading: new IconButton(
-            icon: new Icon(Icons.arrow_back),
-            onPressed: () {
-              if (isLogin == false) {
-                BlocProvider.of<OrderBloc>(context, listen: false)
-                  ..add(OrderItemUpdateEvent(
-                      customerId: userId,
-                      orderId: widget.orderId,
-                      context: context));
-
-                payresp.paymentCapturedResp(
-                    transcationId: "${widget.transcationId}",
-                    ammount: double.parse(widget.ammount.toString()));
-
-                navigationPushReplacement(
-                    context,
-                    UserNavigationBar(
-                      currentTab: 0,
-                    ));
-              } else {
-                payresp.paymentCapturedResp(
-                    transcationId: "${widget.transcationId}",
-                    ammount: double.parse(widget.ammount));
-
-                navigationPushReplacement(
-                    context,
-                    UserNavigationBar(
-                      currentTab: 0,
-                    ));
-              }
-            }),
-      ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        // crossAxisAlignment: ,
-        children: [
-          Center(
-            child: Txt(
-              t: 'Your Order has been                               \n        accepted',
-              style: labelTextStyle,
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          // crossAxisAlignment: ,
+          children: [
+            Center(
+              child: Txt(
+                t: 'Your Order has been                               \n        accepted',
+                style: labelTextStyle,
+              ),
             ),
-          ),
-          heightSizedBox(5.0),
-          Center(
-            child: Txt(
-              t: "Your Items has been placed and is on \n It's way to being processed",
-              style: smallTextStyle,
+            heightSizedBox(5.0),
+            Center(
+              child: Txt(
+                t: "Your Items has been placed and is on \n It's way to being processed",
+                style: smallTextStyle,
+              ),
             ),
-          ),
-          //   InkWell(onTap: () {
-          //     BlocProvider.of<AuthBloc>(context, listen: false)
-          //         ..add(SignUpBtnEvent(email: email, context: context));
-          //   },
-          //     child: Container( height: 40,width: 60,child: Text('ok',style: labelTextStyle)))
-        ],
+            //   InkWell(onTap: () {
+            //     BlocProvider.of<AuthBloc>(context, listen: false)
+            //         ..add(SignUpBtnEvent(email: email, context: context));
+            //   },
+            //     child: Container( height: 40,width: 60,child: Text('ok',style: labelTextStyle)))
+          ],
+        ),
       ),
     );
   }

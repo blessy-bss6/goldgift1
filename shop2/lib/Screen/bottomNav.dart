@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shop2/Screen/prodList2.dart';
 import '../utils/shared_helper.dart';
 import '../utils/style.dart';
 
@@ -53,7 +54,8 @@ class _UserNavigationBarState extends State<UserNavigationBar> {
           break;
 
         case 2:
-          widget.currentPage = ProductListScreen();
+          // widget.currentPage = ProductListScreen();
+          widget.currentPage = ProductShowScreen();
           break;
         case 3:
           widget.currentPage = CartScreen();
@@ -65,9 +67,8 @@ class _UserNavigationBarState extends State<UserNavigationBar> {
           break;
         case 5:
           widget.currentPage = OrderDeatilsScreen();
-          
+
           break;
-        
       }
     });
   }

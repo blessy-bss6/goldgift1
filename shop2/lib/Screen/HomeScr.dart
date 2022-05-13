@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shop2/Backend/Resp/reg_login_resp.dart';
-import 'package:shop2/Screen/ProdList.dart';
-import 'package:shop2/Screen/splashScr.dart';
+
+import '../Screen/ProdList.dart';
 
 import '../Elements/button.dart';
-import '../Elements/drawers.dart';
-import '../Elements/formfield.dart';
+
 import '../Elements/imgScr.dart';
 import '../Screen/cartScr.dart';
 import '../utils/common.dart';
@@ -15,7 +13,6 @@ import '../utils/style.dart';
 import '../Backend/Bloc/home_Bloc.dart';
 import 'CategoryScr.dart';
 import 'LoginScr.dart';
-import 'f1.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key? key}) : super(key: key);
@@ -53,22 +50,23 @@ class _HomeScreenState extends State<HomeScreen> {
                     //   title: Text('Available seats'),
                     // ),
                     backgroundColor: coffeColor,
+                    automaticallyImplyLeading: false,
                     title: Text(
                       'Gold Gift Ideas',
                       style: whiteTextStyle,
                     ),
                     centerTitle: true,
-                    bottom: PreferredSize(
-                        preferredSize: Size.fromHeight(60),
-                        child: Container(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 5.0, horizontal: 15.0),
-                            child: SearchBox(
-                              controller: searchController,
-                            ),
-                          ),
-                        )),
+                    // bottom: PreferredSize(
+                    //     preferredSize: Size.fromHeight(60),
+                    //     child: Container(
+                    //       child: Padding(
+                    //         padding: const EdgeInsets.symmetric(
+                    //             vertical: 5.0, horizontal: 15.0),
+                    //         child: SearchBox(
+                    //           controller: searchController,
+                    //         ),
+                    //       ),
+                    //     )),
                     actions: <Widget>[
                       IconButton(
                         icon: const Icon(Icons.login),
@@ -82,7 +80,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ],
                   ),
-                  SliverToBoxAdapter(child: ImgSlider(),),
+                  SliverToBoxAdapter(
+                    child: ImgSlider(),
+                  ),
                   // SliverList(
                   //   delegate: SliverChildListDelegate([
                   //     ImgSlider(),
@@ -127,7 +127,10 @@ class _HomeScreenState extends State<HomeScreen> {
                           );
                         }, childCount: state.category.length)),
                   ),
+                     
 
+
+                  SliverToBoxAdapter(child: ImgSlider(),),
                   // ! First List
                   SliverPadding(
                     padding: const EdgeInsets.all(3),
@@ -181,7 +184,6 @@ class _HomeScreenState extends State<HomeScreen> {
 // !  Vertical list for Category
 class CategoryListItem extends StatelessWidget {
   final dynamic cateList;
-
 
   CategoryListItem({Key? key, this.cateList}) : super(key: key);
 

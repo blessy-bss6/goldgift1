@@ -45,9 +45,9 @@ class _ProdDetailScreenState extends State<ProdDetailScreen> {
   }
 
   vartionFun() async {
-    print(
-        "================================================================================================================================================================================");
-    print(widget.prodNumber["id"]);
+    // print(
+    //     "================================================================================================================================================================================");
+    // print(widget.prodNumber["id"]);
 
     dynamic data = await prodVerResp.prodVaritionResp(
         productId: widget.prodNumber["id"].toString());
@@ -55,18 +55,15 @@ class _ProdDetailScreenState extends State<ProdDetailScreen> {
     setState(() {
       varitonData = data;
     });
-    print(data);
+    // print(data);
   }
 
   String? htmlData;
   htmlRemove() {
-    String html =
-        '<div><p>Hello</p>This is <br/>fluttercampus.com<span>,Bye!</span></div>';
-
-    var doc = parse(widget.prodNumber['description']);
+    var doc = parse(widget.prodNumber['short_description']);
     if (doc.documentElement != null) {
       String parsedstring = doc.documentElement!.text;
-      print("  html data =========== $parsedstring");
+      // print("  html data =========== $parsedstring");
       setState(() {
         htmlData = parsedstring;
       });
@@ -84,73 +81,76 @@ class _ProdDetailScreenState extends State<ProdDetailScreen> {
       body: BlocConsumer<ProductBloc, ProductState>(
           listener: (context, state) {},
           builder: (context, state) {
-            return SingleChildScrollView(
-              child: Column(
-                children: [
-                  // ! Image Section
-                  heightSizedBox(13.0),
-                  Container(
-                    alignment: Alignment.center,
-                    // color: Colors.red,
-                    child: Pics(
-                      networkImg: true,
-                      src:
-                          '${widget.prodNumber["images"].length > 0 ? widget.prodNumber["images"][0]['src'] : ''}',
-                      // src: 'assets/images/Wooden-Pooja-Mandir.png',
-                      width: 300,
-                      height: 200,
-                    ),
-                  ),
-                  heightSizedBox(10.0),
-                  //  Image List Section
-                  // Container(
-                  //     child: widget.prodNumber["images"].length > 0
-                  //         ? ImgHorizontalList(
-                  //             cheight: 80,
-                  //             prodList: widget.prodNumber["images"],
-                  //             callBack: imgcallBack,
-                  //             itemBorder: listImgSrc != null
-                  //                 ? listImgSrc.toString()
-                  //                 : null,
-                  //           )
-                  //         : null),
-                  // !  Product Content
-                  ProdDetailsContent(prodNumber: widget.prodNumber),
-
-                  // Container(
-                  //   height: 30,
-                  //   child: ListView.builder(
-                  //       itemCount: varitonData.length,
-                  //       scrollDirection: Axis.horizontal,
-                  //       itemBuilder: (context, i) {
-                  //         return Btn(
-                  //           margin: EdgeInsets.all(5),
-                  //           onTap: () {
-
-                  //           },
-                  //           alignment: Alignment.bottomLeft,
-                  //           height: 25,
-                  //           // width: 0,
-                  //           btnName: '${varitonData[i]["attributes"][0]["option"]}',
-                  //           txtColor: offWhiteColor,
-                  //           color: offgreenColor,
-                  //         );
-                  //       }),
-                  // ),
-
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      alignment: Alignment.bottomCenter,
-                      child: Txt(
-                        t: htmlData.toString(),
-                        style: smallTextStyle,
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    // ! Image Section
+                    heightSizedBox(25.0),
+                    Container(
+                      alignment: Alignment.center,
+                      // color: Colors.red,
+                      child: Pics(
+                        networkImg: true,
+                        src:
+                            '${widget.prodNumber["images"].length > 0 ? widget.prodNumber["images"][0]['src'] : ''}',
+                        // src: 'assets/images/Wooden-Pooja-Mandir.png',
+                        width: 300,
+                        height: 250,
                       ),
                     ),
-                  )
+                    heightSizedBox(10.0),
+                    //  Image List Section
+                    // Container(
+                    //     child: widget.prodNumber["images"].length > 0
+                    //         ? ImgHorizontalList(
+                    //             cheight: 80,
+                    //             prodList: widget.prodNumber["images"],
+                    //             callBack: imgcallBack,
+                    //             itemBorder: listImgSrc != null
+                    //                 ? listImgSrc.toString()
+                    //                 : null,
+                    //           )
+                    //         : null),
+                    // !  Product Content
+                    ProdDetailsContent(prodNumber: widget.prodNumber),
 
-                  // ! Btn  for Cart
-                ],
+                    // Container(
+                    //   height: 30,
+                    //   child: ListView.builder(
+                    //       itemCount: varitonData.length,
+                    //       scrollDirection: Axis.horizontal,
+                    //       itemBuilder: (context, i) {
+                    //         return Btn(
+                    //           margin: EdgeInsets.all(5),
+                    //           onTap: () {
+
+                    //           },
+                    //           alignment: Alignment.bottomLeft,
+                    //           height: 25,
+                    //           // width: 0,
+                    //           btnName: '${varitonData[i]["attributes"][0]["option"]}',
+                    //           txtColor: offWhiteColor,
+                    //           color: offgreenColor,
+                    //         );
+                    //       }),
+                    // ),
+
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        alignment: Alignment.bottomCenter,
+                        child: Txt(
+                          t: htmlData.toString(),
+                          style: smallTextStyle,
+                        ),
+                      ),
+                    )
+
+                    // ! Btn  for Cart
+                  ],
+                ),
               ),
             );
           }),

@@ -186,7 +186,7 @@ import 'addressScr.dart';
 //                             // hintText: 'Enter First Name',
 //                             controller: passwordController,
 //                             vertical: 15,
-//                             // validator: validateField,
+//
 //                             validator: (v) => validateField(v!),
 //                           )
 //                         : null,
@@ -361,10 +361,9 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
         if (userE == true) {
           setState(() {
             userEs = true;
-           
           });
-           snackBar(context, 'User Already Exists');
-        }else{
+          snackBar(context, 'User Already Exists');
+        } else {
           setState(() {
             userEs = false;
           });
@@ -442,7 +441,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                   controller: fNameController,
                   vertical: 15,
                   maxLength: 10,
-                  // validator: validateField,
+
                   validator: (v) => validateField(v!),
                 ),
                 heightSizedBox(10.0),
@@ -456,7 +455,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                   controller: lNameController,
                   vertical: 15,
                   maxLength: 10,
-                  // validator: validateField,
+
                   validator: (v) => validateField(v!),
                 ),
                 heightSizedBox(10.0),
@@ -470,7 +469,6 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                   controller: countryController,
                   vertical: 15,
                   maxLength: 10,
-                  // validator: validateField,
                 ),
                 heightSizedBox(10.0),
                 EditTextField(
@@ -482,7 +480,6 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                   hintText: 'House Number and street number',
                   controller: street1Controller,
                   vertical: 15,
-                  // validator: validateField,
                   validator: (v) => validateField(v!),
                 ),
 
@@ -495,7 +492,6 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                   hintText: 'Apartment , suit ,etc',
                   controller: street2Controller,
                   vertical: 15,
-                  // validator: validateField,
                   validator: (v) => validateField(v!),
                 ),
 
@@ -509,7 +505,6 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                   controller: townController,
                   vertical: 15,
                   maxLength: 15,
-                  // validator: validateField,
                   validator: (v) => validateField(v!),
                 ),
                 heightSizedBox(10.0),
@@ -522,7 +517,6 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                   controller: stateController,
                   maxLength: 10,
                   vertical: 15,
-                  // validator: validateField,
                   validator: (v) => validateField(v!),
                 ),
 
@@ -536,7 +530,6 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                   controller: pinCodeController,
                   vertical: 15,
                   maxLength: 9,
-                  // validator: validateField,
                   validator: (v) => validateField(v!),
                 ),
 
@@ -558,7 +551,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                         // hintText: 'Enter Email',
                         controller: emailController,
                         vertical: 15,
-                        // validator: validateField,
+
                         maxLength: 25,
                         keyboardType: TextInputType.emailAddress,
                         validator: (v) => validateEmail(v!),
@@ -576,7 +569,6 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                         validator: (v) => validateField(v!),
                         vertical: 15,
                         keyboardType: TextInputType.phone,
-                        // validator: validateField,
                       ),
                     ],
                   ),
@@ -593,7 +585,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                           // hintText: 'Enter First Name',
                           controller: passwordController,
                           vertical: 15,
-                          // validator: validateField,
+
                           validator: (v) => validateField(v!),
                         )
                       : null,
@@ -628,7 +620,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                 controller: fNameController2,
                                 vertical: 15,
                                 maxLength: 10,
-                                // validator: validateField,
+
                                 // validator: (v) => validateField(v!),
                               ),
                               heightSizedBox(10.0),
@@ -642,7 +634,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                 controller: lNameController2,
                                 vertical: 15,
                                 maxLength: 10,
-                                // validator: validateField,
+
                                 // validator: (v) => validateField(v!),
                               ),
                               heightSizedBox(10.0),
@@ -656,7 +648,6 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                 controller: countryController2,
                                 vertical: 15,
                                 maxLength: 10,
-                                // validator: validateField,
                               ),
                               heightSizedBox(10.0),
                               EditTextField(
@@ -668,7 +659,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                 hintText: 'House Number and street number',
                                 controller: street1Controller2,
                                 vertical: 15,
-                                // validator: validateField,
+
                                 // validator: (v) => validateField(v!),
                               ),
                               heightSizedBox(10.0),
@@ -680,7 +671,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                 hintText: 'Apartment , suit ,etc',
                                 controller: street2Controller2,
                                 vertical: 15,
-                                // validator: validateField,
+
                                 // validator: (v) => validateField(v!),
                               ),
                               heightSizedBox(10.0),
@@ -693,7 +684,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                 controller: townController2,
                                 vertical: 15,
                                 maxLength: 15,
-                                // validator: validateField,
+
                                 // validator: (v) => validateField(v!),/
                               ),
                               heightSizedBox(10.0),
@@ -706,7 +697,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                 controller: stateController2,
                                 maxLength: 10,
                                 vertical: 15,
-                                // validator: validateField,
+
                                 // validator: (v) => validateField(v!),
                               ),
                               heightSizedBox(10.0),
@@ -719,7 +710,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                 controller: pinCodeController2,
                                 vertical: 15,
                                 maxLength: 9,
-                                // validator: validateField,
+
                                 // validator: (v) => validateField(v!),
                               ),
                             ],
