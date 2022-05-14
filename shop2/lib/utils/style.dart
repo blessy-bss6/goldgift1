@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-const montserratMedium = 'MontserratMedium';
-const montserratSemiBold = 'MontserratSemiBold';
+const poppinsMedium = 'PoppinsMedium';
+const poppinsSemiBold = 'PoppinsSemiBold';
 // const redColor = Color(0xffF6343F);
 // const blackColor = Color(0xFF000000);
 // const bottomSheet = Color(0xff71181C);
@@ -38,26 +38,26 @@ const dashBgColor =
     Color.fromARGB(255, 237, 237, 237); /* Seller DashBoard Bg */
 
 TextStyle smallTextStyle =
-    TextStyle(fontFamily: montserratMedium, color: txtBlackColor, fontSize: 14);
+    TextStyle(fontFamily: poppinsMedium, color: txtBlackColor, fontSize: 14);
 TextStyle appBarTS =
-    TextStyle(fontFamily: montserratMedium, fontSize: 18, color: txtBlackColor);
+    TextStyle(fontFamily: poppinsMedium, fontSize: 18, color: txtBlackColor);
 TextStyle liteHeadingTS = TextStyle(
-    color: Colors.grey.shade600, fontSize: 13.0, fontFamily: montserratMedium);
+    color: Colors.grey.shade600, fontSize: 13.0, fontFamily: poppinsMedium);
 
 TextStyle labelTextStyle = TextStyle(
   color: Colors.black,
   fontWeight: FontWeight.bold,
-  fontFamily: montserratMedium,
+  fontFamily: poppinsMedium,
   fontSize: 14.0,
 );
 TextStyle mediumTextStyle = TextStyle(
   color: Colors.black,
-  fontFamily: montserratMedium,
+  fontFamily: poppinsMedium,
   fontSize: 16.0,
 );
 
 TextStyle whiteTextStyle = TextStyle(
   color: Colors.white,
-  fontFamily: montserratMedium,
+  fontFamily: poppinsMedium,
   fontSize: 14.0,
 );

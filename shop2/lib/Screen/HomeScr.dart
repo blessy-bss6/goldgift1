@@ -45,50 +45,60 @@ class _HomeScreenState extends State<HomeScreen> {
                 slivers: [
                   // ! Sliver app Bar
                   SliverAppBar(
-                    // expandedHeight: 6.0,
-                    // flexibleSpace: const FlexibleSpaceBar(
-                    //   title: Text('Available seats'),
-                    // ),
-                    backgroundColor: coffeColor,
+                    backgroundColor: offWhiteColor,
                     automaticallyImplyLeading: false,
-                    title: Text(
-                      'Gold Gift Ideas',
-                      style: whiteTextStyle,
+                    title: Image.asset(
+                      "assets/imgs/applogo.png",
+                      fit: BoxFit.contain,
+                      height: 50,
+                      width: 150,
                     ),
                     centerTitle: true,
-                    // bottom: PreferredSize(
-                    //     preferredSize: Size.fromHeight(60),
-                    //     child: Container(
-                    //       child: Padding(
-                    //         padding: const EdgeInsets.symmetric(
-                    //             vertical: 5.0, horizontal: 15.0),
-                    //         child: SearchBox(
-                    //           controller: searchController,
-                    //         ),
+                    expandedHeight: 100.0,
+                    floating: true,
+                    pinned: true,
+                    snap: true,
+                    actionsIconTheme: IconThemeData(opacity: 0.0),
+                    flexibleSpace: FlexibleSpaceBar(
+                      // title: Text("Sliverappbar"),
+                      centerTitle: true,
+                      background: Image.asset(
+                        "assets/imgs/topheader.png",
+                        fit: BoxFit.fill,
+                      ),
+                      collapseMode: CollapseMode.pin,
+                    ),
+                    // flexibleSpace: Stack(
+                    //   children: <Widget>[
+                    //     Positioned.fill(
+                    //         child: Image.asset(
+                    //       "assets/imgs/topheader.png",
+                    //       width: double.infinity,
+                    //       height: double.maxFinite,
+                    //       fit: BoxFit.fill,
                     //       ),
-                    //     )),
-                    actions: <Widget>[
-                      IconButton(
-                        icon: const Icon(Icons.login),
-                        tooltip: 'Login',
-                        onPressed: () => navigationPush(context, LoginScreen()),
-                      ),
-                      IconButton(
-                        icon: const Icon(Icons.shopping_bag),
-                        tooltip: 'Cart',
-                        onPressed: () => navigationPush(context, CartScreen()),
-                      ),
-                    ],
+                    //       collapseMode: CollapseMode.pin,
+                    //     )
+                    //   ],
+                    // ),
+
+                    // actions: <Widget>[
+                    //   IconButton(
+                    //     icon: const Icon(Icons.login),
+                    //     tooltip: 'Login',
+                    //     onPressed: () => navigationPush(context, LoginScreen()),
+                    //   ),
+                    //   IconButton(
+                    //     icon: const Icon(Icons.shopping_bag),
+                    //     tooltip: 'Cart',
+                    // //     onPressed: () => navigationPush(context, CartScreen()),
+                    //   ),
+                    // ],
                   ),
                   SliverToBoxAdapter(
                     child: ImgSlider(),
                   ),
-                  // SliverList(
-                  //   delegate: SliverChildListDelegate([
-                  //     ImgSlider(),
-                  //     // CategoryListItem(cateList: state.category)
-                  //   ]),
-                  // ),
+                  
 
                   // ! First List
                   SliverPadding(
@@ -127,10 +137,10 @@ class _HomeScreenState extends State<HomeScreen> {
                           );
                         }, childCount: state.category.length)),
                   ),
-                     
 
-
-                  SliverToBoxAdapter(child: ImgSlider(),),
+                  SliverToBoxAdapter(
+                    child: ImgSlider(),
+                  ),
                   // ! First List
                   SliverPadding(
                     padding: const EdgeInsets.all(3),

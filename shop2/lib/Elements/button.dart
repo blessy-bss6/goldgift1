@@ -37,7 +37,7 @@ class Txt extends StatelessWidget {
             color: color ?? null,
             fontSize: fontSize ?? 14,
             fontWeight: fontWeight ?? null,
-            fontFamily: fontFamily ?? montserratMedium,
+            fontFamily: fontFamily ?? poppinsMedium,
           ),
     );
   }

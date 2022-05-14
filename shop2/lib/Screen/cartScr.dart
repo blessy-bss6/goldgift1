@@ -165,6 +165,7 @@ class _CartScreenState extends State<CartScreen> {
     
               SliverAppBars(
                 title: 'Cart Screen',
+                
               ),
               SliverToBoxAdapter(
                   child: Center(

@@ -373,7 +373,7 @@ class CusDrawerList extends StatelessWidget {
         // },
         child: ListTile(
           title: Text(title!,
-              style: TextStyle(fontFamily: montserratMedium, fontSize: 14)),
+              style: TextStyle(fontFamily: poppinsMedium, fontSize: 14)),
           leading: Icon(
             icon,
             size: 20,

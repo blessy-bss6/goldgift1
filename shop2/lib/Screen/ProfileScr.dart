@@ -131,7 +131,7 @@ class ProfileCard extends StatelessWidget {
                   child: Text(
                     cardText,
                     style:
-                        TextStyle(fontSize: 14.0, fontFamily: montserratMedium),
+                        TextStyle(fontSize: 14.0, fontFamily: poppinsMedium),
                   ),
                 ),
                 // Image.asset(imagePath, height: 20)

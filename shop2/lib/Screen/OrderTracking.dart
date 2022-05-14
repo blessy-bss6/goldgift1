@@ -34,15 +34,16 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope( 
-      onWillPop: () =>  willPopCallback(context,true, widget:UserNavigationBar(currentTab: 0)),
+    return WillPopScope(
+      onWillPop: () => willPopCallback(context, true,
+          widget: UserNavigationBar(currentTab: 0)),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: BlocConsumer<OrderBloc, OrderState>(
             listener: (context, state) {},
             builder: (context, state) {
               // print(state);
-    
+
               if (state is OrderDelSuccessState) {
                 return Container(
                     child: ListView.builder(
@@ -59,7 +60,8 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
                                     )),
                                 child: Column(
                                     mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         '#Order Id: ${state.data[i]['id']}',
@@ -72,7 +74,7 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
                           );
                         }));
               }
-    
+
               if (state is OrderSuccessState) {
                 return Container(
                     child: state.data.isNotEmpty
@@ -113,15 +115,13 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
                     () => setState(() {
                           loadMore = false;
                         }));
-                return
-                    loadMore == true
-                        ? Center(
-                            child: CircularProgressIndicator(),
-                          )
-                        :
-                    Center(
-                  child: Text('No Data'),
-                );
+                return loadMore == true
+                    ? Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : Center(
+                        child: Text('No Data'),
+                      );
               }
             }),
       ),
@@ -221,18 +221,47 @@ class _TrackingProdContentState extends State<TrackingProdContent> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Divider(),
-                            Text(
-                              'DiscountPrice :-                       ${widget.prodNumber['discount_total']}',
-                              style: labelTextStyle,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'DiscountPrice :-',
+                                  style: labelTextStyle,
+                                ),
+                                Text(
+                                  '${widget.prodNumber['discount_total']}',
+                                    // '${widget.prodNumber['sale_price']}',
+                                  style: labelTextStyle,
+                                ),
+                              ],
                             ),
-                            Text(
-                              'ShippingPrice :-                        ${widget.prodNumber['shipping_total']}',
-                              style: labelTextStyle,
+
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'ShippingPrice :-',
+                                  style: labelTextStyle,
+                                ),
+                                Text(
+                                  '${widget.prodNumber['shipping_total']}',
+                                  style: labelTextStyle,
+                                ),
+                              ],
                             ),
-                            Text(
-                              'Total :-                                 ${widget.prodNumber['total']}',
-                              style: labelTextStyle,
-                            ),
+
+                            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'Total :- ',
+                                  style: labelTextStyle,
+                                ),
+                                Text(
+                                  '${widget.prodNumber['total']}',
+                                  style: labelTextStyle,
+                                ),
+                              ],
+                            )
 
                             // PriceList(
                             //   heading: 'Price',

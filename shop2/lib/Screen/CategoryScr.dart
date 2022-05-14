@@ -179,10 +179,10 @@ class CategeoryGridProdList extends StatelessWidget {
     return InkWell(
         onTap: onTap,
         child: Container(
-          // padding: EdgeInsets.only(top: 3),
+         
           decoration: BoxDecoration(
               color: offWhiteColor,
-              borderRadius: BorderRadius.circular(5.0),
+              borderRadius: BorderRadius.circular(15.0),
               border: Border.all(
                 color: Color.fromARGB(255, 236, 234, 234),
               )),
@@ -192,6 +192,13 @@ class CategeoryGridProdList extends StatelessWidget {
               children: <Widget>[
                 Center(
                   child: Container(
+                     decoration: BoxDecoration(
+                          // color: offWhiteColor,
+                          borderRadius: BorderRadius.circular(10.0),
+                          border: Border.all(
+                            color: Color.fromARGB(255, 236, 234, 234),
+                          )),
+                    
                       child: imageUrl != null
                           ? Image.network(
                               imageUrl != null ? imageUrl! : '',
@@ -205,12 +212,17 @@ class CategeoryGridProdList extends StatelessWidget {
                 // ! title  and Subtitle for
                 Container(
                   padding:
-                      EdgeInsets.only(left: 3, right: 3, top: 3, bottom: 2),
+                      EdgeInsets.only(left: 5, right: 3, top: 3, bottom: 2),
                   child: Text(
                     title!.length <= 40 ? title! : title!.substring(0, 40),
-                    textAlign: TextAlign.left,
-                    // fontSize: 15,
-                    // fontWeight: FontWeight.bold,
+                    textAlign: TextAlign.center,
+                    style: TextStyle( 
+                      fontFamily: poppinsMedium,
+                             fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                    ),
+
+             
                   ),
                 )
               ]),

@@ -28,7 +28,7 @@ class _OrderDeatilsScreenState extends State<OrderDeatilsScreen> {
         appBar: AppBar(
           centerTitle: true, backgroundColor: coffeColor,
           title: Text('Order Details ',),
-          automaticallyImplyLeading: false,
+          // automaticallyImplyLeading: false,
           // bottomChild: Row(
           //   children: [
           //     Expanded(

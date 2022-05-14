@@ -62,11 +62,11 @@ class _UserNavigationBarState extends State<UserNavigationBar> {
           break;
 
         case 4:
-          widget.currentPage = ProfileScreen();
+          widget.currentPage = OrderDeatilsScreen();
 
           break;
         case 5:
-          widget.currentPage = OrderDeatilsScreen();
+          widget.currentPage = ProfileScreen();
 
           break;
       }
@@ -80,22 +80,23 @@ class _UserNavigationBarState extends State<UserNavigationBar> {
       body: widget.currentPage,
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
-        selectedItemColor: coffeColor,
+        selectedItemColor: yellowColor,
         // selectedFontSize: 0,
         // unselectedFontSize: 0,
-        unselectedItemColor: Colors.black38,
+        unselectedItemColor: offWhiteColor,
         iconSize: 25,
-        backgroundColor: offWhiteColor,
+        // backgroundColor: offWhiteColor,
+        backgroundColor: coffeColor,
         currentIndex: widget.currentTab!,
         showSelectedLabels: true,
         selectedFontSize: 12,
 
         showUnselectedLabels: true,
         selectedLabelStyle: TextStyle(
-            fontSize: 12, color: coffeColor, fontFamily: montserratMedium),
+            fontSize: 12, color: coffeColor, fontFamily: poppinsMedium),
 
         unselectedLabelStyle: TextStyle(
-            fontSize: 12, color: Colors.black38, fontFamily: montserratMedium),
+            fontSize: 12, color: Colors.black38, fontFamily: poppinsMedium),
         unselectedFontSize: 12,
 
         onTap: (int i) {
@@ -106,7 +107,7 @@ class _UserNavigationBarState extends State<UserNavigationBar> {
             icon: Image.asset(
               'assets/icons/bottom-5.png',
               height: 22,
-              color: widget.currentTab == 0 ? coffeColor : Colors.black38,
+              color: widget.currentTab == 0 ? yellowColor : offWhiteColor,
             ),
             label: 'Home',
           ),
@@ -114,46 +115,52 @@ class _UserNavigationBarState extends State<UserNavigationBar> {
             icon: Image.asset(
               'assets/icons/bottom-2.png',
               height: 22,
-              color: widget.currentTab == 1 ? coffeColor : Colors.black38,
+              color: widget.currentTab == 1 ? yellowColor : offWhiteColor,
             ),
             label: 'Category',
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.category,
+              Icons.card_giftcard_outlined,
               size: 22,
-              color: widget.currentTab == 2 ? coffeColor : Colors.black38,
+              color: widget.currentTab == 2 ? yellowColor : offWhiteColor,
             ),
             label: 'Product',
           ),
           BottomNavigationBarItem(
-            icon: Image.asset(
-              'assets/icons/bottom-4.png',
-              height: 22,
-              color: widget.currentTab == 3 ? coffeColor : Colors.black38,
+            icon: Icon(
+              Icons.shopping_cart,
+              size: 22,
+              //  Image.asset(
+              //   'assets/icons/bottom-4.png',
+              // height: 22,
+              color: widget.currentTab == 3 ? yellowColor : offWhiteColor,
             ),
             label: 'Cart',
           ),
           BottomNavigationBarItem(
-            icon: Image.asset(
-              'assets/icons/bottom-1.png',
-              height: 22,
-              color: widget.currentTab == 4 ? coffeColor : Colors.black38,
+            icon: Icon(
+              Icons.shopping_bag,
+              size: 22,
+              //  Image.asset(
+              //   'assets/icons/bottom-1.png',
+              //   height: 22,
+              color: widget.currentTab == 4 ? yellowColor : offWhiteColor,
             ),
-            label: 'Profile',
+            label: 'Order',
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.shop,
+              Icons.account_circle_rounded,
               size: 22,
-              color: widget.currentTab == 5 ? coffeColor : Colors.black38,
+              color: widget.currentTab == 5 ? yellowColor : offWhiteColor,
             ),
             // icon: Image.asset(
             //   'assets/icons/bottom-3.png',
             //   height: 22,
             //   color: widget.currentTab == 2 ? coffeColor : Colors.black38,
             // ),
-            label: 'Order',
+            label: 'Profile',
           ),
         ],
       ),

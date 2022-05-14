@@ -47,7 +47,7 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
       title: title != null
           ? Text(title!,
               style: TextStyle(
-                  fontFamily: montserratMedium, color: txtColor ?? orangeColor))
+                  fontFamily: poppinsMedium, color: txtColor ?? orangeColor))
           : null,
       centerTitle: centerTitle ?? false,
       actions: actionList,
@@ -120,8 +120,7 @@ class SliverAppBars extends StatelessWidget {
       title: title != null
           ? Text(title!,
               style: TextStyle(
-                  fontFamily: montserratMedium,
-                  color: txtColor ?? txtWhiteColor))
+                  fontFamily: poppinsMedium, color: txtColor ?? txtWhiteColor))
           : null,
       actions: actionList,
       bottom: bottomChild != null
